@@ -1,0 +1,76 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		24F914031BFDBCF1000D722D /* main.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = main.html; sourceTree = "<group>"; };
+		24F914051BFDC0FA000D722D /* play.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = play.js; sourceTree = "<group>"; };
+		24F914061BFDC10E000D722D /* stylesheet.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = stylesheet.css; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		24F913FC1BFDBB13000D722D = {
+			isa = PBXGroup;
+			children = (
+				24F914061BFDC10E000D722D /* stylesheet.css */,
+				24F914051BFDC0FA000D722D /* play.js */,
+				24F914031BFDBCF1000D722D /* main.html */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		24F913FD1BFDBB13000D722D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+			};
+			buildConfigurationList = 24F914001BFDBB13000D722D /* Build configuration list for PBXProject "greensock_playground" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 24F913FC1BFDBB13000D722D;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		24F914011BFDBB13000D722D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		24F914021BFDBB13000D722D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		24F914001BFDBB13000D722D /* Build configuration list for PBXProject "greensock_playground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24F914011BFDBB13000D722D /* Debug */,
+				24F914021BFDBB13000D722D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 24F913FD1BFDBB13000D722D /* Project object */;
+}

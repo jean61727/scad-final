@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "1D90E506146C5C637046FA1D752C213DBFF8E033",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DF99F2D1865461C4A00200A2BBDB24BAFCB3EBA7" : 0,
+    "1D90E506146C5C637046FA1D752C213DBFF8E033" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3895089D-3062-4071-A5AA-F65A9351D50E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DF99F2D1865461C4A00200A2BBDB24BAFCB3EBA7" : "",
+    "1D90E506146C5C637046FA1D752C213DBFF8E033" : "greensock_playground\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "greensock_playground",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "greensock_playground.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jean61727\/scad-final.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1D90E506146C5C637046FA1D752C213DBFF8E033"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jean61727\/scad-final.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DF99F2D1865461C4A00200A2BBDB24BAFCB3EBA7"
+    }
+  ]
+}

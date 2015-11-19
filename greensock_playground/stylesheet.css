@@ -1,0 +1,21 @@
+html, body{
+    height:100%;
+    width:100%
+}
+
+#banner {
+    width:100%;
+    height: 20px;
+}
+
+#tabs > div {
+    width:100px;
+    height:50px;
+    
+    background-color:red;
+    
+    float: left;
+    
+    margin: 5px;
+    border-radius: 5px;
+}
