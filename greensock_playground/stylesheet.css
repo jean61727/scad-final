@@ -1,6 +1,7 @@
 html, body{
     height:100%;
-    width:98%;
+    width:700px;
+    background-color: gray;
 }
 
 /* defining text view */
@@ -14,9 +15,9 @@ margin:
 use left-right margin within a block(container)
 use top-down margin between containers.
 */
-#banner > div, #tab_container > div {
-    margin: 0px 3px 3px 0px;
-    float:left;
+#banner, #content_container {
+    margin: 0px 0px 30px 0px;
+    clear:left;
 }
 
 #tab_container {
@@ -24,19 +25,25 @@ use top-down margin between containers.
     clear:left;
 }
 
-#banner, #content_container {
-    margin: 0px 0px 10px 0px;
-    clear:left;
+#banner > div, #tab_container > div {
+    margin: 0px 3px 3px 0px;
+    float:left;
 }
+
+/* the four divs should be overlap, only show one of each. This is controlled by jQuery */
+#content_container > div {
+    position: absolute;
+}
+
 
 /* defining object shape and color */
 #banner {
     width:inherit;
-    height:35px;
+    height:30px;
 }
 
 #banner_top {
-    width:700px;
+    width:500px;
     height: inherit;
 
     border-radius: 5px;
@@ -58,13 +65,11 @@ use top-down margin between containers.
     width:100px;
     height:inherit;
     border-radius: 5px;
-    background-color:#70DDD3;
 }
 
 #content_container {
-    width:850px;
+    width:inherit;
     height:inherit;
-
     background-color:lightgray;
 }
 
