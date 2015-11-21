@@ -1,12 +1,51 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
+    	{% load staticfiles %}
+	    <!-- Bootstrap Core CSS -->
+	    <link href="{% static 'login/bootstrap.min.css' %}" rel="stylesheet">
+
+	    <!-- Custom CSS -->
+	    <link href="{% static 'login/agency.css' %}" rel="stylesheet">
+	    <link rel="stylesheet" type="text/css" href="{% static 'login/stylesheet.css' %}">
+
+	    <!-- Custom Fonts -->
+	    <link href="{% static 'login/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+	    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+	    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+	    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+	    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+	    <!-- external library-->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- local code -->
+        <script src="{% static 'login/js/play.js' %}"></script>
+
+
         <title>Django Login Application |
         {% block title %}{% endblock %}</title>
     </head>
+
+
     <body>
-        <h1>{% block head %}{% endblock %}</h1>
-        {% block content %}{% endblock %}
+
+    	<div id="banner">
+            <div id="banner_top"><a>My favorite music site!</a></div>
+            <div id="post_button" class="banner button">POST</div>
+            <div id="login_button" class="banner button">LOGIN</div>
+        </div>
+        <div id="tab_container">
+            <div id="top">Top</div>
+            <div id="explore">Explorer</div>
+            <div id="profile">Profile</div>
+            <div id="search">Search</div>
+        </div>
+
+        <div id="content_container">
+        	<h1>{% block head %}{% endblock %}</h1>
+        		{% block content %}{% endblock %}
+        </div>
+        
  
     </body>
 </html>

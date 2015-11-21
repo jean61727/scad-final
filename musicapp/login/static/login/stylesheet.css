@@ -1,0 +1,70 @@
+html, body{
+    height:100%;
+    width:98%;
+}
+
+/* defining text view */
+.button, #tab_container, #banner {
+    text-align: center;
+}
+
+/* defining object layout */
+/*
+margin: 
+use left-right margin within a block(container)
+use top-down margin between containers.
+*/
+#banner > div, #tab_container > div {
+    margin: 0px 3px 3px 0px;
+    float:left;
+}
+
+#tab_container {
+    margin: 0px 0px 0px 0px;
+    clear:left;
+}
+
+#banner, #content_container {
+    margin: 0px 0px 10px 0px;
+    clear:left;
+}
+
+/* defining object shape and color */
+#banner {
+    width:inherit;
+    height:35px;
+}
+
+#banner_top {
+    width:700px;
+    height: inherit;
+
+    border-radius: 5px;
+}
+
+.banner.button {
+    width:70px;
+    height:inherit;
+    border-radius: 5px;
+    background-color:#F48686;
+}
+
+#tab_container{
+    width:inherit;
+    height:20px;
+}
+
+#tab_container > div {
+    width:100px;
+    height:inherit;
+    border-radius: 5px;
+    background-color:#70DDD3;
+}
+
+#content_container {
+    width:850px;
+    height:inherit;
+
+    background-color:lightgray;
+}
+
