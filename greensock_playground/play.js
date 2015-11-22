@@ -3,6 +3,15 @@
 
 var defaultTabColor = '#70DDD3';
 var highlightTabColor = '#2F5F5A';
+var defaultButtonColor = '#F7B4B4';
+var defaultButtonBorderColor = '#964646';
+var highlightButtonColor = '#B13232';
+
+var highlightTabEffectCSS = {
+    backgroundColor:highlightTabColor,
+    color:'white',
+    ease:'Expo.easeOut'
+}
 
 var selectedTabId = '#home';
 
@@ -11,18 +20,27 @@ var allContentSelector = '#content_container > div';
 
 // START POINT UPON WINDOW LOADED
 $(function(){
-  TweenLite.fromTo("#banner_top", 2, {
-    backgroundColor:'#4645FF'
-  }, {
-    backgroundColor:"#DFB3F2"
-  });
+  //constants
+  var BODY_WIDTH = '900px';
 
   // setting start view
+  // set general layout
+  $("body, html").css('width', BODY_WIDTH);
+  $("#content_container, #content_container > div").css('width', '97%');
+
   // set tab default color 
   $("#tab_container > div").css("background-color", defaultTabColor);
+  // set default button color
+  $(".banner.button").css({
+    "background-color": defaultButtonColor,
+    "border-color": defaultButtonBorderColor
+   });
+  
   // only show home tab content at start
-  $("#content_container > div").css("opacity", 0);
-  $("#home_content").css("opacity", 1);
+  $("#content_container > div").css("opacity", 0).hide();
+  $("#home_content").css("opacity", 1).show();
+  $(selectedTabId).css(highlightTabEffectCSS);
+
   // text vertically aligning
   var bannerHeightStirng = $("#banner").css("height");
   var resultArray = /\d+/g.exec(bannerHeightStirng);
@@ -33,13 +51,37 @@ $(function(){
   // binding button listeners
   $("#tab_container > div")
   .click(tabMouseClicked);
+  $(".banner.button")
+  .mouseenter(buttonEnterEffect)
+  .mouseleave(buttonLeaveEffect);
 
   // test block
-  var feed = new PostFeed("name", "text", "url", "id");
-  feed.appendToHomeContent();
-  feed = new PostFeed("name2", 'text2', 'url2', 'id2');
-  feed.appendToHomeContent();
+  for(var i = 0; i<10; i++){
+    var feed = new PostFeed("name"+i, "text"+i, "url"+i, "id"+i);
+    feed.appendToHomeContent();
+  }
+  $("#content_container").css("height", 'auto');
 });
+
+
+function buttonEnterEffect() {
+  // assign the new color withh animation effect
+  TweenLite.to(this, 0.5, {
+    backgroundColor: highlightButtonColor,
+    color:'white',
+    borderColor:'white',
+    ease:'Expo.easeOut'
+  });
+}
+function buttonLeaveEffect() {
+  // change to original color
+  TweenLite.to(this, 0.5, {
+    backgroundColor: defaultButtonColor,
+    color:'black',
+    borderColor:defaultButtonBorderColor,
+    ease:'easeOut'
+  })
+}
 
 function tabMouseClicked(){
   var previousSelectedTabId = selectedTabId;
@@ -63,15 +105,19 @@ function tabMouseClicked(){
     ease:'Expo.easeOut'
   }, "start_point")
   // let previous tab content fade away
-  .to(previousSelectedTabContentId, 0.5, {
+  .to(previousSelectedTabContentId, 3, {
     opacity:0,
     ease:'Expo.easeOut'
   }, "start_point")
   // let current teb content fade in
-  .to(selectedTabContentId, 0.5, {
+  .to(selectedTabContentId, 1.5, {
     opacity:1,
-    ease:'Expo.easeOutr'
+    ease:'Expo.easeOut'
   }, "start_point");
+  // you must hide the previous content and release the space,
+  // in order to let the new content place correctly.
+  $(previousSelectedTabContentId).hide();
   switchAnimation.play();
+  $(selectedTabContentId).show();
 }
 

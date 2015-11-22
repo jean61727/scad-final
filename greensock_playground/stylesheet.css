@@ -1,6 +1,5 @@
 html, body{
     height:100%;
-    width:700px;
     background-color: gray;
 }
 
@@ -26,14 +25,16 @@ use top-down margin between containers.
 }
 
 #banner > div, #tab_container > div {
-    margin: 0px 3px 3px 0px;
+    margin: 0px 3px 0px 0px;
     float:left;
 }
 
 /* the four divs should be overlap, only show one of each. This is controlled by jQuery */
+/*
 #content_container > div {
     position: absolute;
 }
+*/
 
 
 /* defining object shape and color */
@@ -44,16 +45,23 @@ use top-down margin between containers.
 
 #banner_top {
     width:500px;
-    height: inherit;
+    height:100%;
+    
+    background-color:#DFB3F2;
+    border-color:#9675A5;
 
-    border-radius: 5px;
+    border-style:solid;
+    border-width:2px;
+    border-radius:5px;
 }
 
 .banner.button {
     width:70px;
-    height:inherit;
+    height:100%;
+
+    border-width:2px;
+    border-style:solid;
     border-radius: 5px;
-    background-color:#F48686;
 }
 
 #tab_container{
@@ -68,8 +76,10 @@ use top-down margin between containers.
 }
 
 #content_container {
-    width:inherit;
     height:inherit;
     background-color:lightgray;
 }
 
+#content_container > div {
+    height:inherit;
+}
