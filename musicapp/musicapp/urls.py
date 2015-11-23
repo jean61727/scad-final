@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from login.views import *
+from musicSite.views import base
 
 urlpatterns = patterns('',
     # Examples:
@@ -14,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^register/$', register),
     url(r'^register/success/$', register_success),
     url(r'^home/$', home),
+    url(r'^app/$', base),
 
 )
