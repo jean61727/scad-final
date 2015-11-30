@@ -1,0 +1,85 @@
+html, body{
+    height:100%;
+    background-color: gray;
+}
+
+/* defining text view */
+.button, #tab_container, #banner {
+    text-align: center;
+}
+
+/* defining object layout */
+/*
+margin: 
+use left-right margin within a block(container)
+use top-down margin between containers.
+*/
+#banner, #content_container {
+    margin: 0px 0px 30px 0px;
+    clear:left;
+}
+
+#tab_container {
+    margin: 0px 0px 0px 0px;
+    clear:left;
+}
+
+#banner > div, #tab_container > div {
+    margin: 0px 3px 0px 0px;
+    float:left;
+}
+
+/* the four divs should be overlap, only show one of each. This is controlled by jQuery */
+/*
+#content_container > div {
+    position: absolute;
+}
+*/
+
+
+/* defining object shape and color */
+#banner {
+    width:inherit;
+    height:30px;
+}
+
+#banner_top {
+    width:500px;
+    height:100%;
+    
+    background-color:#DFB3F2;
+    border-color:#9675A5;
+
+    border-style:solid;
+    border-width:2px;
+    border-radius:5px;
+}
+
+.banner.button {
+    width:70px;
+    height:100%;
+
+    border-width:2px;
+    border-style:solid;
+    border-radius: 5px;
+}
+
+#tab_container{
+    width:inherit;
+    height:20px;
+}
+
+#tab_container > div {
+    width:100px;
+    height:inherit;
+    border-radius: 5px;
+}
+
+#content_container {
+    height:inherit;
+    background-color:lightgray;
+}
+
+#content_container > div {
+    height:inherit;
+}
