@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^register/success/$', register_success),
     url(r'^home/$', home),
     url(r'^app/$', base),
+    
 
 )

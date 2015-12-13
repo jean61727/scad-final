@@ -6,4 +6,7 @@ from django.template import Context
 # Create your views here.
 def base(request):
 	
-	return render_to_response('test.html')
+	return render_to_response('playground_main.html')
+
+def link(request):
+	return render_to_response('post_link.html')
