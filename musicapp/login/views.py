@@ -38,7 +38,7 @@ def register_success(request):
  
 def logout_page(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/app')
  
 @login_required
 def home(request):
