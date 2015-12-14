@@ -10,7 +10,7 @@ $(function(){
     $('#show_link').click(function(){
         var url = $('#input_link').val();
         var vidId = getVidID(url);
-        $('#link_vedio').append('<iframe width="350" height="210"  src="http://www.youtube.com/embed/' + vidId + '"></iframe>');
+        $('#link_video').append('<iframe width="100%" height="50%" style="margin-top:25px; margin-right:50px;"   src="http://www.youtube.com/embed/' + vidId + '"></iframe>');
         alert("影片ID為 " + vidId);
         
         if(checkVidURL(url))
