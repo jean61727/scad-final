@@ -8,14 +8,17 @@ $(function(){
 
 	
     $('#show_link').click(function(){
+        $('#link_vedio').empty();
         var url = $('#input_link').val();
         var vidId = getVidID(url);
-        $('#link_vedio').append('<iframe width="350" height="210"  src="http://www.youtube.com/embed/' + vidId + '"></iframe>');
+        
+       
         alert("影片ID為 " + vidId);
         
         if(checkVidURL(url))
         {
             alert("正確");
+             $('#link_vedio').append('<iframe width="350" height="210"  src="http://www.youtube.com/embed/' + vidId + '"></iframe>');
         }
         else{
             alert("錯誤");
