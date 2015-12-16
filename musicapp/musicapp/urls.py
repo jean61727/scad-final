@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from login.views import *
 from musicSite.views import base
+from musicSite.views import home_view
 
 urlpatterns = patterns('',
     # Examples:
@@ -14,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'), # If user is not login it will redirect to login page
     url(r'^register/$', register),
     url(r'^register/success/$', register_success),
-    url(r'^home/$', home),
+    url(r'^home/$', home_view, name='home'),
     url(r'^app/$', base,name = 'mainpage'),
 
 
