@@ -34,13 +34,13 @@ def link(request):
 def user_post(request):
 
 	#request.POST['name_of_var']
-	print 'haha'
+	#print 'haha'
 	#print request.POST['input_link']
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
 		new_post = Post(
-            url=request.POST.get('input_link'),
+            url=request.POST.get('vidsID'),
             start_time=request.POST.get('input_start'),
             post_message=request.POST.get('post_message'),
             )
