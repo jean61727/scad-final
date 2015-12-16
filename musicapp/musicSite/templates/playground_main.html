@@ -159,28 +159,21 @@
                         <div style='float:right;'>
                             <div id='link_video'></div>
                         </div>
-                        <form style = "width:45%;">
+                       <form action="/post/" method="post" style = "width:45%;">{% csrf_token %}
                             <div class="form-group">
                                 <label for="input_link">link</label>
-                                <input type="link" class="form-control" id="input_link" placeholder="Please paste the link">    
+                                <input type="link" class="form-control" id="input_link" name = "input_link" placeholder="Please paste the link">    
                                 <button type="submit" id="show_link">show link</button>
 
                             </div>
-                            <form action="/post/" method="post" style = "width:45%;">{% csrf_token %}
-                            <!--<form action="/post/" method="post" style = "width:45%;">-->
-                                <div class="form-group">
-                                    <label for="input_link">link</label>
-                                    <input type="link" class="form-control" id="input_link" placeholder="Please paste the link">    
-                                    <button type="submit" id="show_link">show link</button>
-                                    
-                                </div>
+                            
                                 <div class="form-group">
                                     <label for="input_start">Where do you want it to start</label>
-                                    <input type="start_time" class="form-control" id="input_start" placeholder="calculated in seconds">
+                                    <input type="start_time" class="form-control" id="input_start" name = "input_start" placeholder="calculated in seconds">
                                 </div>
                                 <div class="form-group">
                                     <label for="post_message">Say sth...</label>
-                                    <textarea type="text" class="form-control" id="post_message" placeholder="type sth here" rows="3"></textarea>
+                                    <textarea type="text" class="form-control" id="post_message" placeholder="type sth here" rows="3" name = "post_message" ></textarea>
                                 </div>
                                 <div class="form-group">
                                     <select class="form-control">
@@ -197,6 +190,7 @@
                                     </label>
                                 </div>-->
                                 <input type="submit" class="btn btn-default" value="Submit">
+                               
                             </form>
                             
                         </div>
@@ -206,7 +200,7 @@
                         <div>
                             <div class="row" align="center">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <form action="#" id='search_form'>{% csrf_token %}
+                                    <form action="#" id='search_form'>
                                         <label for="input_song">Search new songs</label>
                                         <p><input type="text" id="input_song" placeholder="insert here..." autocomplete="off" class="form-control" /></p>
                                         <p><input type="submit" value="Search" class="form-control btn btn-primary w100" style ="width:45%;" ></p>

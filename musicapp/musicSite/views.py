@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+from posts.models import Post
 
 
 # Create your views here.
@@ -31,13 +32,22 @@ def link(request):
 
 @csrf_protect
 def user_post(request):
+
 	#request.POST['name_of_var']
+	print 'haha'
+	#print request.POST['input_link']
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		return render(request, 'post_link.html')
+		new_post = Post(
+            url=request.POST.get('input_link'),
+            start_time=request.POST.get('input_start'),
+            post_message=request.POST.get('post_message'),
+            )
+		new_post.save()
+		return HttpResponseRedirect('/app')
 	else:
-		return render(request, 'post_link.html')
+		return render(request, 'playground_main.html', {})
 
 
 
