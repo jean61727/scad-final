@@ -166,7 +166,7 @@
                                 <button type="submit" id="show_link">show link</button>
 
                             </div>
-                            <form action="." method="post" style = "width:45%;">{% csrf_token %}
+                            <form action="/post/" method="post" style = "width:45%;">{% csrf_token %}
                             <!--<form action="/post/" method="post" style = "width:45%;">-->
                                 <div class="form-group">
                                     <label for="input_link">link</label>
@@ -206,7 +206,7 @@
                         <div>
                             <div class="row" align="center">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <form action="#" id='search_form'>
+                                    <form action="#" id='search_form'>{% csrf_token %}
                                         <label for="input_song">Search new songs</label>
                                         <p><input type="text" id="input_song" placeholder="insert here..." autocomplete="off" class="form-control" /></p>
                                         <p><input type="submit" value="Search" class="form-control btn btn-primary w100" style ="width:45%;" ></p>

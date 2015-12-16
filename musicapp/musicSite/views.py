@@ -23,21 +23,21 @@ def home_view(request):
 
 def base(request):
 	
-	return render_to_response('playground_main.html')
+	return render(request,'playground_main.html')
 
 def link(request):
 
-	return render_to_response('post_link.html')
+	return render(request,'post_link.html')
 
 @csrf_protect
 def user_post(request):
 	#request.POST['name_of_var']
 	context=RequestContext(request)
 	if request.method == 'POST':
-		request.POST
-		print "here"
-	return render_to_response(context_instance=RequestContext(request))
-
+		#request.POST
+		return render(request, 'post_link.html')
+	else:
+		return render(request, 'post_link.html')
 
 
 
