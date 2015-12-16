@@ -3,9 +3,15 @@ from django.http import HttpResponse,Http404
 from django.template.loader import get_template
 from django import template
 from django.template import Context
+
 # Create your views here.
 def home_view(request):
-	return render(request, 'playground_main.html', {})
+	if request.method == "POST":
+		# ajax call
+		return HttpResponse("haha");
+	else:
+		# a access request to website visit
+		return render(request, 'playground_main.html', {})
 	# return render_to_response('playground_main.html')
 
 def base(request):
