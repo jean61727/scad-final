@@ -32,6 +32,12 @@ def link(request):
 @csrf_protect
 def user_post(request):
 	#request.POST['name_of_var']
+	context=RequestContext(request)
 	if request.method == 'POST':
+		request.POST
 		print "here"
-	return HttpResponseRedirect('/register/success/')
+	return render_to_response(context_instance=RequestContext(request))
+
+
+
+
