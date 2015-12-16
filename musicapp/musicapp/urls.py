@@ -1,8 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from login.views import *
-from musicSite.views import base
-from musicSite.views import home_view
+from musicSite.views import *
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^register/success/$', register_success),
     url(r'^home/$', home_view, name='home'),
     url(r'^app/$', base,name = 'mainpage'),
+    url(r'^login_home/$',home_login),
+    url(r'^post/$',user_post),
 
 
 

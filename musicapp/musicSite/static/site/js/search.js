@@ -2,7 +2,7 @@
 
 $(function() {
 // Search for a specified string.
- $("form").on("submit", function(e) {
+ $("#search_form").on("submit", function(e) {
        e.preventDefault();
 	$("#results").empty();
 	var q = $('#input_song').val();

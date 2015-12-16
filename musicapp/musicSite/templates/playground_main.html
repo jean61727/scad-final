@@ -1,32 +1,53 @@
 <html>
-    <head>
-        {% load staticfiles %}
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <title>YouBox</title>
+    <title>YouBox</title>
 
-        
-        <!-- Custom CSS -->
-        <link href="../static/bootstrap/css/1-col-portfolio.css" rel="stylesheet">
-        <!--Jquery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="{% static 'site/js/post.js' %}" type="text/javascript"></script>
-        <script src="{% static 'site/js/search.js' %}" type="text/javascript"></script>
-        <script src="{% static 'site/js/link.js' %}" type="text/javascript"></script>
-        <!--load youtube api-->
-        <script src="https://apis.google.com/js/client.js?onload=init"></script>
-        <!-- Bootstrap Core CSS -->
-        <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        
+    <!-- jQuery and its plugins -->
+    <script src="{% static 'bootstrap/js/jquery.js' %}"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+    <script src="{% static 'site/js/post.js' %}" type="text/javascript"></script>
+    <script src="{% static 'site/js/search.js' %}" type="text/javascript"></script>
+    <script src="{% static 'site/js/link.js' %}" type="text/javascript"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- Customed Bootstrap CSS -->
+    <link href="{% static 'bootstrap/css/1-col-portfolio.css' %}" rel="stylesheet">
+    <!--Load Youtube API-->
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+</head>
+<body>
+    <!-- Resolving Django POST request forbidden issue-->
+    {% csrf_token %}
+    <script>
+    $(function(){
+          // resolving POST request forbidden issue
+          var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+          
+          function csrfSafeMethod(method) {
+          // these HTTP methods do not require CSRF protection
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
 
-
-    </head>
-    <body>
-
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+          }
+        });
+      });
+    </script>
+    <!-- Custom JavaScript -->
+    <script type="text/javascript" src="{% static 'home_tab/home_tab.js' %}"></script>
 
 
     <!-- Navigation -->
@@ -60,24 +81,26 @@
         <!-- /.container -->
     </nav>
 
+    <!-- Tab Switcher -->
     <ul class="nav nav-tabs">
       <li class="active"><a href="#">Home</a></li>
       <li><a href="#">Explore</a></li>
       <li><a href="#">File</a></li>
       <li><a href="#">Search</a></li>
-    </ul>
+  </ul>
 
-    <!-- Page Content -->
-    <div class="container">
-
-        <!-- Page Heading -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">Page Heading
-                    <small>Secondary Text</small>
-                </h1>
+  <!-- Post Content -->
+  <div id='post_container' class="container">
+    <!-- Post Heading -->
+            <!--
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Page Heading
+                        <small>Secondary Text</small>
+                    </h1>
+                </div>
             </div>
-        </div>
+        -->
         <!-- /.row -->
 
         <!-- Project One -->
@@ -98,38 +121,6 @@
 
         <hr>
 
-        <!-- Pagination -->
-        <div class="row text-center">
-            <div class="col-lg-12">
-                <ul class="pagination">
-                    <li>
-                        <a href="#">&laquo;</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">1</a>
-                    </li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                    <li>
-                        <a href="#">4</a>
-                    </li>
-                    <li>
-                        <a href="#">5</a>
-                    </li>
-                    <li>
-                        <a href="#">&raquo;</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
         <!-- Footer -->
         <footer>
             <div class="row">
@@ -143,51 +134,39 @@
     </div>
     <!-- /.container -->
 
-        <div id="banner">
-            <div id="banner_top" class="banner">My favorite music site!</div>
-            <div id="post_button" class="banner button">POST</div>
-            <div id="login_button" class="banner button">LOGIN</div>
-        </div>
-        
-        <div id="tab_container">
-            <div id="home" class="tab">Home</div>
-            <div id="explore" class="tab">Explorer</div>
-            <div id="profile" class="tab">Profile</div>
-            <div id="search" class="tab">Search</div>
-        </div>
 
-        <div id="content_container">
-            <div id="home_content">This is Home</div>
-            <div id="explore_content">This is Explorer</div>
-            <div id="profile_content">This is Profile</div>
-            <div id="search_content">This is Search</div>
-        </div>
+    <!-- Implementation of Post and Login Button feature -->
+    <!-- Modal -->
+    <div class="modal fade bs-example-modal-lg" id="myModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
 
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Post New Song!</h4>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs" role="tablist" id = 'myTabs'>
+                <li role="presentation" class="active"><a href="#link" aria-controls="link" role="tab" data-toggle="tab" aria-expanded = "true" >Link</a></li>
+                <li role="presentation"><a href="#search_tab" aria-controls="search_tab" role="tab" data-toggle="tab">Search</a></li>
+            </ul>
 
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="link">
+                    <div >
+                        <div style='float:right;'>
+                            <div id='link_video'></div>
+                        </div>
+                        <form style = "width:45%;">
+                            <div class="form-group">
+                                <label for="input_link">link</label>
+                                <input type="link" class="form-control" id="input_link" placeholder="Please paste the link">    
+                                <button type="submit" id="show_link">show link</button>
 
-        <!-- Modal -->
-        <div class="modal fade bs-example-modal-lg" id="myModal" role="dialog" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-            
-              <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Post New Song!</h4>
-                </div>
-                <div class="modal-body">
-                    <ul class="nav nav-tabs" role="tablist" id = 'myTabs'>
-                        <li role="presentation" class="active"><a href="#link" aria-controls="link" role="tab" data-toggle="tab" aria-expanded = "true" >Link</a></li>
-                        <li role="presentation"><a href="#search_tab" aria-controls="search_tab" role="tab" data-toggle="tab">Search</a></li>
-                     </ul>
-                
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade in active" id="link">
-                        <div >
-                            <div style='float:right;'>
-                                <div id='link_video'></div>
                             </div>
-                            <form style = "width:45%;">
+                            <form action="." method="post" style = "width:45%;">{% csrf_token %}
+                            <!--<form action="/post/" method="post" style = "width:45%;">-->
                                 <div class="form-group">
                                     <label for="input_link">link</label>
                                     <input type="link" class="form-control" id="input_link" placeholder="Please paste the link">    
@@ -216,7 +195,7 @@
                                     <input type="checkbox"> Check me out
                                     </label>
                                 </div>-->
-                                <button type="submit" class="btn btn-default">Submit</button>
+                                <input type="submit" class="btn btn-default" value="Submit">
                             </form>
                             
                         </div>
@@ -226,7 +205,7 @@
                         <div>
                             <div class="row" align="center">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <form action="#">
+                                    <form action="#" id='search_form'>
                                         <label for="input_song">Search new songs</label>
                                         <p><input type="text" id="input_song" placeholder="insert here..." autocomplete="off" class="form-control" /></p>
                                         <p><input type="submit" value="Search" class="form-control btn btn-primary w100" style ="width:45%;" ></p>
@@ -238,22 +217,19 @@
                     </div>
                     
                 </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                   <!-- <button type="button" class="btn btn-primary">Send message</button>-->
-                </div>
             </div>
-              
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary">Send message</button>-->
             </div>
         </div>
 
+    </div>
+</div>
 
-        <!-- jQuery -->
-        <script src="../static/bootstrap/js/jquery.js"></script>
 
-        <!-- Bootstrap Core JavaScript -->
-        <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 
-    </body>
+
+
+</body>
 </html>
