@@ -4,7 +4,14 @@ from django.template.loader import get_template
 from django import template
 from django.template import Context
 
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
+
+
 # Create your views here.
+
 def home_view(request):
 	if request.method == "POST":
 		# ajax call
@@ -19,4 +26,12 @@ def base(request):
 	return render_to_response('playground_main.html')
 
 def link(request):
+
 	return render_to_response('post_link.html')
+
+@csrf_protect
+def user_post(request):
+	#request.POST['name_of_var']
+	if request.method == 'POST':
+		print "here"
+	return HttpResponseRedirect('/register/success/')

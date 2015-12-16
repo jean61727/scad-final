@@ -11,13 +11,13 @@ class Post(models.Model):
     # comments = models.TextField(max_length=100)
     likes = models.IntegerField()
     people_listening = models.IntegerField()
-    user_id = models.ForeignKey('login.MyUser', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('login.CustomUser', on_delete=models.CASCADE)
     category = models.CharField(max_length=20)
 
     time = models.DateTimeField(auto_now_add=True)
  
 class Follower(models.Model):
-	user_id = models.ForeignKey('login.MyUser',on_delete=models.CASCADE)
+	user_id = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE)
 	follow =  models.CharField(max_length=50)
 
 class Comments(models.Model):
