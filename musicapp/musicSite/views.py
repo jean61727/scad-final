@@ -31,6 +31,10 @@ def link(request):
 
 	return render(request,'post_link.html')
 
+def exploreSongCategories(request):
+
+	return render(request,'exploreSongCategories.html')
+
 @csrf_protect
 def user_post(request):
 
