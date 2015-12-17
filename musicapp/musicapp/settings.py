@@ -102,3 +102,7 @@ TEMPLATE_DIRS = (
 # if a user want to access a method that that requires login and the user is not logged in then it will redirect the user to login page.
 import django.contrib.auth
 django.contrib.auth.LOGIN_URL = '/'
+AUTHENTICATION_BACKENDS = (
+    'musicapp.auth_backends.CustomUserModelBackend',
+)
+CUSTOM_USER_MODEL = 'login.CustomUser'

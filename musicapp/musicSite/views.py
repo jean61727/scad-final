@@ -9,6 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from posts.models import Post
+from login.models import CustomUser
 
 
 # Create your views here.
@@ -39,7 +40,9 @@ def user_post(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
+		user = CustomUser.objects.get(id=request.POST.get('user'))
 		new_post = Post(
+			user_id=user,
             url=request.POST.get('vidsID'),
             start_time=request.POST.get('input_start'),
             post_message=request.POST.get('post_message'),
