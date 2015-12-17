@@ -9,6 +9,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from login.models import CustomUser
+
  
 @csrf_protect
 def register(request):
@@ -44,6 +45,6 @@ def logout_page(request):
 @login_required
 def home_login(request):
     return render_to_response(
-    'log_home.html',
+    'playground_main.html',
     { 'user': request.user }
     )
