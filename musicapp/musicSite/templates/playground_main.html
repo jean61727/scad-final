@@ -69,12 +69,18 @@
                     <li>
                         <a type="button" data-toggle="modal" data-target="#myModal">POST</a>
                     </li>
-                    <li>
-                        {% url 'login' as the_url %}
-                        <a href="{{ the_url }}">LOGIN</a>
-                    </li>
+                    
 
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.username %}
+                    <li><p class="navbar-text">Hi {{ user.username }} !</p></li>
+                    <li><a href="/logout/" >LOGOUT</a></li>
+                    {% else %}
+                        {% url 'login' as the_url %}
+                    <li><a href="{{ the_url }}">LOGIN</a></li>
+                    {% endif %}
+
             </div>
             <!-- /.navbar-collapse -->
         </div>
