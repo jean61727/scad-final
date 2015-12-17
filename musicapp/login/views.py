@@ -44,7 +44,7 @@ def logout_page(request):
  
 @login_required
 def home_login(request):
-    return render_to_response(
+    return render(request,
     'playground_main.html',
     { 'user': request.user }
     )
