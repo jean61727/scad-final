@@ -19,12 +19,7 @@ $(function(){
 });
 
 function css_attribute_setup(){
-	$(".glyphicon .glyphicon-heart").css({
-		"color":'blue'
-	});
-	$(".glyphicon .glyphicon-heart .activate").css({
-		"color":'red',
-	});
+
 }
 
 function ajax_fail_handler(xhr, textStatus, errorThrown){
@@ -49,6 +44,12 @@ function render_home_tab_posts(json_data){
 	json_data = [
 		{
 			"post_id":"0000",
+			"is_like":"false",
+			"like_count":"38",
+			"video_title":"YouTube Video",
+			"user_pic":__static_img_path+"default_user_picture.png",
+			"username":"JeyJey",
+			"message":"This is awesome and you must listen to this!",
 			"comments":[
 				{
 					"commentor":"me",
@@ -62,6 +63,12 @@ function render_home_tab_posts(json_data){
 		},
 		{
 			"post_id":"0001",
+			"is_like":"true",
+			"like_count":"3",
+			"video_title":"YouTube Video",
+			"user_pic":__static_img_path+"default_user_picture.png",
+			"username":"Jennyferrr",
+			"message":"Damn it this is totally junk never click play!",
 			"comments":[],
 		}
 	];
@@ -70,21 +77,32 @@ function render_home_tab_posts(json_data){
 	json_data.forEach(function(obj){
 		// render post main body - the row
 		post_id = obj['post_id'];
-		id_post_row = post_id+"_row";
+		id_post_body = post_id+"_row";
 		$("<div>", {
 			'class':'row',
-			'id':id_post_row,
+			'id':id_post_body,
 		}).appendTo("#post_container");
 
 		// left side - video view
-		render_post_video(obj, id_post_row);
+		id_post_video = post_id + "_video";
+		$("<div>", {
+			'class':'col-xs-6',
+			'id':id_post_video,
+		}).appendTo("#"+id_post_body);
+		render_post_video(obj, id_post_video);
 
 		// right side - post detail view
-		render_post_field(obj, id_post_row);
-		$("#"+id_post_row).after("<hr>");
+		id_post_field = post_id + "_field";
+		$("<div>", {
+			'class':'col-xs-6',
+			'id':id_post_field,
+		}).appendTo("#"+id_post_body);
+		render_post_field(obj, id_post_field);
+
+		$("#"+id_post_body).after("<hr>");
 
 		// render comment field
-		render_post_comment(obj, id_post_row);
+		render_post_comment(obj, id_post_body);
 
 		
 	});// post render ended
@@ -107,29 +125,76 @@ function render_home_tab_posts(json_data){
 
 }// home tab content render ended
 
-function render_post_video(post_data, id_post_body){
-	id_post_video = post_data['post_id'] + "_video";
-		$("<div>", {
-			'class':'col-xs-7',
-			'id':id_post_video,
-		}).appendTo("#"+id_post_body);
-		$("<a>", {
-			'href':"#",
-			'html':'<img class="img-responsive" src="http://placehold.it/700x300" alt="">'
-		}).appendTo("#"+id_post_video);
+function render_post_video(post_data, id_post_video){
+	$("<a>", {
+		'href':"#",
+		'html':'<img class="img-responsive" src="http://placehold.it/700x300" alt="">'
+	}).appendTo("#"+id_post_video);
 }
 
-function render_post_field(post_data, id_post_body){
-	id_post_detail = post_data['post_id']+"_detail";
+function render_post_field(post_data, id_post_field){
+	// Split into {like, title} and {pic, username, message}
+	post_id = post_data['post_id'];
+	id_field_title_bar =  post_id + "_field_title_bar";
+	id_field_content = post_id + "_field_content";
+	// {like, title} := title bar
+	$("<div>", {
+		'class':'row',
+		'id':id_field_title_bar,
+	})
+	.appendTo("#"+id_post_field);
+	// {like}
+	heart_icon = $("<i>", {
+		'class':'fa fa-heart-o',
+	}).appendTo("#"+id_field_title_bar);
+	// {title}
 	
-	var post_field = $("<div>", {
-		'class':'col-xs-5',
-		'html':'post message here',
-	}).appendTo("#"+id_post_body);
+	// {pic, username, message} := content
+	$("<div>", {
+		'class':'row',
+		'id':id_field_content,
+	})
+	.appendTo("#"+id_post_field);
+	// Split into {pic, username} and {message}
+	id_field_user = post_id + "_field_user";
+	id_field_message = post_id + "_field_message";
+	// {pic, username} := user
+	$("<div>", {
+		'class':'col-xs-4',
+		'id':id_field_user,
+	})
+	.css({'background-color':'grey'}).appendTo("#"+id_field_content);
+	// {message}
+	$("<div>", {
+		'class':'col-xs-8',
+		'html':post_data['message'],
+		'id':id_field_message,
+	})
+	.css({'background-color':'pink'}).appendTo("#"+id_field_content);
+	// Split into {pic}, {username}
+	id_field_pic = post_id + "_field_pic";
+	id_field_username = post_id + "_field_username";
+	// {pic}
+	$("<div>", {
+		'class':'row',
+		'id':id_field_pic,
+	}).appendTo("#"+id_field_user);
+	$("<img>", {
+		'src':post_data['user_pic'],
+		'class':'img-circle img-responsive img-thumbnail',
+		'alt':'user picture',
+		'height':'200',
+	}).appendTo("#"+id_field_pic);
+	// {username}
+	$("<div>", {
+		'class':'row text-center',
+		'id':id_field_username,
+	}).appendTo("#"+id_field_user);
+	$("<a>", {
+		'href':'#',
+		'html':post_data['username'],
+	}).appendTo("#"+id_field_username);
 
-	heart_icon = $("<span>", {
-		'class':'glyphicon glyphicon-heart',
-	}).appendTo(post_field);
 }
 
 function render_post_comment(post_data, id_post_body){
