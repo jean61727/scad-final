@@ -36,19 +36,18 @@
           function csrfSafeMethod(method) {
           // these HTTP methods do not require CSRF protection
           return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
+      }
 
-        $.ajaxSetup({
+      $.ajaxSetup({
           beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
               xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
           }
-        });
-      });
+      }
+  });
+  });
     </script>
-    <!-- Custom JavaScript -->
-    <script type="text/javascript" src="{% static 'home_tab/home_tab.js' %}"></script>
+    
 
 
     <!-- Navigation -->
@@ -78,25 +77,126 @@
                     <li><p class="navbar-text">Hi {{ user.username }} !</p></li>
                     <li><a href="/logout/" >LOGOUT</a></li>
                     {% else %}
-                        {% url 'login' as the_url %}
+                    {% url 'login' as the_url %}
                     <li><a href="{{ the_url }}">LOGIN</a></li>
                     {% endif %}
 
+                </div>
+                <!-- /.navbar-collapse -->
             </div>
-            <!-- /.navbar-collapse -->
+            <!-- /.container -->
+        </nav>
+
+        <!-- Implementation of Post and Login Button feature -->
+        <!-- Modal -->
+        <div class="modal fade bs-example-modal-lg" id="myModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Post New Song!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs" role="tablist" id = 'myTabs'>
+                            <li role="presentation" class="active"><a href="#link" aria-controls="link" role="tab" data-toggle="tab" aria-expanded = "true" >Link</a></li>
+                            <li role="presentation"><a href="#search_tab" aria-controls="search_tab" role="tab" data-toggle="tab">Search</a></li>
+                        </ul>
+
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="link">
+                            <div >
+                                <div style='float:right;'>
+                                    <div id='link_video'></div>
+                                </div>
+                                <form action="/post/" method="post" style = "width:45%;">{% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="input_link">link</label>
+                                        <input type="link" class="form-control" id="input_link" name = "input_link" placeholder="Please paste the link">    
+                                        <!--<button  id="show_link">show link</button> -->
+                                        <input type="button"  id="show_link" value="show link">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="vidsID">videoID</label>
+                                        <input  class="form-control" id="vidsID" name = "vidsID" placeholder="Video ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input_start">Where do you want it to start</label>
+                                        <input type="start_time" class="form-control" id="input_start" name = "input_start" placeholder="calculated in seconds">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="post_message">Say sth...</label>
+                                        <textarea type="text" class="form-control" id="post_message" placeholder="type sth here" rows="3" name = "post_message" ></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control">
+                                          <option>Rock</option>
+                                          <option>Hip hop</option>
+                                          <option>Relax</option>
+                                          <option>Classic</option>
+                                          <option>Party</option>
+                                      </select>
+                                  </div>
+                                  <input type="hidden" name="user" value="{{ user.id }}">
+                                    <!--<div class="checkbox">
+                                        <label>
+                                        <input type="checkbox"> Check me out
+                                        </label>
+                                    </div>-->
+                                    <input type="submit" class="btn btn-default" value="Submit">
+
+                                </form>
+                                
+                            </div>
+                            
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="search_tab">
+                            <div>
+                                <div class="row" align="center">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <form action="#" id='search_form'>
+                                            <label for="input_song">Search new songs</label>
+                                            <p><input type="text" id="input_song" placeholder="insert here..." autocomplete="off" class="form-control" /></p>
+                                            <p><input type="submit" value="Search" class="form-control btn btn-primary w100" style ="width:45%;" ></p>
+                                        </form>
+                                        <div id="results"></div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Send message</button>-->
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.container -->
-    </nav>
 
-    <!-- Tab Switcher -->
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Explore</a></li>
-      <li><a href="#">File</a></li>
-      <li><a href="#">Search</a></li>
-  </ul>
+        <!-- Tab Switcher -->
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Explore</a></li>
+          <li><a href="#">File</a></li>
+          <li><a href="#">Search</a></li>
+        </ul>
 
-  {% block content %}
-  {% endblock %}
-  </body>
+        <!-- Tab Content implement by separate html templates -->
+        {% block content %}
+        {% endblock %}
+
+        <!-- The Overall Website Footer -->
+        <div id='footer_container' class="container-fluid">
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright &copy; YouBox 2015</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </body>
 </html>
