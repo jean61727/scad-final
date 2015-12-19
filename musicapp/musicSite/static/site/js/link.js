@@ -18,12 +18,12 @@ $(function(){
         if(checkVidURL(url))
         {   if($('#input_start').val()==null){
             alert("正確");
-              $('#link_video').append('<iframe width="100%" height="50%" style="margin-top:25px; margin-right:100px;"   src="http://www.youtube.com/embed/' + vidId + '"></iframe>');
+              $('#link_video').append('<iframe width="100%" height="350px" style="margin-top:25px; margin-right:100px;"   src="http://www.youtube.com/embed/' + vidId + '"></iframe>');
             $('#vidsID').val(vidId);
         }
          else{
          alert("正確" );
-              $('#link_video').append('<iframe width="100%" height="50%" style="margin-top:25px; margin-right:100px;"   src="http://www.youtube.com/embed/' + vidId + '?start='+ $('#input_start').val() +'"></iframe>');
+              $('#link_video').append('<iframe width="100%" height="350px" style="margin-top:25px; margin-right:100px;"   src="http://www.youtube.com/embed/' + vidId + '?start='+ $('#input_start').val() +'"></iframe>');
              $('#vidsID').val(vidId);
          }
         }
