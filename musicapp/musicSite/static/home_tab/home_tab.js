@@ -90,7 +90,7 @@ function render_home_tab_posts(json_data){
 			"video_title":"YouTube Video",
 			"user_pic":__static_img_path+"user_pic.jpg",
 			"username":"JeyJey",
-			"message":"This is awesome you must listen to this!",
+			"message":"This is awesome you must listen to this! 中文也ok 啦",
 			"comments":[
 				{
 					"commentor":"me",
@@ -110,8 +110,33 @@ function render_home_tab_posts(json_data){
 			"video_title":"YouTube Video",
 			"user_pic":__static_img_path+"user_pic.jpg",
 			"username":"Jennyferrr",
-			"message":"Damn it this is totally junk never click play!",
-			"comments":[],
+			"message":"Holy crap this is totally shit never click play!",
+			"comments":[
+				{
+					"commentor":"小蘋果",
+					"comment_content":"明明很動人  我眼淚掉下來了...",
+				}
+			],
+		},
+		{
+			"post_id":"0002",
+			"is_like":"true",
+			"like_count":"233",
+			"video_id":"X2WH8mHJnhM",
+			"video_title":"YouTube Video",
+			"user_pic":__static_img_path+"user_pic.jpg",
+			"username":"David",
+			"message":"I soooo like this video~ need to listen to this before bed or I can not sleeepp!",
+			"comments":[
+				{
+					"commentor":"mozart",
+					"comment_content":"beautifull!",
+				},
+				{
+					"commentor":"beethoven",
+					"comment_content":"Bravvoo",
+				}
+			],
 		}
 	];
 
