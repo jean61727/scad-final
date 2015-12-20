@@ -1,5 +1,55 @@
 // jQuery window ready block
 $(function(){
+	
+	
+});
+
+// 2. This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+var player;
+function onYouTubeIframeAPIReady() {
+	console.log("youtube iframe ready");
+	render_home_tab();
+	// add youtube video by api
+	// id_player = obj['post_id']+'_player';
+	// player = new YT.Player(id_player, {
+	// 	  videoId: obj['video_id'],
+	// 	  events: {
+			//'onReady': onPlayerReady,
+			//'onStateChange': onPlayerStateChange
+	//   }
+	// });
+	// $("#"+id_post_video).addClass("embed-responsive");
+	// $("#"+id_player).addClass("embed-responsive-item");
+}
+
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+	event.target.playVideo();
+}
+
+// 5. The API calls this function when the player's state changes.
+//    The function indicates that when playing a video (state=1),
+//    the player should play for six seconds and then stop.
+var done = false;
+function onPlayerStateChange(event) {
+	// if (event.data == YT.PlayerState.PLAYING && !done) {
+	//   setTimeout(stopVideo, 6000);
+	//   done = true;
+	// }
+}
+function stopVideo() {
+	player.stopVideo();
+}
+
+
+// this is the starter of the whole render chain functions
+function render_home_tab(){
 	// acquire post data for rendering
 	var request_url = '#';
 	var request_data = {};
@@ -14,12 +64,6 @@ $(function(){
 	.done(render_home_tab_posts)
 	.fail(ajax_fail_handler);
 
-	// css setting
-	css_attribute_setup();
-});
-
-function css_attribute_setup(){
-
 }
 
 function ajax_fail_handler(xhr, textStatus, errorThrown){
@@ -28,10 +72,6 @@ function ajax_fail_handler(xhr, textStatus, errorThrown){
 	// use xhr.responseText to print response message
 	// use textStatus and error to see server error message
 	console.log(textStatus);
-}
-
-function render_home_tab(json_data){
-	render_home_tab_posts(json_data);
 }
 
 function render_home_tab_posts(json_data){
@@ -50,7 +90,7 @@ function render_home_tab_posts(json_data){
 			"video_title":"YouTube Video",
 			"user_pic":__static_img_path+"user_pic.jpg",
 			"username":"JeyJey",
-			"message":"This is awesome and you must listen to this!",
+			"message":"This is awesome you must listen to this!",
 			"comments":[
 				{
 					"commentor":"me",
@@ -90,6 +130,7 @@ function render_home_tab_posts(json_data){
 		$("<div>", {
 			'class':'col-xs-6',
 			'id':id_post_video,
+			//'class':'embed-responsive',
 		}).appendTo("#"+id_post_body);
 		render_post_video(obj, id_post_video);
 
@@ -106,7 +147,6 @@ function render_home_tab_posts(json_data){
 		// render comment field
 		render_post_comment(obj, id_post_body);
 
-		
 	});// post render ended
 
 	// render header
@@ -125,15 +165,22 @@ function render_home_tab_posts(json_data){
 		'html':'Post Feed <small>Check out what people listen to!</small>'
 	}).appendTo("#"+id_home_tab_header_col);
 
+
+
 }// home tab content render ended
 
 function render_post_video(post_data, id_post_video){
-	var youtube_url = "http://www.youtube.com/embed/"+post_data['video_id'];
+	var youtube_url = "http://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://example.com";
+	id_player = post_data['post_id']+'_player';
 	$("<div>", {
-		'class':'embed-responsive',
+		'id':id_player,
+		'class':'embed-responsive embed-responsive-16by9',
 	})
 	.append($("<iframe>", {
 		'src': youtube_url,
+		// 'type':'text/html',
+		'frameborder':'0',
+		'class':'embed-responsive-item',
 	}))
 	.appendTo("#"+id_post_video);
 }
@@ -191,7 +238,7 @@ function render_post_field(post_data, id_post_field){
 		'src':post_data['user_pic'],
 		'class':'img-circle img-responsive img-thumbnail',
 		'alt':'user picture',
-		//'max-height':'100',
+		'width':'100px',
 	}).appendTo("#"+id_field_pic);
 	// {username}
 	$("<div>", {
