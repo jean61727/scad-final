@@ -46,8 +46,9 @@ function render_home_tab_posts(json_data){
 			"post_id":"0000",
 			"is_like":"false",
 			"like_count":"38",
+			"video_id":"ZbZSe6N_BXs",
 			"video_title":"YouTube Video",
-			"user_pic":__static_img_path+"default_user_picture.png",
+			"user_pic":__static_img_path+"user_pic.jpg",
 			"username":"JeyJey",
 			"message":"This is awesome and you must listen to this!",
 			"comments":[
@@ -65,8 +66,9 @@ function render_home_tab_posts(json_data){
 			"post_id":"0001",
 			"is_like":"true",
 			"like_count":"3",
+			"video_id":"X2WH8mHJnhM",
 			"video_title":"YouTube Video",
-			"user_pic":__static_img_path+"default_user_picture.png",
+			"user_pic":__static_img_path+"user_pic.jpg",
 			"username":"Jennyferrr",
 			"message":"Damn it this is totally junk never click play!",
 			"comments":[],
@@ -126,10 +128,14 @@ function render_home_tab_posts(json_data){
 }// home tab content render ended
 
 function render_post_video(post_data, id_post_video){
-	$("<a>", {
-		'href':"#",
-		'html':'<img class="img-responsive" src="http://placehold.it/700x300" alt="">'
-	}).appendTo("#"+id_post_video);
+	var youtube_url = "http://www.youtube.com/embed/"+post_data['video_id'];
+	$("<div>", {
+		'class':'embed-responsive',
+	})
+	.append($("<iframe>", {
+		'src': youtube_url,
+	}))
+	.appendTo("#"+id_post_video);
 }
 
 function render_post_field(post_data, id_post_field){
@@ -160,17 +166,19 @@ function render_post_field(post_data, id_post_field){
 	id_field_message = post_id + "_field_message";
 	// {pic, username} := user
 	$("<div>", {
-		'class':'col-xs-4',
+		'class':'col-xs-4 text-center',
 		'id':id_field_user,
 	})
-	.css({'background-color':'grey'}).appendTo("#"+id_field_content);
+	// .css({'background-color':'grey'})
+	.appendTo("#"+id_field_content);
 	// {message}
 	$("<div>", {
 		'class':'col-xs-8',
 		'html':post_data['message'],
 		'id':id_field_message,
 	})
-	.css({'background-color':'pink'}).appendTo("#"+id_field_content);
+	//.css({'background-color':'pink'})
+	.appendTo("#"+id_field_content);
 	// Split into {pic}, {username}
 	id_field_pic = post_id + "_field_pic";
 	id_field_username = post_id + "_field_username";
@@ -183,11 +191,11 @@ function render_post_field(post_data, id_post_field){
 		'src':post_data['user_pic'],
 		'class':'img-circle img-responsive img-thumbnail',
 		'alt':'user picture',
-		'height':'200',
+		//'max-height':'100',
 	}).appendTo("#"+id_field_pic);
 	// {username}
 	$("<div>", {
-		'class':'row text-center',
+		'class':'row',
 		'id':id_field_username,
 	}).appendTo("#"+id_field_user);
 	$("<a>", {
