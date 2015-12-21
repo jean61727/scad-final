@@ -76,7 +76,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a type="button" data-toggle="modal" data-target="#myModal">POST</a>
+                        <a href="" type="button" data-toggle="modal" data-target="#myModal">POST</a>
                     </li>
 
 
@@ -96,6 +96,14 @@
         </div>
         <!-- /.container -->
     </nav>
+
+    <!-- Tab Switcher -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="/home">Home</a></li>
+        <li><a href="/explorer">Explore</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Search</a></li>
+    </ul>
 
     <!-- Implementation of Post and Login Button feature -->
     <!-- Modal -->
@@ -224,14 +232,6 @@
         </div>
     </div>
 
-    <!-- Tab Switcher -->
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Explore</a></li>
-        <li><a href="#">File</a></li>
-        <li><a href="#">Search</a></li>
-    </ul>
-
     <!-- Tab Content implement by separate html templates -->
     {% block content %} {% endblock %}
 
@@ -239,7 +239,7 @@
     <div id='footer_container' class="container-fluid">
         <footer>
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 text-center">
                     <p>Copyright &copy; YouBox 2015</p>
                 </div>
             </div>
