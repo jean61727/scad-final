@@ -50,7 +50,10 @@ def user_post(request):
             url=request.POST.get('vidsID'),
             start_time=request.POST.get('input_start'),
             post_message=request.POST.get('post_message'),
+            category=request.POST.get('category'),
             )
+		print (request.POST.get('category'))
+		print ("hello")
 		new_post.save()
 		return HttpResponseRedirect('/app')
 	else:
