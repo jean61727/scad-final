@@ -35,6 +35,12 @@ def exploreSongCategories(request):
 
 	return render(request,'exploreSongCategories.html')
 
+def categoriesContent(request,category):
+
+	post_list = Post.objects.filter(category=category)
+
+	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list})
+
 @csrf_protect
 def user_post(request):
 
