@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^$', home_view, name='home'),
     url(r'^home/$', home_view, name='home'),
     url(r'^explore/songcategories/$',exploreSongCategories),
+    url(r'^profile/$',profile),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', 'django.contrib.auth.views.login', name='login'),

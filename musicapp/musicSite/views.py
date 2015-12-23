@@ -59,5 +59,6 @@ def user_post(request):
 	else:
 		return render(request, 'playground_main.html', {})
 
-
+def profile (request):
+	return render(request,'profile.html')
 

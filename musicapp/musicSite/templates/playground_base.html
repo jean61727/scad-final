@@ -99,10 +99,12 @@
 
     <!-- Tab Switcher -->
     <ul class="nav nav-tabs">
+        {% block navbar %}
         <li class="active"><a href="/home">Home</a></li>
         <li><a href="/explore/songcategories/">Explore</a></li>
-        <li><a href="#">Profile</a></li>
+        <li><a href="/profile/">Profile</a></li>
         <li><a href="#">Search</a></li>
+         {% endblock %}
     </ul>
 
     <!-- Implementation of Post and Login Button feature -->
