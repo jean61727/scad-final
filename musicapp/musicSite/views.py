@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from posts.models import Post,Comments
+from posts.models import Post,Comments,Follower
 from login.models import CustomUser
 import json
 from django.core import serializers
@@ -146,4 +146,67 @@ def profile (request):
 	#print user_post.post_message[1]
 	#print request.user
 	return render(request,'profile.html',{'user_post': user_post,'data':data})
+
+def profile_user (request,user):
+
+	user = CustomUser.objects.get(username=user)
+	user_post=Post.objects.filter(user_id=user)
+	print user
+	video_id_list=[]
+	for post in user_post:
+		video_id_list.append(str(post.url))
+		print str(post.url)
+	video_id_list=json.dumps(video_id_list)
+
+	data = serializers.serialize("json", user_post)
+
+	#print user_post[1].url
+	#print user_post.post_message[1]
+	#print request.user
+	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user})
+
+
+
+def search(request):
+	user_list=CustomUser.objects.all()
+	print user_list
+	return render(request,'search.html',{'user_list':user_list})
+
+
+def like_add(request):
+
+
+	return
+
+def follow_add(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		new_post = Follower(
+			user_id=user,
+            follow=request.POST.get('follow')
+            )
+		print (request.POST.get('follow'))
+		print ("hello")
+		new_post.save()
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+	else:
+		return render(request, 'playground_main.html', {})
+
+def follow_delete(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
+		
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+	else:
+		return render(request, 'playground_main.html', {})
+
 

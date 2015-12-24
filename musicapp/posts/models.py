@@ -31,3 +31,9 @@ class Comments(models.Model):
     post_id = models.CharField(max_length=100, null=True)
     comment_message = models.CharField(max_length=300)
     time = models.DateTimeField(auto_now_add=True)
+
+class Likes(models.Model):
+
+    post_id = models.CharField(max_length=100,null=True)
+    user_id = models.CharField(max_length=100,null=True)
+    

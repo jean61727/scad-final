@@ -225,7 +225,8 @@ function render_post_field(post_data, id_post_field){
 	.appendTo("#"+id_post_field);
 	// {like}
 	heart_icon = $("<i>", {
-		'class':'fa fa-heart-o',
+		'class':'fa fa-heart-o button',
+		'onclick':'like(this)',
 	}).appendTo("#"+id_field_title_bar);
 	// {title}
 	
@@ -403,5 +404,5 @@ function comment_input_enter_listener(e){
 		})
 		.fail(ajax_fail_handler);
 	}
-}
+
 
