@@ -1,5 +1,6 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,Http404
+from django.http import JsonResponse
 from django.template.loader import get_template
 from django import template
 from django.template import Context
@@ -17,7 +18,78 @@ from login.models import CustomUser
 def home_view(request):
 	if request.method == "POST":
 		# ajax call
-		return HttpResponse("haha");
+
+		# organize a json object
+		json_object = {
+			"posts":[]
+		}
+
+		filtered_posts = Post.objects.filter().values(
+			'id',
+			'title',
+			'url',
+			'start_time',
+			'post_message',
+			'likes',
+			'people_listening',
+			'category',
+			'user_id_id',
+			'time',
+			'user_pic_path')
+
+		for one_post in filtered_posts:
+			post_data = {
+				"post_id":one_post["id"],
+				"is_like":"false",
+				"like_count":one_post["likes"],
+				"video_id":one_post["url"],
+				"video_title": one_post["title"] ,
+				"user_pic":  one_post["user_pic_path"] ,
+				"username": one_post["user_id_id"]  ,
+				"message": one_post["post_message"]  ,
+				"comments":[]
+			}
+
+			comments = []
+			
+			comment_data = {
+				"commentor":"me",
+				"comment_content":"good",
+			}
+
+			comments.append(comment_data)
+
+			post_data["comments"] = comments
+
+			json_object["posts"].append(post_data)
+
+		# second post data
+		post_data = {
+			"post_id":"0001",
+			"is_like":"true",
+			"like_count":"3",
+			"video_id":"X2WH8mHJnhM",
+			"video_title":"YouTube Video",
+			"user_pic":"/static/img/user_pic.jpg",
+			"username":"Jennyferrr",
+			"message":"Holy crap this is totally shit never click play!",
+			"comments":[]
+		}
+
+		comments = []
+		
+		comment_data = {
+			"commentor":"mozart",
+			"comment_content":"beautifull!",
+		}
+
+		comments.append(comment_data)
+
+		post_data["comments"] = comments
+
+		json_object["posts"].append(post_data)
+
+		return JsonResponse(json_object)
 	else:
 		# a access request to website visit
 		return render(request, 'playground_main.html', {})
