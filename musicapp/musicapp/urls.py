@@ -11,7 +11,9 @@ urlpatterns = patterns('',
     # Main View Tab Content
     url(r'^$', home_view, name='home'),
     url(r'^home/$', home_view, name='home'),
+    url(r'^explore/songcategories/content/(?P<category>\w+)/', categoriesContent),
     url(r'^explore/songcategories/$',exploreSongCategories),
+    url(r'^profile/$',profile),
 
     # Backend Administration
     url(r'^admin/', include(admin.site.urls)),
@@ -24,5 +26,6 @@ urlpatterns = patterns('',
     url(r'^app/$', base,name = 'mainpage'),
     url(r'^login_home/$',home_login),
     url(r'^post/$',user_post),
+
 
 )
