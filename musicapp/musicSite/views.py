@@ -129,7 +129,7 @@ def user_post(request):
 		print (request.POST.get('category'))
 		print ("hello")
 		new_post.save()
-		return HttpResponseRedirect('/app')
+		return HttpResponseRedirect('/home')
 	else:
 		return render(request, 'playground_main.html', {})
 
