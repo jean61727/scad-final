@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from posts.models import Post,Follower
+from posts.models import *
 from login.models import CustomUser
 import json
 from django.core import serializers
@@ -179,10 +179,6 @@ def search(request):
 	return render(request,'search.html',{'user_list':user_list})
 
 
-def like_add(request):
-
-
-	return
 
 def follow_add(request):
 
@@ -215,4 +211,32 @@ def follow_delete(request):
 	else:
 		return render(request, 'playground_main.html', {})
 
+def like_add(request):
 
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		new_post = Likes(
+			user_id=user,
+            post_id=request.POST.get('post_id')
+            )
+		print (request.POST.get('post_id'))
+		print ("hello")
+		new_post.save()
+		return render(request, 'playground_main.html', {})
+	else:
+		return render(request, 'playground_main.html', {})
+def like_delete(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		Likes.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
+		
+		return render(request, 'playground_main.html', {})
+	else:
+		return render(request, 'playground_main.html', {})

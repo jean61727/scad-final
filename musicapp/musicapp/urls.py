@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^login_home/$',home_login),
     url(r'^post/$',user_post),
     url(r'^like/$',like_add),
+    url(r'^unlike/$',like_delete),
     url(r'^follow/$',follow_add),
     url(r'^unfollow/$',follow_delete),
     

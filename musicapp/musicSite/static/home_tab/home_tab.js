@@ -224,7 +224,7 @@ function render_post_field(post_data, id_post_field){
 	// {like}
 	heart_icon = $("<i>", {
 		'class':'fa fa-heart-o button',
-		'onclick':'like(this)',
+		'onclick':'like(this,'+post_id+')',
 	}).appendTo("#"+id_field_title_bar);
 	// {title}
 	
@@ -363,10 +363,22 @@ function render_post_comment(post_data, id_post_body){
 	}).appendTo("#"+id_comment_footer);
 }
 
-function like(item){
+function like(item,post_id){
 	
-	$(item).prop('class','glyphicon glyphicon-heart button');
-	console.log(item);
-	$.post("like_add")
+	if($(item).attr('class')=='fa fa-heart-o button'){
+		$(item).prop('class','glyphicon glyphicon-heart button');
+		$.post('/like/',{
+			"post_id":post_id
+		});
+		
+	
+	}
+	else{
+		$(item).prop('class','fa fa-heart-o button');
+		$.post('/unlike/',{
+			"post_id":post_id
+		});
+		
+	}
 }
 
