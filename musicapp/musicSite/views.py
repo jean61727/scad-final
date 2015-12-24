@@ -66,5 +66,14 @@ def user_post(request):
 		return render(request, 'playground_main.html', {})
 
 def profile (request):
-	return render(request,'profile.html')
+
+	user_post=Post.objects.filter(user_id=request.user)
+	video_id_list=[]
+	for post in user_post:
+		video_id_list.append(post.url)
+	print video_id_list
+	#print user_post[1].url
+	#print user_post.post_message[1]
+	#print request.user
+	return render(request,'profile.html',{'user_post': user_post,'video_id_list':video_id_list})
 

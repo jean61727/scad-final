@@ -31,16 +31,29 @@
 	           	<div class="col-md-2">
                     
                     	<h3>{{ user.username }}</h3>
-                    	<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;"></button>
+                    	<script type="text/javascript">
+                    		var list={{video_id_list}}
+                    	</script>
+                    	<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist(list)" ></button>
                 	
                 </div>
 
-
+                <div id="player"></div>
 	        </div>
 
-	        <div class="page-header">
-  				
-			</div>
+	        <div class="page-header"></div>
+	        <div>
+	        	<ul>
+				  {% if user_post %}
+				    {% for post in user_post %}
+				      <li>{{ post.url }}</li>
+				    {% endfor %}
+				  {% else %}
+				    <li>Sorry, no athletes in this list.</li>
+				  {% endif %}
+				</ul>
+
+	        </div>
 
 	    </div>
 
@@ -48,7 +61,6 @@
 	        <div>
 	            
 	        	 
-
 	        </div>
 	  	</div>
 	    
