@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from posts.models import Post
+from posts.models import Post,Follower
 from login.models import CustomUser
 import json
 from django.core import serializers
@@ -184,5 +184,35 @@ def like_add(request):
 
 	return
 
+def follow_add(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		new_post = Follower(
+			user_id=user,
+            follow=request.POST.get('follow')
+            )
+		print (request.POST.get('follow'))
+		print ("hello")
+		new_post.save()
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+	else:
+		return render(request, 'playground_main.html', {})
+
+def follow_delete(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
+		
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+	else:
+		return render(request, 'playground_main.html', {})
 
 

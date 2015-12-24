@@ -24,7 +24,7 @@
 	        	</div>
 	           	<div class="col-md-2">
                     
-                    	<h3>{{ user_other}}<button class="btn btn-primary btn-xs" style="margin-left:10px">+follow</button></h3>
+                    	<h3>{{ user_other}}<input type="button" class="btn btn-primary btn-xs" style="margin-left:10px" onclick='follow(this)' value='+follow'/></h3>
 
                     	<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>
                 	
@@ -108,6 +108,29 @@ function stopVideo() {
 	player.stopVideo();
 }
 
+function follow(item){
+	//var current_user={{user_other}};
+	//console.log(current_user);
+	if($(item).attr('value')=='followed'){
+		$(item).prop('class','btn btn-primary btn-xs');
+		$(item).prop('value','+follow');
+		$.post('/unfollow/',{
+			"follow":"{{user_other}}"
+		});
+		
+	
+	}
+	else{
+		$(item).prop('class','btn btn-success btn-xs');
+		$(item).prop('value','followed');
+		$.post('/follow/',{
+			"follow":"{{user_other}}"
+		});
+		
+	}
+	
+	
+}
 
 
 </script>
