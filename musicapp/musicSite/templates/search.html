@@ -1,28 +1,22 @@
 {% extends 'playground_base.html' %}
 {% load staticfiles %}
 {% block navbar %}
-        <li><a href="/home">Home</a></li>
-        <li><a href="/explore/songcategories/">Explore</a></li>
-        <li class="active"><a href="/profile/">Profile</a></li>
-        <li ><a href="/search/">Search</a></li>
+	    <li><a href="/home">Home</a></li>
+	    <li><a href="/explore/songcategories/">Explore</a></li>
+	    <li ><a href="/profile/">Profile</a></li>
+	    <li class="active"><a href="/search/">Search</a></li>
 {% endblock %}
 {% block content %}
-{% if user.username %}
-<div  class="col-md-11 col-md-offset-1" style="margin-top:3%; margin-bottom:20px; " >	
-	<ul class="nav nav-pills" role="tablist" id='myTabs'>
-	    <li role="presentation" class="active">
-	    	<a href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab" aria-expanded="true">User Profile</a>
-	    </li>
-	    <li role="presentation">
-	    	<a href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
-	    </li>
+	<ul>
+		{%for profile_user in user_list %}
+			<li><a href="{% url 'profile_url' profile_user %}">{{profile_user}}</a></li>
+		{%endfor%}
+
 	</ul>
+	{% if user.username %}
 
-</div>
 
-<div class="col-md-11 col-md-offset-1">
-	<div class="tab-content" >
-	    <div role="tabpanel" class="tab-pane fade in active" id="user_profile">
+
 	    	
 	        <div class = 'row'>
 	        	<div class="col-md-2">
@@ -30,7 +24,7 @@
 	        	</div>
 	           	<div class="col-md-2">
                     
-                    	<h3>{{ user.username }}</h3>
+                    	<h3>{{ user_other}}<button class="btn btn-primary btn-xs" style="margin-left:10px">+follow</button></h3>
 
                     	<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>
                 	
@@ -45,7 +39,6 @@
 
 	        </div>
 
-	    </div>
 
 	    <div role="tabpanel" class="tab-pane fade" id="follow">
 	        <div>
@@ -54,8 +47,7 @@
 	        </div>
 	  	</div>
 	    
-	</div>
-</div>
+
 {% else %}
 <h3 align="center">Please Login !</h3>
 {% endif %}
@@ -120,4 +112,3 @@ function stopVideo() {
 
 </script>
 {% endblock %}
-

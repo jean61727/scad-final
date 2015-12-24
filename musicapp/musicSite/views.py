@@ -152,6 +152,37 @@ def profile (request):
 	#print user_post.post_message[1]
 	#print request.user
 	return render(request,'profile.html',{'user_post': user_post,'data':data})
+
+def profile_user (request,user):
+
+	user = CustomUser.objects.get(username=user)
+	user_post=Post.objects.filter(user_id=user)
+	print user
+	video_id_list=[]
+	for post in user_post:
+		video_id_list.append(str(post.url))
+		print str(post.url)
+	video_id_list=json.dumps(video_id_list)
+
+	data = serializers.serialize("json", user_post)
+
+	#print user_post[1].url
+	#print user_post.post_message[1]
+	#print request.user
+	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user})
+
+
+
+def search(request):
+	user_list=CustomUser.objects.all()
+	print user_list
+	return render(request,'search.html',{'user_list':user_list})
+
+
 def like_add(request):
+
+
 	return
+
+
 
