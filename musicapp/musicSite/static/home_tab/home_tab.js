@@ -52,14 +52,16 @@ function stopVideo() {
 function render_home_tab(){
 	// acquire post data for rendering
 	var request_url = '#';
-	var request_data = {};
+	var request_json = {
+		"request_type":"get_home_tab_post",
+	};
 	// render tab content = render all posts
 	$.ajax({
 		type:"POST",
 		url:request_url,
-		data:request_data,
-		// dataType:"JSON" /* this specify the returned object type */
-		// contentType:
+		data:JSON.stringify(request_json),
+		dataType:"JSON", /* this specify the returned object type */
+		contentType:"application/json",
 	})
 	.done(render_home_tab_posts)
 	.fail(ajax_fail_handler);
@@ -75,8 +77,8 @@ function ajax_fail_handler(xhr, textStatus, errorThrown){
 }
 
 function render_home_tab_posts(json_data){
-	console.log("returned object:");
-	console.log(json_data);
+	// console.log("returned object:");
+	// console.log(json_data);
 
 	// render post data
 	// we will have the following fields to render for each post:
@@ -360,8 +362,14 @@ function render_post_comment(post_data, id_post_body){
 		'type':'text',
 		'id':id_comment_input,
 	/*}).appendTo("#"+id_comment_panel_heading);*/
-	}).appendTo("#"+id_comment_footer);
+	})
+	//.keyup(comment_input_enter_listener)
+	.appendTo("#"+id_comment_footer)
+	.bind('keyup', {
+		postid: post_id
+	}, comment_input_enter_listener);
 }
+
 
 function like(item,post_id){
 	
@@ -380,5 +388,41 @@ function like(item,post_id){
 		});
 		
 	}
+}
+function comment_input_enter_listener(e){
+	// if enter is pressed
+	if(e.keyCode == 13){
+		var $input_field = this;
+		var $post_id = e.data.postid;
+		// console.log($(this).val());
+		var comment_message = $(this).val();
+
+		// push this commnt into database
+		var request_json = {
+			"request_type":"push_comment_input",
+			"comment_message":comment_message,
+			"post_id":$post_id,
+		};
+
+		$.ajax({
+			type:"POST",
+			url:"#",
+			data:JSON.stringify(request_json),
+			//dataType:"JSON", /* this specify the returned object type */
+			contentType:'application/json',
+		})
+		.done(function(response_json){
+			// display the new comment
+			$($input_field).val("");
+			console.log(response_json["comment_content"]);
+			// add the new comment
+			$("<li>", {
+				'class':'list-group-item',
+				'html':response_json["comment_content"],
+			}).appendTo("#"+$post_id+"_comment_list");
+		})
+		.fail(ajax_fail_handler);
+	}
+
 }
 

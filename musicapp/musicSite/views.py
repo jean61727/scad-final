@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+
 from posts.models import *
 from login.models import CustomUser
 import json
@@ -19,78 +20,72 @@ from django.core import serializers
 def home_view(request):
 	if request.method == "POST":
 		# ajax call
+		json_data = json.loads(request.body)
+		request_type = json_data['request_type']
+		if request_type == "get_home_tab_post":
+			# query database data
+			display_post_count = 2
+			filtered_posts = Post.objects.all().order_by('-time').values(
+				'id',
+				'title',
+				'url',
+				'start_time',
+				'post_message',
+				'likes',
+				'people_listening',
+				'category',
+				'user_id_id',
+				'time',
+				'user_pic_path')[:display_post_count]
 
-		# organize a json object
-		json_object = {
-			"posts":[]
-		}
-
-		filtered_posts = Post.objects.filter().values(
-			'id',
-			'title',
-			'url',
-			'start_time',
-			'post_message',
-			'likes',
-			'people_listening',
-			'category',
-			'user_id_id',
-			'time',
-			'user_pic_path')
-
-		for one_post in filtered_posts:
-			post_data = {
-				"post_id":one_post["id"],
-				"is_like":"false",
-				"like_count":one_post["likes"],
-				"video_id":one_post["url"],
-				"video_title": one_post["title"] ,
-				"user_pic":  one_post["user_pic_path"] ,
-				"username": one_post["user_id_id"]  ,
-				"message": one_post["post_message"]  ,
-				"comments":[]
+			# print list(Post.objects.latest('time'))
+			# organize a json object
+			json_object = {
+				"posts":[]
 			}
+			for one_post in filtered_posts:
+				# make a data set for a single post
+				post_data = {
+					"post_id":one_post["id"],
+					"is_like":"false",
+					"like_count":one_post["likes"],
+					"video_id":one_post["url"],
+					"video_title": one_post["title"] ,
+					"user_pic":  one_post["user_pic_path"] ,
+					"username": one_post["user_id_id"]  ,
+					"message": one_post["post_message"]  ,
+					"comments":[]
+				}
+				# collecting comment data
+				filtered_comments = Comments.objects.filter(post_id=one_post["id"]).values("comment_message")
+				comments = []
+				
+				for one_comment in filtered_comments:
+					comment_data = {
+						"commentor":"me",
+						"comment_content":one_comment["comment_message"],
+					}
+					comments.append(comment_data)
 
-			comments = []
-			
+				post_data["comments"] = comments
+
+				json_object["posts"].append(post_data)
+
+			return JsonResponse(json_object)
+
+		elif request_type == "push_comment_input":
+			Comments.objects.create(
+				comment_message=json_data["comment_message"],
+				post_id=json_data["post_id"],
+				)
 			comment_data = {
-				"commentor":"me",
-				"comment_content":"good",
+				"commentor":"meee",
+				"comment_content":json_data["comment_message"],
 			}
+			return JsonResponse(comment_data)
 
-			comments.append(comment_data)
-
-			post_data["comments"] = comments
-
-			json_object["posts"].append(post_data)
-
-		# second post data
-		post_data = {
-			"post_id":"0001",
-			"is_like":"true",
-			"like_count":"3",
-			"video_id":"X2WH8mHJnhM",
-			"video_title":"YouTube Video",
-			"user_pic":"/static/img/user_pic.jpg",
-			"username":"Jennyferrr",
-			"message":"Holy crap this is totally shit never click play!",
-			"comments":[]
-		}
-
-		comments = []
-		
-		comment_data = {
-			"commentor":"mozart",
-			"comment_content":"beautifull!",
-		}
-
-		comments.append(comment_data)
-
-		post_data["comments"] = comments
-
-		json_object["posts"].append(post_data)
-
-		return JsonResponse(json_object)
+		else:
+			return HttpResponse("Invalid request type")
 	else:
 		# a access request to website visit
 		return render(request, 'playground_main.html', {})
