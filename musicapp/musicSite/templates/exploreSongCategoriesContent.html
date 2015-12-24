@@ -109,19 +109,24 @@
       <li><a href="#">Search</a></li>
   </ul>
 
+{% if post_list %}
     {% for post in post_list|dictsortreversed:"likes" %}
       <div>
-<!--          {{ post.title }}
+         {{ post.title }}
          {{ post.url }}
         {{ post.start_time }}
-        {{ post.post_message }} -->
+        {{ post.post_message }}
         {{ post.likes }}
-<!--         {{ post.people }}
+        {{ post.people }}
         {{ post.user_id }}
         {{ post.category }}
-        {{ post.time }} -->
+        {{ post.time }}
     </div>
     {% endfor %}
+
+{% else %}
+    <div>Sorry, no posts in this category.</div>
+{% endif %}
 
 <!-- {% for post in post_list %}
     <div>
