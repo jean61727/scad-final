@@ -404,5 +404,5 @@ function comment_input_enter_listener(e){
 		})
 		.fail(ajax_fail_handler);
 	}
-
+}
 
