@@ -22,7 +22,9 @@ class Follower(models.Model):
 	follow =  models.CharField(max_length=50)
 
 class Comments(models.Model):
-    comment_id = models.CharField(max_length=50)
+    # Django sqlite will automatically generate a unique primary key
+    # for each entry in a table, so we don't need comment_id
+    # comment_id = models.CharField(max_length=50)
     # commented user id or username? should be discussed
     # comment_user_id = models.CharField(max_length=50)
     comment_message = models.CharField(max_length=300)
