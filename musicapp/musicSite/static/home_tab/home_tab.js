@@ -71,7 +71,7 @@ function ajax_fail_handler(xhr, textStatus, errorThrown){
 	// simply pass the following into console.log():
 	// use xhr.responseText to print response message
 	// use textStatus and error to see server error message
-	console.log(textStatus);
+	console.log(xhr.responseText);
 }
 
 function render_home_tab_posts(json_data){
@@ -81,7 +81,7 @@ function render_home_tab_posts(json_data){
 	// render post data
 	// we will have the following fields to render for each post:
 	// post tile, video url, post message, comments, likes, user
-	json_data = [
+	json_data_ = [
 		{
 			"post_id":"0000",
 			"is_like":"false",
@@ -141,7 +141,7 @@ function render_home_tab_posts(json_data){
 	];
 
 	// iterate the json object, and render out the post
-	json_data.forEach(function(obj){
+	json_data["posts"].forEach(function(obj){
 		// render post main body - the row
 		post_id = obj['post_id'];
 		id_post_body = post_id+"_row";
@@ -265,6 +265,7 @@ function render_post_field(post_data, id_post_field){
 		'alt':'user picture',
 		'width':'100px',
 	}).appendTo("#"+id_field_pic);
+	// console.log(post_data['user_pic']);
 	// {username}
 	$("<div>", {
 		'class':'row',
