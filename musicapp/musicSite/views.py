@@ -152,4 +152,6 @@ def profile (request):
 	#print user_post.post_message[1]
 	#print request.user
 	return render(request,'profile.html',{'user_post': user_post,'data':data})
+def like_add(request):
+	return
 
