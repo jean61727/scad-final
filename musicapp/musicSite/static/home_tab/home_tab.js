@@ -223,7 +223,8 @@ function render_post_field(post_data, id_post_field){
 	.appendTo("#"+id_post_field);
 	// {like}
 	heart_icon = $("<i>", {
-		'class':'fa fa-heart-o',
+		'class':'fa fa-heart-o button',
+		'onclick':'like(this)',
 	}).appendTo("#"+id_field_title_bar);
 	// {title}
 	
@@ -362,4 +363,10 @@ function render_post_comment(post_data, id_post_body){
 	}).appendTo("#"+id_comment_footer);
 }
 
+function like(item){
+	
+	$(item).prop('class','glyphicon glyphicon-heart button');
+	console.log(item);
+	$.post("like_add")
+}
 

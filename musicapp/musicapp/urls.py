@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^app/$', base,name = 'mainpage'),
     url(r'^login_home/$',home_login),
     url(r'^post/$',user_post),
+    url(r'^like/$',like_add),
 
 
 )

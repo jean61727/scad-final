@@ -11,7 +11,8 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from posts.models import Post
 from login.models import CustomUser
-
+import json
+from django.core import serializers
 
 # Create your views here.
 
@@ -138,5 +139,19 @@ def user_post(request):
 		return render(request, 'playground_main.html', {})
 
 def profile (request):
-	return render(request,'profile.html')
+
+	user_post=Post.objects.filter(user_id=request.user)
+	video_id_list=[]
+	for post in user_post:
+		video_id_list.append(str(post.url))
+	video_id_list=json.dumps(video_id_list)
+
+	data = serializers.serialize("json", user_post)
+
+	#print user_post[1].url
+	#print user_post.post_message[1]
+	#print request.user
+	return render(request,'profile.html',{'user_post': user_post,'data':data})
+def like_add(request):
+	return
 
