@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     url(r'^explore/songcategories/content/(?P<category>\w+)/', categoriesContent),
     url(r'^explore/songcategories/$',exploreSongCategories),
     url(r'^profile/$',profile),
+    url(r'^profile/(?P<user>\w+)',profile_user,name="profile_url"),
+    url(r'^search/$',search),
+
 
     # Backend Administration
     url(r'^admin/', include(admin.site.urls)),
@@ -27,6 +30,10 @@ urlpatterns = patterns('',
     url(r'^login_home/$',home_login),
     url(r'^post/$',user_post),
     url(r'^like/$',like_add),
+    url(r'^unlike/$',like_delete),
+    url(r'^follow/$',follow_add),
+    url(r'^unfollow/$',follow_delete),
+    
 
 
 )

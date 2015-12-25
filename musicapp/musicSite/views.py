@@ -9,7 +9,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from posts.models import Post
+
+from posts.models import *
 from login.models import CustomUser
 import json
 from django.core import serializers
@@ -19,78 +20,72 @@ from django.core import serializers
 def home_view(request):
 	if request.method == "POST":
 		# ajax call
+		json_data = json.loads(request.body)
+		request_type = json_data['request_type']
+		if request_type == "get_home_tab_post":
+			# query database data
+			display_post_count = 2
+			filtered_posts = Post.objects.all().order_by('-time').values(
+				'id',
+				'title',
+				'url',
+				'start_time',
+				'post_message',
+				'likes',
+				'people_listening',
+				'category',
+				'user_id_id',
+				'time',
+				'user_pic_path')[:display_post_count]
 
-		# organize a json object
-		json_object = {
-			"posts":[]
-		}
-
-		filtered_posts = Post.objects.filter().values(
-			'id',
-			'title',
-			'url',
-			'start_time',
-			'post_message',
-			'likes',
-			'people_listening',
-			'category',
-			'user_id_id',
-			'time',
-			'user_pic_path')
-
-		for one_post in filtered_posts:
-			post_data = {
-				"post_id":one_post["id"],
-				"is_like":"false",
-				"like_count":one_post["likes"],
-				"video_id":one_post["url"],
-				"video_title": one_post["title"] ,
-				"user_pic":  one_post["user_pic_path"] ,
-				"username": one_post["user_id_id"]  ,
-				"message": one_post["post_message"]  ,
-				"comments":[]
+			# print list(Post.objects.latest('time'))
+			# organize a json object
+			json_object = {
+				"posts":[]
 			}
+			for one_post in filtered_posts:
+				# make a data set for a single post
+				post_data = {
+					"post_id":one_post["id"],
+					"is_like":"false",
+					"like_count":one_post["likes"],
+					"video_id":one_post["url"],
+					"video_title": one_post["title"] ,
+					"user_pic":  one_post["user_pic_path"] ,
+					"username": one_post["user_id_id"]  ,
+					"message": one_post["post_message"]  ,
+					"comments":[]
+				}
+				# collecting comment data
+				filtered_comments = Comments.objects.filter(post_id=one_post["id"]).values("comment_message")
+				comments = []
+				
+				for one_comment in filtered_comments:
+					comment_data = {
+						"commentor":"me",
+						"comment_content":one_comment["comment_message"],
+					}
+					comments.append(comment_data)
 
-			comments = []
-			
+				post_data["comments"] = comments
+
+				json_object["posts"].append(post_data)
+
+			return JsonResponse(json_object)
+
+		elif request_type == "push_comment_input":
+			Comments.objects.create(
+				comment_message=json_data["comment_message"],
+				post_id=json_data["post_id"],
+				)
 			comment_data = {
-				"commentor":"me",
-				"comment_content":"good",
+				"commentor":"meee",
+				"comment_content":json_data["comment_message"],
 			}
+			return JsonResponse(comment_data)
 
-			comments.append(comment_data)
-
-			post_data["comments"] = comments
-
-			json_object["posts"].append(post_data)
-
-		# second post data
-		post_data = {
-			"post_id":"0001",
-			"is_like":"true",
-			"like_count":"3",
-			"video_id":"X2WH8mHJnhM",
-			"video_title":"YouTube Video",
-			"user_pic":"/static/img/user_pic.jpg",
-			"username":"Jennyferrr",
-			"message":"Holy crap this is totally shit never click play!",
-			"comments":[]
-		}
-
-		comments = []
-		
-		comment_data = {
-			"commentor":"mozart",
-			"comment_content":"beautifull!",
-		}
-
-		comments.append(comment_data)
-
-		post_data["comments"] = comments
-
-		json_object["posts"].append(post_data)
-
-		return JsonResponse(json_object)
+		else:
+			return HttpResponse("Invalid request type")
 	else:
 		# a access request to website visit
 		return render(request, 'playground_main.html', {})
@@ -134,7 +129,7 @@ def user_post(request):
 		print (request.POST.get('category'))
 		print ("hello")
 		new_post.save()
-		return HttpResponseRedirect('/app')
+		return HttpResponseRedirect('/home')
 	else:
 		return render(request, 'playground_main.html', {})
 
@@ -152,6 +147,91 @@ def profile (request):
 	#print user_post.post_message[1]
 	#print request.user
 	return render(request,'profile.html',{'user_post': user_post,'data':data})
-def like_add(request):
-	return
 
+def profile_user (request,user):
+
+	user = CustomUser.objects.get(username=user)
+	user_post=Post.objects.filter(user_id=user)
+	print user
+	video_id_list=[]
+	for post in user_post:
+		video_id_list.append(str(post.url))
+		print str(post.url)
+	video_id_list=json.dumps(video_id_list)
+
+	data = serializers.serialize("json", user_post)
+
+	#print user_post[1].url
+	#print user_post.post_message[1]
+	#print request.user
+	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user})
+
+
+
+def search(request):
+	user_list=CustomUser.objects.all()
+	print user_list
+	return render(request,'search.html',{'user_list':user_list})
+
+
+
+def follow_add(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		new_post = Follower(
+			user_id=user,
+            follow=request.POST.get('follow')
+            )
+		print (request.POST.get('follow'))
+		print ("hello")
+		new_post.save()
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+	else:
+		return render(request, 'playground_main.html', {})
+
+def follow_delete(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
+		
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+	else:
+		return render(request, 'playground_main.html', {})
+
+def like_add(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		new_post = Likes(
+			user_id=user,
+            post_id=request.POST.get('post_id')
+            )
+		print (request.POST.get('post_id'))
+		print ("hello")
+		new_post.save()
+		return render(request, 'playground_main.html', {})
+	else:
+		return render(request, 'playground_main.html', {})
+def like_delete(request):
+
+	context=RequestContext(request)
+	if request.method == 'POST':
+		#request.POST
+		print request.user
+		user = CustomUser.objects.get(username=request.user)
+		Likes.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
+		
+		return render(request, 'playground_main.html', {})
+	else:
+		return render(request, 'playground_main.html', {})
