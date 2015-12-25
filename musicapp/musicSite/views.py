@@ -152,11 +152,11 @@ def profile_user (request,user):
 
 	user = CustomUser.objects.get(username=user)
 	user_post=Post.objects.filter(user_id=user)
-	print user
+	print (user)
 	video_id_list=[]
 	for post in user_post:
 		video_id_list.append(str(post.url))
-		print str(post.url)
+		print (str(post.url))
 	video_id_list=json.dumps(video_id_list)
 
 	data = serializers.serialize("json", user_post)
@@ -170,7 +170,7 @@ def profile_user (request,user):
 
 def search(request):
 	user_list=CustomUser.objects.all()
-	print user_list
+	print (user_list)
 	return render(request,'search.html',{'user_list':user_list})
 
 
@@ -180,7 +180,7 @@ def follow_add(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		print request.user
+		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		new_post = Follower(
 			user_id=user,
@@ -198,7 +198,7 @@ def follow_delete(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		print request.user
+		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
 		
@@ -211,7 +211,7 @@ def like_add(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		print request.user
+		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		new_post = Likes(
 			user_id=user,
@@ -228,7 +228,7 @@ def like_delete(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		print request.user
+		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		Likes.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
 		
