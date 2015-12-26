@@ -37,13 +37,14 @@
                 </div>
 
                 <div id="player"></div>
+                <input type="text" size="70" id="test-log">
 	        </div>
 
-	        <div class="page-header"></div>
-	        <div>
+	        <div class="page-header"><div id=play_list>
 	        	
 
-	        </div>
+	        </div></div>
+	        
 
 	    </div>
 
@@ -66,11 +67,20 @@
 <script type="text/javascript">
 var videos =JSON.parse('{{ data|safe }}');
 var video_id_list=[];
+$("#play_list").sortable().bind('sortupdate', function (e, ui) {
+        console.log('現在的順序' + ui.item.index());
+    $("input#test-log").val($('#play_list').sortable('serialize')); 
+    console.log(ui.item);
+    for(var i=0 ; i<ui.item.length;i++){
+     console.log(ui.item[i]);
+    }
+    });
+
 function playlist(user_post){
-	
+	$("#play_list").empty();
 	for (var i=0;i<videos.length;i++){
 		video_id_list[i]=videos[i].fields.url;
-
+        $("#play_list").append("<li id=node_"+ i +">"+videos[i].fields.url+"</li>")
 	}
 	//console.log(videos);
 	//console.log(videos[1]);
@@ -120,4 +130,5 @@ function stopVideo() {
 
 </script>
 {% endblock %}
+
 
