@@ -37,20 +37,7 @@
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
 </head>
 <body>
-  {% for post in post_list %}
-    <div>
-    {{ post.title }}
-    {{ post.url }}
-    {{ post.start_time }}
-    {{ post.post_message }}
-    {{ post.likes }}
-    {{ post.people }}
-    {{ post.user_id }}
-    {{ post.category }}
-    {{ post.time }}
 
-    </div>
-{% endfor %}
 
  <!-- Resolving Django POST request forbidden issue-->
     {% csrf_token %}
@@ -122,8 +109,40 @@
       <li><a href="#">Search</a></li>
   </ul>
 
+{% if post_list %}
+    {% for post in post_list|dictsortreversed:"likes" %}
+      <div>
+         {{ post.title }}
+         {{ post.url }}
+        {{ post.start_time }}
+        {{ post.post_message }}
+        {{ post.likes }}
+        {{ post.people }}
+        {{ post.user_id }}
+        {{ post.category }}
+        {{ post.time }}
+    </div>
+    {% endfor %}
 
+{% else %}
+    <div>Sorry, no posts in this category.</div>
+{% endif %}
 
+<!-- {% for post in post_list %}
+    <div>
+    {{ post.title }}
+    {{ post.url }}
+    {{ post.start_time }}
+    {{ post.post_message }}
+    {{ post.likes }}
+    {{ post.people }}
+    {{ post.user_id }}
+    {{ post.category }}
+    {{ post.time }}
+
+    </div>
+{% endfor %}  -->
+ 
     <div id='footer_container' class="container-fluid">
         <!-- Footer -->
         <footer>
