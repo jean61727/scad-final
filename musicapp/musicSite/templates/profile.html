@@ -68,19 +68,24 @@
 var videos =JSON.parse('{{ data|safe }}');
 var video_id_list=[];
 $("#play_list").sortable().bind('sortupdate', function (e, ui) {
-        console.log('現在的順序' + ui.item.index());
-    $("input#test-log").val($('#play_list').sortable('serialize')); 
+    /*console.log('現在的順序' + ui.item.index());*/
+    $("input#test-log").val($('#play_list').sortable('toArray')); 
     console.log(ui.item);
-    for(var i=0 ; i<ui.item.length;i++){
-     console.log(ui.item[i]);
+    for(var i=0 ; i<$('#play_list').sortable('toArray').length;i++){
+    /*console.log($('#play_list').sortable('toArray')[i]);*/
+    console.log($("#"+$('#play_list').sortable('toArray')[i]).text());
+    video_id_list[i]=$("#"+$('#play_list').sortable('toArray')[i]).text();
     }
+    console.log(video_id_list);
+    onYouTubePlayerAPIReady();
     });
 
 function playlist(user_post){
 	$("#play_list").empty();
+    $('#player').empty();
 	for (var i=0;i<videos.length;i++){
 		video_id_list[i]=videos[i].fields.url;
-        $("#play_list").append("<li id=node_"+ i +">"+videos[i].fields.url+"</li>")
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' >"+videos[i].fields.url+"</li>")
 	}
 	//console.log(videos);
 	//console.log(videos[1]);
@@ -97,7 +102,7 @@ function playlist(user_post){
 }
 
 
-window.onYouTubePlayerAPIReady=function() {
+function onYouTubePlayerAPIReady() {
 	player = new YT.Player('player', {
 	  height: '390',
 	  width: '640',
