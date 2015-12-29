@@ -40,7 +40,7 @@
                 <input type="text" size="70" id="test-log">
 	        </div>
 
-	        <div class="page-header"><div id=play_list>
+	        <div class="page-header"><div id="play_list">
 	        	
 
 	        </div></div>
@@ -67,6 +67,11 @@
 <script type="text/javascript">
 var videos =JSON.parse('{{ data|safe }}');
 var video_id_list=[];
+var player;
+for (var i=0;i<videos.length;i++){
+		video_id_list[i]=videos[i].fields.url;
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' >"+videos[i].fields.url+"</li>")
+	}
 $("#play_list").sortable().bind('sortupdate', function (e, ui) {
     /*console.log('現在的順序' + ui.item.index());*/
     $("input#test-log").val($('#play_list').sortable('toArray')); 
@@ -77,26 +82,26 @@ $("#play_list").sortable().bind('sortupdate', function (e, ui) {
     video_id_list[i]=$("#"+$('#play_list').sortable('toArray')[i]).text();
     }
     console.log(video_id_list);
-    onYouTubePlayerAPIReady();
+    //onYouTubePlayerAPIReady();
+	player.destroy();
+
     });
 
 function playlist(user_post){
 	$("#play_list").empty();
-    $('#player').empty();
 	for (var i=0;i<videos.length;i++){
-		video_id_list[i]=videos[i].fields.url;
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' >"+videos[i].fields.url+"</li>")
+		
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' >"+video_id_list[i]+"</li>")
 	}
 	//console.log(videos);
-	//console.log(videos[1]);
-	var tag = document.createElement('script');
-	tag.src = "https://www.youtube.com/iframe_api";
-	var firstScriptTag = document.getElementsByTagName('script')[0];
-	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-	var player;
-	console.log("here2");
+
+		console.log(videos[0]);
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		onYouTubePlayerAPIReady();
 	
-	var done = false;
 	
 	
 }
@@ -121,14 +126,18 @@ function onYouTubePlayerAPIReady() {
 function onPlayerReady(event) {
 	event.target.loadPlaylist(video_id_list);
 }
+var done = false;
 function onPlayerStateChange(event) {
 	if (event.data == YT.PlayerState.PLAYING && !done) {
-	 // setTimeout(stopVideo, 60000);
+	  setTimeout(stopVideo, 6000);
 	  done = true;
 	}
+	setTimeout(stopVideo, 6000);
 }
 function stopVideo() {
-	player.stopVideo();
+	//player.stopVideo();
+	//console.log('here');
+	//player.destroy();
 }
 
 
