@@ -4,12 +4,13 @@ $(function(){
 });
 
 // this is the starter of the whole render chain functions
-function render_home_tab(){
+function render_home_tab(id_container){
 	// acquire post data for rendering
 	var request_url = '#';
 	var request_json = {
 		"request_type":"get_home_tab_post",
 	};
+
 	// render tab content = render all posts
 	$.ajax({
 		type:"POST",
@@ -18,13 +19,15 @@ function render_home_tab(){
 		dataType:"JSON", /* this specify the returned object type */
 		contentType:"application/json",
 	})
-	.done(render_home_tab_posts)
+	.done(function(json_data){
+		render_home_tab_posts(json_data, id_container);
+	})
 	.fail(ajax_fail_handler);
 	
-	
+	render_home_tab_posts();
 }
 
-function render_home_tab_posts(json_data){
+function render_home_tab_posts(json_data, id_container){
 	// console.log("returned object:");
 	// console.log(json_data);
 
@@ -40,7 +43,7 @@ function render_home_tab_posts(json_data){
 		$("<div>", {
 			'class':'row',
 			'id':id_post_body,
-		}).appendTo("#post_container");
+		}).appendTo("#"+id_container);
 
 		// left side - video view
 		id_post_video = post_id + "_video";
