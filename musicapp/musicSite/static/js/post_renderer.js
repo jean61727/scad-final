@@ -10,7 +10,7 @@ function render_post(id_container, filter_object){
 	var request_json;
 
 	request_json = {
-		"request_type":"get_home_tab_post",
+		"request_type":"get_post",
 		"filter":filter_object,
 	};
 
@@ -300,7 +300,7 @@ function comment_input_enter_listener(e){
 
 		$.ajax({
 			type:"POST",
-			url:"#",
+			url:"/post_db/",
 			data:JSON.stringify(request_json),
 			//dataType:"JSON", /* this specify the returned object type */
 			contentType:'application/json',
