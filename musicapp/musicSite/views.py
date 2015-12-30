@@ -134,6 +134,12 @@ def categoriesContent(request,category):
 
 	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list})
 
+def exploreUsers(request):
+
+	all_users = CustomUser.objects.all()
+
+	return render(request,'exploreUsers.html',{'all_users': all_users})
+
 @csrf_protect
 def user_post(request):
 
