@@ -136,20 +136,28 @@
                     <div class="thumbnail">
                     <img src="{% static 'img/user_pic.jpg' %}" class= "img-circle img-responsive img-thumbnail" style="width:70px; height: 70px;" >
                       <p><strong>{{ user.username }}</strong></p>
-                      <ul>
-                     {% for post in all_posts %}
+                    <div class="list-group">
 
-                        {{ post.id }}
 
+                     {% for post in all_posts%}
+
+                        {% if post.user_id|stringformat:"s" == user.username|stringformat:"s" %}
+                          <a href="#" class="list-group-item">{{ post.url }}</a>
+                         {%endif%}
 
                     {% endfor %} 
-                    </ul>
-                      <button class="btn">More Posts</button>
+
+
+
+                    </div>
+
+                      <a href="/profile/{{user.username}}" class="btn">More Posts</a>
                     </div>
                   </div>
 
  
         {% endfor %}
+
         </div>
         </div>
     </div>
@@ -158,7 +166,6 @@
     {% else %}
         <div>Sorry, no posts in this category.</div>
     {% endif %} 
-
 
 
 
