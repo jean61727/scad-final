@@ -106,10 +106,17 @@
     <!-- Tab Switcher -->
     <ul class="nav nav-tabs">
       <li><a href="/home/">Home</a></li>
-      <li class="active"><a href="#">Explore</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        <li class="active"><a href="/explore/songcategories/">Explore Songs</a></li>
+        <li ><a href="/explore/users/">Explore Users</a></li>
+
+        </ul>
+      </li>
       <li><a href="/profile/">Profile</a></li>
-      <li><a href="#">Search</a></li>
-  </ul>
+      <li><a href="/search/">Search</a></li>  </ul>
 
     <!-- Portfolio Grid Section: categories -->
     <section id="portfolio" class="bg-darkest-gray" >
