@@ -112,6 +112,11 @@ def categoriesContent(request,category):
 def exploreUsers(request):
 
 	all_users = CustomUser.objects.all()
+#    all_posts = Post.objects.all()
+
+#    user_post = {}
+#        for user in all_users:
+#        
 
 	return render(request,'exploreUsers.html',{'all_users': all_users})
 
