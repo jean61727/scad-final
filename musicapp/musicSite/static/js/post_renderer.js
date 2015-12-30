@@ -4,11 +4,14 @@ $(function(){
 });
 
 // this is the starter of the whole render chain functions
-function render_home_tab(id_container){
+function render_post(id_container, filter_object){
 	// acquire post data for rendering
-	var request_url = '#';
-	var request_json = {
+	var request_url = '/post_db/';
+	var request_json;
+
+	request_json = {
 		"request_type":"get_home_tab_post",
+		"filter":filter_object,
 	};
 
 	// render tab content = render all posts
@@ -20,11 +23,10 @@ function render_home_tab(id_container){
 		contentType:"application/json",
 	})
 	.done(function(json_data){
-		render_home_tab_posts(json_data, id_container);
+		var json_object = json_data;
+		render_home_tab_posts(json_object, id_container);
 	})
 	.fail(ajax_fail_handler);
-	
-	render_home_tab_posts();
 }
 
 function render_home_tab_posts(json_data, id_container){
@@ -36,7 +38,8 @@ function render_home_tab_posts(json_data, id_container){
 	// post tile, video url, post message, comments, likes, user
 
 	// iterate the json object, and render out the post
-	json_data["posts"].forEach(function(obj){
+	console.log(json_data);
+	json_data.posts.forEach(function(obj){
 		// render post main body - the row
 		post_id = obj['post_id'];
 		id_post_body = post_id+"_row";

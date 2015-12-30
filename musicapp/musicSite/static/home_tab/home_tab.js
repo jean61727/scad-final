@@ -15,7 +15,10 @@ var player;
 function onYouTubeIframeAPIReady() {
 	console.log("youtube iframe ready");
 	// render all the content here
-	render_home_tab("post_container");
+	render_post("post_container", {
+		"username":"iriver",
+		"limit":3,
+	});
 	
 	// add youtube video by api
 	// id_player = obj['post_id']+'_player';

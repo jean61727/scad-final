@@ -1,6 +1,9 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,Http404
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
+import json
+
 from django.template.loader import get_template
 from django import template
 from django.template import Context
@@ -12,20 +15,35 @@ from django.template import RequestContext
 
 from posts.models import *
 from login.models import CustomUser
-import json
+
 from django.core import serializers
 
 # Create your views here.
-
-def home_view(request):
+def post_db(request):
 	if request.method == "POST":
 		# ajax call
 		json_data = json.loads(request.body)
 		request_type = json_data['request_type']
 		if request_type == "get_home_tab_post":
-			# query database data
-			display_post_count = 2
-			filtered_posts = Post.objects.all().order_by('-time').values(
+			
+			# parse the filter dict object
+			filter = {}
+			for key in json_data["filter"]:
+				# we don't know how to join tables, so we first get user id
+				if key == 'username':
+					user_id = CustomUser.objects.filter(username=json_data["filter"][key]).values("id")
+					filter.update( { "user_id": user_id } )
+				else:
+					filter.update({ key:json_data["filter"][key] })
+			# some must-have field
+			if "limit" in filter:
+				display_post_count = filter["limit"]
+				del filter["limit"]
+			else:
+				display_post_count = 1
+			
+			# query all info of a post from database
+			filtered_posts = Post.objects.filter(**filter).order_by('-time').values(
 				'id',
 				'title',
 				'url',
@@ -38,8 +56,7 @@ def home_view(request):
 				'time',
 				'user_pic_path')[:display_post_count]
 
-			# print list(Post.objects.latest('time'))
-			# organize a json object
+			# start organizing a json object
 			json_object = {
 				"posts":[]
 			}
@@ -57,7 +74,8 @@ def home_view(request):
 					"comments":[]
 				}
 				# collecting comment data
-				filtered_comments = Comments.objects.filter(post_id=one_post["id"]).values("comment_message")
+				comment_query_constrain = {"post_id":one_post["id"]}
+				filtered_comments = Comments.objects.filter(**comment_query_constrain).values("comment_message")
 				comments = []
 				
 				for one_comment in filtered_comments:
@@ -67,6 +85,7 @@ def home_view(request):
 					}
 					comments.append(comment_data)
 
+				# append to json object
 				post_data["comments"] = comments
 
 				json_object["posts"].append(post_data)
@@ -86,6 +105,12 @@ def home_view(request):
 
 		else:
 			return HttpResponse("Invalid request type")
+	else:
+		raise PermissionDenied
+
+def home_view(request):
+	if request.method == "POST":
+		raise PermissionDenied
 	else:
 		# a access request to website visit
 		return render(request, 'playground_main.html', {})
