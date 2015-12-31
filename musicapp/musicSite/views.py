@@ -18,23 +18,61 @@ from login.models import CustomUser
 
 from django.core import serializers
 
+# for using OR operation in db query
+from django.db.models import Q
+
 # Create your views here.
 def post_db(request):
 	if request.method == "POST":
 		# ajax call
 		json_data = json.loads(request.body)
+		
 		request_type = json_data['request_type']
 		if request_type == "get_post":
-			
+			# we don't know how to join tables, so we first get user id
+			# resolve the username into user id
+			filter_data = json_data["filter"]
+			if "username" in filter_data:
+				if type(filter_data["username"]) is list:
+					id_list = []
+					for a_name in filter_data["username"]:
+						id_list.append(CustomUser.objects.filter(username=a_name).values("id"))
+					del filter_data["username"]
+					filter_data.update({
+						"user_id_id":id_list
+					})
+				else:
+					user_id = CustomUser.objects.filter(username=filter_data["username"]).values("id")
+					del filter_data["username"]
+					filter_data.update({
+						"user_id_id":user_id
+					})
+
+
 			# parse the filter dict object
 			filter = {}
-			for key in json_data["filter"]:
-				# we don't know how to join tables, so we first get user id
-				if key == 'username':
-					user_id = CustomUser.objects.filter(username=json_data["filter"][key]).values("id")
-					filter.update( { "user_id": user_id } )
+			q_object = Q()
+			for key,value in filter_data.iteritems():
+				# because we don't know how to use the god damn join table, so we still have to deal with user id explicitly
+				if key == 'user_id_id':
+					# if we have multiple ids then iterate it
+					# finally, add them to the Q object
+					if type(value) is list:
+						for a_id in value:
+							q_object = q_object|Q(**{key:a_id})
+					else:
+						filter.update( { key: value } )
+				elif key == 'or':
+					# for adding OR operation for the db query
+					for field,constrain in filter_data[key].iteritems():
+						if type(constrain) is list:
+							for a_constrain in constrain:
+								q_object = q_object|Q(**{field:a_constrain})
+						else:
+							q_object = q_object|Q(**{field:constrain})
 				else:
-					filter.update({ key:json_data["filter"][key] })
+					filter.update({ key:filter_data[key] })
+
 			# some must-have field
 			if "limit" in filter:
 				display_post_count = filter["limit"]
@@ -43,7 +81,7 @@ def post_db(request):
 				display_post_count = 1
 			
 			# query all info of a post from database
-			filtered_posts = Post.objects.filter(**filter).order_by('-time').values(
+			filtered_posts = Post.objects.filter(q_object&Q(**filter)).order_by('-time').values(
 				'id',
 				'title',
 				'url',
@@ -61,7 +99,9 @@ def post_db(request):
 				"posts":[]
 			}
 			for one_post in filtered_posts:
+
 				# make a data set for a single post
+				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username")[0]
 				post_data = {
 					"post_id":one_post["id"],
 					"is_like":"false",
@@ -69,7 +109,8 @@ def post_db(request):
 					"video_id":one_post["url"],
 					"video_title": one_post["title"] ,
 					"user_pic":  one_post["user_pic_path"] ,
-					"username": one_post["user_id_id"]  ,
+					"username": user_data["username"],
+					"user_id": one_post["user_id_id"]  ,
 					"message": one_post["post_message"]  ,
 					"comments":[]
 				}
@@ -103,8 +144,26 @@ def post_db(request):
 			}
 			return JsonResponse(comment_data)
 
+		elif request_type == "get_follower_list":
+			requested_user = json_data["main_user_name"]
+			# convert username into user id
+			requested_user_id = CustomUser.objects.filter(username=requested_user).values("id")
+			follower_name_list = Follower.objects.filter(user_id_id=requested_user_id).values("follow")
+			json_object = {
+				"follower_list":[],
+				"login_user_name":str(request.user),
+			}
+			for follower_data in follower_name_list:
+				json_object["follower_list"].append(follower_data["follow"])
+			return JsonResponse(json_object)
+
+		elif request_type == "get_login_user":
+			json_object = {
+				"username":str(request.user),
+			}
+			return JsonResponse(json_object)
 		else:
-			return HttpResponse("Invalid request type")
+			return HttpResponse("view.py: Invalid request type")
 	else:
 		raise PermissionDenied
 

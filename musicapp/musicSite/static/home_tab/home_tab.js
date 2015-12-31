@@ -1,19 +1,68 @@
 function onYouTubeIframeAPIReady() {
 	console.log("youtube iframe ready");
-	// render all the content here
-	render_post("post_container", {
-		"limit":4,
-	});
+	start_with_get_login_user();
+	// restreive follower list
+}
 
-	// add youtube video by api
-	// id_player = obj['post_id']+'_player';
-	// player = new YT.Player(id_player, {
-	// 	  videoId: obj['video_id'],
-	// 	  events: {
-			//'onReady': onPlayerReady,
-			//'onStateChange': onPlayerStateChange
-	//   }
-	// });
-	// $("#"+id_post_video).addClass("embed-responsive");
-	// $("#"+id_player).addClass("embed-responsive-item");
+function start_with_get_login_user(){
+	var request_url = "/post_db/";
+	var json_request = {
+		"request_type":"get_login_user",
+	};
+	// render tab content = render all posts
+	$.ajax({
+		type:"POST",
+		url:request_url,
+		data:JSON.stringify(json_request),
+		dataType:"JSON", /* this specify the returned object type */
+		contentType:"application/json",
+	})
+	.done(function(result){
+		if (result["username"] == "AnonymousUser"){
+			// show some message
+			$("<h3>", {
+				"html":"Let's login first. Only showing one post."
+			}).appendTo("#post_container");
+
+			// defualt case when user isn't yet login
+			render_post("post_container", {
+				"limit":1,
+			})
+
+		} else {
+			// render the login user's post and all his followers'
+			start_with_get_follwer_list();
+		}
+	})
+	.fail(ajax_fail_handler);
+}
+
+function start_with_get_follwer_list(){
+	var request_url = "/post_db/";
+	var json_request = {
+		"request_type":"get_follower_list",
+		"main_user_name":"iriver",
+	};
+
+	$.ajax({
+		type:"POST",
+		url:request_url,
+		data:JSON.stringify(json_request),
+		dataType:"JSON", /* this specify the returned object type */
+		contentType:"application/json",
+	})
+	.done(function(result){
+		// get follwer list		
+		var username_list = result.follower_list;
+		username_list.push(result.login_user_name);
+
+		// render the post using constrain conditions
+		render_post("post_container", {
+			"username":username_list,
+			"limit":4,
+			"or":{
+			},
+		});
+	})
+	.fail(ajax_fail_handler);
 }

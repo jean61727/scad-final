@@ -38,7 +38,7 @@ function render_home_tab_posts(json_data, id_container){
 	// post tile, video url, post message, comments, likes, user
 
 	// iterate the json object, and render out the post
-	console.log(json_data);
+	// console.log(json_data);
 	json_data.posts.forEach(function(obj){
 		// render post main body - the row
 		post_id = obj['post_id'];
