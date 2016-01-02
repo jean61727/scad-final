@@ -1,3 +1,5 @@
+musicapp.back/
+deprecated/
 venv/
 __pycache__
 staticfiles

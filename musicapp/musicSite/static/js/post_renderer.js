@@ -73,20 +73,20 @@ function render_home_tab_posts(json_data, id_container){
 	});// post render ended
 
 	// render header
-	id_home_tab_header_row = 'home_tab_header';
-	$("<div>", {
-		'class':'row',
-		id:id_home_tab_header_row
-	}).prependTo("#post_container");
-	id_home_tab_header_col = 'home_tab_header_col1'
-	$("<div>", {
-		'class':'col-xs-12',
-		id:id_home_tab_header_col,
-	}).appendTo("#"+id_home_tab_header_row);
-	$("<h1>", {
-		'class':'page-header',
-		'html':'Post Feed <small>Check out what people listen to!</small>'
-	}).appendTo("#"+id_home_tab_header_col);
+	// id_home_tab_header_row = 'home_tab_header';
+	// $("<div>", {
+	// 	'class':'row',
+	// 	id:id_home_tab_header_row
+	// }).prependTo("#post_container");
+	// id_home_tab_header_col = 'home_tab_header_col1'
+	// $("<div>", {
+	// 	'class':'col-xs-12',
+	// 	id:id_home_tab_header_col,
+	// }).appendTo("#"+id_home_tab_header_row);
+	// $("<h1>", {
+	// 	'class':'page-header',
+	// 	'html':'Post Feed <small>Check out what people listen to!</small>'
+	// }).appendTo("#"+id_home_tab_header_col);
 
 }// home tab content render ended
 

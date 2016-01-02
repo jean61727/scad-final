@@ -21,13 +21,15 @@ function start_with_get_login_user(){
 		if (result["username"] == "AnonymousUser"){
 			// show some message
 			$("<h3>", {
-				"html":"Let's login first. Only showing one post."
-			}).appendTo("#post_container");
+				"html":"Let's login first"
+			})
+			.appendTo("#post_container");
+			// .after('<hr>');
 
 			// defualt case when user isn't yet login
-			render_post("post_container", {
-				"limit":1,
-			})
+			// render_post("post_container", {
+			// 	"limit":0,
+			// })
 
 		} else {
 			// render the login user's post and all his followers'
