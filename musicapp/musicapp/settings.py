@@ -22,6 +22,7 @@ SECRET_KEY = '1mdsuij_8lcg2qyi@l@y!39q*4gk^$@5kqo67)5ymeh+z8*w_t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# already defined in TEMPLATE
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -56,21 +57,30 @@ ROOT_URLCONF = 'musicapp.urls'
 WSGI_APPLICATION = 'musicapp.wsgi.application'
 
 
+import dj_database_url
+# add these lines at the end of your settings.py to continue to use sql lite locally and only postgres on heroku.
+# http://stackoverflow.com/questions/12308046/how-to-launch-your-already-made-django-app-on-heroku
+
+# import os
+if os.getcwd() == "/app":
+    DATABASES = {
+        'default': dj_database_url.config(default='postgres://localhost')
+    }
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        #'ENGINE':'django.db.backends.mysql',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        #'NAME': 'musicproject',
-        #'USER': 'musicprojectuser',
-        #'PASSWORD': 'password',
-        #'HOST': 'localhost',
-        #'PORT': '',
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            #'ENGINE':'django.db.backends.mysql',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            #'NAME': 'musicproject',
+            #'USER': 'musicprojectuser',
+            #'PASSWORD': 'password',
+            #'HOST': 'localhost',
+            #'PORT': '',
+        }
     }
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -91,13 +101,39 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#Templates
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-      os.path.join(os.path.dirname(__file__), 'templates'),
-)
+# Templates
+# TEMPLATE_DIRS = (
+#     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+#     # Always use forward slashes, even on Windows.
+#     # Don't forget to use absolute paths, not relative paths.
+#       os.path.join(os.path.dirname(__file__), 'templates'),
+# )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+            os.path.join(os.path.dirname(__file__), 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+        # 'TEMPLATE_DEBUG' : True,
+    },
+]
+
 
 # if a user want to access a method that that requires login and the user is not logged in then it will redirect the user to login page.
 import django.contrib.auth
@@ -106,3 +142,4 @@ AUTHENTICATION_BACKENDS = (
     'musicapp.auth_backends.CustomUserModelBackend',
 )
 CUSTOM_USER_MODEL = 'login.CustomUser'
+

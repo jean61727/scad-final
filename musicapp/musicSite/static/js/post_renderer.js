@@ -91,7 +91,7 @@ function render_home_tab_posts(json_data, id_container){
 }// home tab content render ended
 
 function render_post_video(post_data, id_post_video){
-	var youtube_url = "http://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://example.com";
+	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://example.com";
 	id_player = post_data['post_id']+'_player';
 	$("<div>", {
 		'id':id_player,

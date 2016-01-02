@@ -10,5 +10,8 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "musicapp.settings")
 
+# https://djangogirlstaipei.gitbooks.io/django-girls-taipei-tutorial/content/django/deploy.html
 from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+from dj_static import Cling
+# application = get_wsgi_application()
+application = Cling(get_wsgi_application())

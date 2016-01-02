@@ -22,7 +22,6 @@ urlpatterns = patterns('',
     url(r'^post_db/$', post_db),
     # Backend Administration
     url(r'^admin/', include(admin.site.urls)),
-
     url(r'^login/', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', logout_page),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'), # If user is not login it will redirect to login page
