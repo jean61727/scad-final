@@ -23,14 +23,14 @@ from django.db.models import Q
 
 # Create your views here.
 def post_db(request):
-		if request.method == "POST":
-			# ajax call
-				json_data = json.loads(request.body)
-				request_type = json_data['request_type']
-				if request_type == "get_post":
+	if request.method == "POST":
+		# ajax call
+		json_data = json.loads(request.body)
+		request_type = json_data['request_type']
+		if request_type == "get_post":
 			# we don't know how to join tables, so we first get user id
 			# resolve the username into user id
-					filter_data = json_data["filter"]
+			filter_data = json_data["filter"]
 			if "username" in filter_data:
 				if type(filter_data["username"]) is list:
 					id_list = []
