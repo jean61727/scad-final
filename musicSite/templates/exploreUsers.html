@@ -1,3 +1,6 @@
+{% extends 'playground_base.html' %}
+{% load staticfiles %}
+{% block content %}
 <html>
 <head>
     {% load staticfiles %}
@@ -35,6 +38,7 @@
 
     <!--Load Youtube API-->
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script type="text/javascript" src="{% static 'js/initialize_youtube_api.js' %}"></script>
 
     <!-- thumbnail CSS -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -108,12 +112,13 @@
     </nav>
 
     <!-- Tab Switcher -->
-    <ul class="nav nav-tabs">
+<!--     <ul class="nav nav-tabs">
       <li><a href="/home/">Home</a></li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
+          
         <li ><a href="/explore/songcategories/">Explore Songs</a></li>
         <li class="active"><a href="/explore/users/">Explore Users</a></li>
 
@@ -122,7 +127,7 @@
       <li><a href="/profile/">Profile</a></li>
       <li><a href="/search/">Search</a></li>  
     </ul>
-
+ -->
 
     {% if all_users %}
     <div class="bg-1">
@@ -179,7 +184,7 @@
             </div>
         </footer>
     </div>
-    
+    <div id='post_con  tainer' cl ass="container-fluid" ></div>
     <!-- Implementation of Post and Login Button feature -->
     <!-- Modal -->
     <div class="modal fade bs-example-modal-lg" id="myModal" role="dialog" tabindex="-1">
@@ -361,3 +366,4 @@
 
 </body>
 </html>
+{% endblock %}

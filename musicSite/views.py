@@ -23,14 +23,14 @@ from django.db.models import Q
 
 # Create your views here.
 def post_db(request):
-        if request.method == "POST":
-                # ajax call
-                json_data = json.loads(request.body.decode('utf8'))
-                request_type = json_data['request_type']
-                if request_type == "get_post":
+		if request.method == "POST":
+			# ajax call
+				json_data = json.loads(request.body)
+				request_type = json_data['request_type']
+				if request_type == "get_post":
 			# we don't know how to join tables, so we first get user id
-                        # resolve the username into user id
-                        filter_data = json_data["filter"]
+			# resolve the username into user id
+					filter_data = json_data["filter"]
 			if "username" in filter_data:
 				if type(filter_data["username"]) is list:
 					id_list = []
@@ -220,11 +220,11 @@ def user_post(request):
 		user = CustomUser.objects.get(id=request.POST.get('user'))
 		new_post = Post(
 			user_id=user,
-            url=request.POST.get('vidsID'),
-            start_time=request.POST.get('input_start'),
-            post_message=request.POST.get('post_message'),
-            category=request.POST.get('category'),
-            title=request.POST.get('vidsTitle'),
+			url=request.POST.get('vidsID'),
+			start_time=request.POST.get('input_start'),
+			post_message=request.POST.get('post_message'),
+			category=request.POST.get('category'),
+			title=request.POST.get('vidsTitle'),
             )
 		print (request.POST.get('category'))
 		print ("hello")
@@ -284,8 +284,8 @@ def follow_add(request):
 		user = CustomUser.objects.get(username=request.user)
 		new_post = Follower(
 			user_id=user,
-            follow=request.POST.get('follow')
-            )
+			follow=request.POST.get('follow')
+			)
 		print (request.POST.get('follow'))
 		print ("hello")
 		new_post.save()
