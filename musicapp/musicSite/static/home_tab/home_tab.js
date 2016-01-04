@@ -1,51 +1,70 @@
-// jQuery window ready block
-$(function(){
-	
-	
-});
-
-// 2. This code loads the IFrame Player API code asynchronously.
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-// 3. This function creates an <iframe> (and YouTube player)
-//    after the API code downloads.
-var player;
 function onYouTubeIframeAPIReady() {
 	console.log("youtube iframe ready");
-	// render all the content here
-	render_home_tab("post_container");
-	
-	// add youtube video by api
-	// id_player = obj['post_id']+'_player';
-	// player = new YT.Player(id_player, {
-	// 	  videoId: obj['video_id'],
-	// 	  events: {
-			//'onReady': onPlayerReady,
-			//'onStateChange': onPlayerStateChange
-	//   }
-	// });
-	// $("#"+id_post_video).addClass("embed-responsive");
-	// $("#"+id_player).addClass("embed-responsive-item");
+	start_with_get_login_user();
+	// restreive follower list
 }
 
-// 4. The API will call this function when the video player is ready.
-function onPlayerReady(event) {
-	event.target.playVideo();
+function start_with_get_login_user(){
+	var request_url = "/post_db/";
+	var json_request = {
+		"request_type":"get_login_user",
+	};
+	// render tab content = render all posts
+	$.ajax({
+		type:"POST",
+		url:request_url,
+		data:JSON.stringify(json_request),
+		dataType:"JSON", /* this specify the returned object type */
+		contentType:"application/json",
+	})
+	.done(function(result){
+		if (result["username"] == "AnonymousUser"){
+			// show some message
+			$("<h3>", {
+				"html":"Let's login first"
+			})
+			.appendTo("#post_container");
+			// .after('<hr>');
+
+			// defualt case when user isn't yet login
+			// render_post("post_container", {
+			// 	"limit":0,
+			// })
+
+		} else {
+			// render the login user's post and all his followers'
+			start_with_get_follwer_list();
+		}
+	})
+	.fail(ajax_fail_handler);
 }
 
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
-var done = false;
-function onPlayerStateChange(event) {
-	// if (event.data == YT.PlayerState.PLAYING && !done) {
-	//   setTimeout(stopVideo, 6000);
-	//   done = true;
-	// }
-}
+function start_with_get_follwer_list(){
+	var request_url = "/post_db/";
+	var json_request = {
+		"request_type":"get_follower_list",
+		"main_user_name":"iriver",
+	};
 
-function stopVideo() {
-	player.stopVideo();
+	$.ajax({
+		type:"POST",
+		url:request_url,
+		data:JSON.stringify(json_request),
+		dataType:"JSON", /* this specify the returned object type */
+		contentType:"application/json",
+	})
+	.done(function(result){
+		// get follwer list		
+		var username_list = result.follower_list;
+		username_list.push(result.login_user_name);
+
+		// render the post using constrain conditions
+		render_post("post_container", {
+			"username":username_list,
+			"limit":4,
+			"or":{
+			},
+		});
+	})
+	.fail(ajax_fail_handler);
 }

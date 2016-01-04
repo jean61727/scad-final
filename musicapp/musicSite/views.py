@@ -1,6 +1,9 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,Http404
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
+import json
+
 from django.template.loader import get_template
 from django import template
 from django.template import Context
@@ -12,20 +15,73 @@ from django.template import RequestContext
 
 from posts.models import *
 from login.models import CustomUser
-import json
+
 from django.core import serializers
 
-# Create your views here.
+# for using OR operation in db query
+from django.db.models import Q
 
-def home_view(request):
+# Create your views here.
+def post_db(request):
 	if request.method == "POST":
 		# ajax call
 		json_data = json.loads(request.body)
+		
 		request_type = json_data['request_type']
-		if request_type == "get_home_tab_post":
-			# query database data
-			display_post_count = 2
-			filtered_posts = Post.objects.all().order_by('-time').values(
+		if request_type == "get_post":
+			# we don't know how to join tables, so we first get user id
+			# resolve the username into user id
+			filter_data = json_data["filter"]
+			if "username" in filter_data:
+				if type(filter_data["username"]) is list:
+					id_list = []
+					for a_name in filter_data["username"]:
+						id_list.append(CustomUser.objects.filter(username=a_name).values("id"))
+					del filter_data["username"]
+					filter_data.update({
+						"user_id_id":id_list
+					})
+				else:
+					user_id = CustomUser.objects.filter(username=filter_data["username"]).values("id")
+					del filter_data["username"]
+					filter_data.update({
+						"user_id_id":user_id
+					})
+
+
+			# parse the filter dict object
+			filter = {}
+			q_object = Q()
+			for key,value in filter_data.iteritems():
+				# because we don't know how to use the god damn join table, so we still have to deal with user id explicitly
+				if key == 'user_id_id':
+					# if we have multiple ids then iterate it
+					# finally, add them to the Q object
+					if type(value) is list:
+						for a_id in value:
+							q_object = q_object|Q(**{key:a_id})
+					else:
+						filter.update( { key: value } )
+				elif key == 'or':
+					# for adding OR operation for the db query
+					for field,constrain in filter_data[key].iteritems():
+						if type(constrain) is list:
+							for a_constrain in constrain:
+								q_object = q_object|Q(**{field:a_constrain})
+						else:
+							q_object = q_object|Q(**{field:constrain})
+				else:
+					filter.update({ key:filter_data[key] })
+
+			# some must-have field
+			if "limit" in filter:
+				display_post_count = filter["limit"]
+				del filter["limit"]
+			else:
+				display_post_count = 1
+			
+			# query all info of a post from database
+			filtered_posts = Post.objects.filter(q_object&Q(**filter)).order_by('-time').values(
 				'id',
 				'title',
 				'url',
@@ -38,13 +94,14 @@ def home_view(request):
 				'time',
 				'user_pic_path')[:display_post_count]
 
-			# print list(Post.objects.latest('time'))
-			# organize a json object
+			# start organizing a json object
 			json_object = {
 				"posts":[]
 			}
 			for one_post in filtered_posts:
+
 				# make a data set for a single post
+				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username")[0]
 				post_data = {
 					"post_id":one_post["id"],
 					"is_like":"false",
@@ -52,12 +109,14 @@ def home_view(request):
 					"video_id":one_post["url"],
 					"video_title": one_post["title"] ,
 					"user_pic":  one_post["user_pic_path"] ,
-					"username": one_post["user_id_id"]  ,
+					"username": user_data["username"],
+					"user_id": one_post["user_id_id"]  ,
 					"message": one_post["post_message"]  ,
 					"comments":[]
 				}
 				# collecting comment data
-				filtered_comments = Comments.objects.filter(post_id=one_post["id"]).values("comment_message")
+				comment_query_constrain = {"post_id":one_post["id"]}
+				filtered_comments = Comments.objects.filter(**comment_query_constrain).values("comment_message")
 				comments = []
 				
 				for one_comment in filtered_comments:
@@ -67,6 +126,7 @@ def home_view(request):
 					}
 					comments.append(comment_data)
 
+				# append to json object
 				post_data["comments"] = comments
 
 				json_object["posts"].append(post_data)
@@ -84,10 +144,35 @@ def home_view(request):
 			}
 			return JsonResponse(comment_data)
 
+		elif request_type == "get_follower_list":
+			requested_user = json_data["main_user_name"]
+			# convert username into user id
+			requested_user_id = CustomUser.objects.filter(username=requested_user).values("id")
+			follower_name_list = Follower.objects.filter(user_id_id=requested_user_id).values("follow")
+			json_object = {
+				"follower_list":[],
+				"login_user_name":str(request.user),
+			}
+			for follower_data in follower_name_list:
+				json_object["follower_list"].append(follower_data["follow"])
+			return JsonResponse(json_object)
+
+		elif request_type == "get_login_user":
+			json_object = {
+				"username":str(request.user),
+			}
+			return JsonResponse(json_object)
 		else:
-			return HttpResponse("Invalid request type")
+			return HttpResponse("view.py: Invalid request type")
+	else:
+		raise PermissionDenied
+
+def home_view(request):
+	if request.method == "POST":
+		raise PermissionDenied
 	else:
 		# a access request to website visit
+		print "username ",request.user
 		return render(request, 'playground_main.html', {})
 	# return render_to_response('playground_main.html')
 

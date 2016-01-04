@@ -4,11 +4,14 @@ $(function(){
 });
 
 // this is the starter of the whole render chain functions
-function render_home_tab(id_container){
+function render_post(id_container, filter_object){
 	// acquire post data for rendering
-	var request_url = '#';
-	var request_json = {
-		"request_type":"get_home_tab_post",
+	var request_url = '/post_db/';
+	var request_json;
+
+	request_json = {
+		"request_type":"get_post",
+		"filter":filter_object,
 	};
 
 	// render tab content = render all posts
@@ -20,11 +23,10 @@ function render_home_tab(id_container){
 		contentType:"application/json",
 	})
 	.done(function(json_data){
-		render_home_tab_posts(json_data, id_container);
+		var json_object = json_data;
+		render_home_tab_posts(json_object, id_container);
 	})
 	.fail(ajax_fail_handler);
-	
-	render_home_tab_posts();
 }
 
 function render_home_tab_posts(json_data, id_container){
@@ -36,7 +38,8 @@ function render_home_tab_posts(json_data, id_container){
 	// post tile, video url, post message, comments, likes, user
 
 	// iterate the json object, and render out the post
-	json_data["posts"].forEach(function(obj){
+	// console.log(json_data);
+	json_data.posts.forEach(function(obj){
 		// render post main body - the row
 		post_id = obj['post_id'];
 		id_post_body = post_id+"_row";
@@ -70,25 +73,25 @@ function render_home_tab_posts(json_data, id_container){
 	});// post render ended
 
 	// render header
-	id_home_tab_header_row = 'home_tab_header';
-	$("<div>", {
-		'class':'row',
-		id:id_home_tab_header_row
-	}).prependTo("#post_container");
-	id_home_tab_header_col = 'home_tab_header_col1'
-	$("<div>", {
-		'class':'col-xs-12',
-		id:id_home_tab_header_col,
-	}).appendTo("#"+id_home_tab_header_row);
-	$("<h1>", {
-		'class':'page-header',
-		'html':'Post Feed <small>Check out what people listen to!</small>'
-	}).appendTo("#"+id_home_tab_header_col);
+	// id_home_tab_header_row = 'home_tab_header';
+	// $("<div>", {
+	// 	'class':'row',
+	// 	id:id_home_tab_header_row
+	// }).prependTo("#post_container");
+	// id_home_tab_header_col = 'home_tab_header_col1'
+	// $("<div>", {
+	// 	'class':'col-xs-12',
+	// 	id:id_home_tab_header_col,
+	// }).appendTo("#"+id_home_tab_header_row);
+	// $("<h1>", {
+	// 	'class':'page-header',
+	// 	'html':'Post Feed <small>Check out what people listen to!</small>'
+	// }).appendTo("#"+id_home_tab_header_col);
 
 }// home tab content render ended
 
 function render_post_video(post_data, id_post_video){
-	var youtube_url = "http://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://example.com";
+	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://example.com";
 	id_player = post_data['post_id']+'_player';
 	$("<div>", {
 		'id':id_player,
@@ -297,7 +300,7 @@ function comment_input_enter_listener(e){
 
 		$.ajax({
 			type:"POST",
-			url:"#",
+			url:"/post_db/",
 			data:JSON.stringify(request_json),
 			//dataType:"JSON", /* this specify the returned object type */
 			contentType:'application/json',
