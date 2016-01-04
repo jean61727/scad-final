@@ -197,8 +197,17 @@ def categoriesContent(request,category):
 def exploreUsers(request):
 
 	all_users = CustomUser.objects.all()
+	all_posts = Post.objects.all()
 
-	return render(request,'exploreUsers.html',{'all_users': all_users})
+	user_posts = {}
+
+	# for user in all_users:
+	# 	user_posts.update({'user.id': Post.objects.filter(user_id=user.username)})
+	# 	#user_posts[user.id] = Post.objects.filter(user_id=user.username)
+	# 	print (Post.objects.filter(user_id=user.username))
+	# 	print(user.id)
+		
+	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts})
 
 @csrf_protect
 def user_post(request):
