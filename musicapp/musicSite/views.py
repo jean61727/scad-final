@@ -172,7 +172,7 @@ def home_view(request):
 		raise PermissionDenied
 	else:
 		# a access request to website visit
-		print "username ",request.user
+		# print "username ",request.user
 		return render(request, 'playground_main.html', {})
 	# return render_to_response('playground_main.html')
 
