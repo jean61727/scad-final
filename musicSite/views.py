@@ -4,6 +4,9 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 import json
 
+# for regular expression
+import re
+
 from django.template.loader import get_template
 from django import template
 from django.template import Context
@@ -139,20 +142,31 @@ def post_db(request):
 			return JsonResponse(json_object)
 
 		elif request_type == "push_comment_input":
-			Comment.objects.create(
-				comment_message=json_data["comment_message"],
-				post_id=json_data["post_id"],
-				)
-			comment_data = {
-				"commentor":"meee",
-				"comment_content":json_data["comment_message"],
-			}
+			# check comment is blank or not first
+			if re.match('^\s*$',json_data["comment_message"]) is not None:
+				# print "garbage comment"
+				comment_data = {
+					"comment_content":"",
+				}
+			else:
+				# print "good comment"
+				Comment.objects.create(
+					comment_message=json_data["comment_message"],
+					post_id=json_data["post_id"],
+					)
+				comment_data = {
+					"commentor":"meee",
+					"comment_content":json_data["comment_message"],
+				}
+
 			return JsonResponse(comment_data)
 
 		elif request_type == "get_follower_list":
 			requested_user = json_data["main_user_name"]
+			# print "the username requesting is ",requested_user
 			# convert username into user id
 			requested_user_id = CustomUser.objects.filter(username=requested_user).values("id")
+			# print "the user id is ",requested_user_id
 			follower_name_list = Follower.objects.filter(user_id_id=requested_user_id).values("follow")
 			json_object = {
 				"follower_list":[],
