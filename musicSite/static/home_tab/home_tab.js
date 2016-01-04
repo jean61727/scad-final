@@ -1,3 +1,8 @@
+// jQuery window ready block
+$(function(){
+	
+});
+
 function onYouTubeIframeAPIReady() {
 	console.log("youtube iframe ready");
 	start_with_get_login_user();
@@ -60,8 +65,7 @@ function start_with_get_follwer_list(){
 
 		// render the post using constrain conditions
 		render_post("post_container", {
-			"username":username_list,
-			"limit":4,
+			"limit":10,
 			"or":{
 			},
 		});

@@ -1,8 +1,3 @@
-// jQuery window ready block
-$(function(){
-	
-});
-
 // this is the starter of the whole render chain functions
 function render_post(id_container, filter_object){
 	// acquire post data for rendering
