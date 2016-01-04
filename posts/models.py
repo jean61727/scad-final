@@ -17,12 +17,16 @@ class Post(models.Model):
     category = models.CharField(max_length=20,null=True)
 
     time = models.DateTimeField(default=datetime.now)
+    def __str__(self):
+        return self.post_message
  
 class Follower(models.Model):
-	user_id = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE)
-	follow =  models.CharField(max_length=50)
+    user_id = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE)
+    follow =  models.CharField(max_length=50)
+    def __str__(self):
+        return self.follow
 
-class Comments(models.Model):
+class Comment(models.Model):
     # Django sqlite will automatically generate a unique primary key
     # for each entry in a table, so we don't need comment_id
     # comment_id = models.CharField(max_length=50)
@@ -32,7 +36,10 @@ class Comments(models.Model):
     comment_message = models.CharField(max_length=300)
     time = models.DateTimeField(auto_now_add=True)
 
-class Likes(models.Model):
+    def __str__(self):
+        return self.comment_message
+
+class Like(models.Model):
 
     post_id = models.CharField(max_length=100,null=True)
     user_id = models.CharField(max_length=100,null=True)

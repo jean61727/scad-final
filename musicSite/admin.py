@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from posts.models import Post,Follower,Comments
+from posts.models import *
 # Register your models here.
 
 admin.site.register(Post)
 admin.site.register(Follower)
-admin.site.register(Comments)
+admin.site.register(Comment)
+admin.site.register(Like)

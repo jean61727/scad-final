@@ -21,9 +21,8 @@ SECRET_KEY = '1mdsuij_8lcg2qyi@l@y!39q*4gk^$@5kqo67)5ymeh+z8*w_t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 # already defined in TEMPLATE
-TEMPLATE_DEBUG = True
+# TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -129,8 +128,8 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG,
         },
-        # 'TEMPLATE_DEBUG' : True,
     },
 ]
 
@@ -140,6 +139,7 @@ import django.contrib.auth
 django.contrib.auth.LOGIN_URL = '/'
 AUTHENTICATION_BACKENDS = (
     'musicapp.auth_backends.CustomUserModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 CUSTOM_USER_MODEL = 'login.CustomUser'
 

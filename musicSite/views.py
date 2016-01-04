@@ -121,7 +121,7 @@ def post_db(request):
 				}
 				# collecting comment data
 				comment_query_constrain = {"post_id":one_post["id"]}
-				filtered_comments = Comments.objects.filter(**comment_query_constrain).values("comment_message")
+				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message")
 				comments = []
 				
 				for one_comment in filtered_comments:
@@ -139,7 +139,7 @@ def post_db(request):
 			return JsonResponse(json_object)
 
 		elif request_type == "push_comment_input":
-			Comments.objects.create(
+			Comment.objects.create(
 				comment_message=json_data["comment_message"],
 				post_id=json_data["post_id"],
 				)
@@ -319,7 +319,7 @@ def like_add(request):
 		#request.POST
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
-		new_post = Likes(
+		new_post = Like(
 			user_id=user,
             post_id=request.POST.get('post_id')
             )
@@ -336,7 +336,7 @@ def like_delete(request):
 		#request.POST
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
-		Likes.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
+		Like.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
 		
 		return render(request, 'playground_main.html', {})
 	else:
