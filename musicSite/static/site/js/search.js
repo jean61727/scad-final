@@ -8,7 +8,7 @@ $(function() {
 	var q = $('#input_song').val();
 	var request = gapi.client.youtube.search.list({
 		q: q,
-		 maxResults: 10,
+		 maxResults: 6,
 		part: 'snippet'
 	});
 
@@ -18,7 +18,7 @@ $(function() {
 		var str = JSON.stringify(response.result);
 		for (var i = 0; i < response.result.items.length; i++) {
 			if(response.result.items[i].id.videoId != null ){
-			$('#results').append('<ul><input  type="radio" name="optradio"  onclick="showRadioValue()" value="'+response.result.items[i].id.videoId+'"><div>'+response.result.items[i].snippet.title+' </div><iframe width="350" height="210"  src="http://www.youtube.com/embed/' + response.result.items[i].id.videoId + '"></iframe></ul>');
+			$('#results').append('<ul><input  type="radio" name="optradio"  onclick="showRadioValue()" id="'+response.result.items[i].snippet.title+'" value="'+response.result.items[i].id.videoId+'"><div>'+response.result.items[i].snippet.title+' </div><iframe width="350" height="210"  src="http://www.youtube.com/embed/' + response.result.items[i].id.videoId + '"></iframe></ul>');
 			console.log(response.result.items[i].id.videoId);}
 		}
 		 resetVideoHeight();
@@ -40,8 +40,11 @@ $("#search-button").click(function () {
 	console.log("search");
 });*/
 function showRadioValue() {
- alert($('input[name="optradio"]:checked').val());
+ //alert($('input[name="optradio"]:checked').val());
+    
+    alert($('input[name="optradio"]:checked').attr('id'));
     $('#searchvidsID').val($('input[name="optradio"]:checked').val());
+    $('#searchvidsTitle').val($('input[name="optradio"]:checked').attr('id'));
 }
 function init() {
 	gapi.client.setApiKey("AIzaSyCzs5nRdocc7hNoI4QJhao-X0B8nDVI2DU");

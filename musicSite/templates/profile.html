@@ -67,10 +67,14 @@
 <script type="text/javascript">
 var videos =JSON.parse('{{ data|safe }}');
 var video_id_list=[];
+var video_title_list=[];
 var player;
 for (var i=0;i<videos.length;i++){
 		video_id_list[i]=videos[i].fields.url;
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' >"+videos[i].fields.url+"</li>")
+        video_title_list[i]=videos[i].fields.title;
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+videos[i].fields.url+"' >"+videos[i].fields.title+"</li>");
+    console.log("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+videos[i].fields.url+"' >"+videos[i].fields.title+"</li>");
+        
 	}
 $("#play_list").sortable().bind('sortupdate', function (e, ui) {
     /*console.log('現在的順序' + ui.item.index());*/
@@ -78,8 +82,11 @@ $("#play_list").sortable().bind('sortupdate', function (e, ui) {
     console.log(ui.item);
     for(var i=0 ; i<$('#play_list').sortable('toArray').length;i++){
     /*console.log($('#play_list').sortable('toArray')[i]);*/
-    console.log($("#"+$('#play_list').sortable('toArray')[i]).text());
-    video_id_list[i]=$("#"+$('#play_list').sortable('toArray')[i]).text();
+    //console.log($("#"+$('#play_list').sortable('toArray')[i]).attr('value'));
+    video_id_list[i]=$("#"+$('#play_list').sortable('toArray')[i]).attr('value');
+         //console.log($('#play_list').sortable('toArray')[i]);
+    //console.log($("#"+$('#play_list').sortable('toArray')[i]).text());
+    video_title_list[i]=$("#"+$('#play_list').sortable('toArray')[i]).text();
     }
     console.log(video_id_list);
     //onYouTubePlayerAPIReady();
@@ -91,7 +98,7 @@ function playlist(user_post){
 	$("#play_list").empty();
 	for (var i=0;i<videos.length;i++){
 		
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' >"+video_id_list[i]+"</li>")
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+video_id_list[i]+"' >"+video_title_list[i]+"</li>");
 	}
 	//console.log(videos);
 
