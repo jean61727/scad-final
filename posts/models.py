@@ -35,6 +35,7 @@ class Comment(models.Model):
     post_id = models.CharField(max_length=100, null=True)
     comment_message = models.CharField(max_length=300)
     time = models.DateTimeField(auto_now_add=True)
+    user_id = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return self.comment_message
