@@ -111,7 +111,15 @@
     <ul class="nav nav-tabs">
         {% block navbar %}
         <li class="active"><a href="/home">Home</a></li>
-        <li><a href="/explore/songcategories/">Explore</a></li>
+              <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        <li class="active"><a href="/explore/songcategories/">Explore Songs</a></li>
+        <li ><a href="/explore/users/">Explore Users</a></li>
+
+        </ul>
+      </li>
         <li><a href="/profile/">Profile</a></li>
         <li><a href="/search/">Search</a></li>
          {% endblock %}

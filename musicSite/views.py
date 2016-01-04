@@ -25,7 +25,7 @@ from django.db.models import Q
 def post_db(request):
 	if request.method == "POST":
 		# ajax call
-		json_data = json.loads(request.body)
+		json_data = json.loads(request.body.decode('utf-8'))
 		request_type = json_data['request_type']
 		if request_type == "get_post":
 			# we don't know how to join tables, so we first get user id
@@ -51,24 +51,24 @@ def post_db(request):
 			# parse the filter dict object
 			filter = {}
 			q_object = Q()
-			for key,value in filter_data.iteritems():
+			for key in filter_data:
 				# because we don't know how to use the god damn join table, so we still have to deal with user id explicitly
 				if key == 'user_id_id':
 					# if we have multiple ids then iterate it
 					# finally, add them to the Q object
-					if type(value) is list:
-						for a_id in value:
+					if type(filter_data[key]) is list:
+						for a_id in filter_data[key]:
 							q_object = q_object|Q(**{key:a_id})
 					else:
-						filter.update( { key: value } )
+						filter.update( { key: filter_data[key] } )
 				elif key == 'or':
 					# for adding OR operation for the db query
-					for field,constrain in filter_data[key].iteritems():
-						if type(constrain) is list:
-							for a_constrain in constrain:
+					for field in filter_data[key]:
+						if type(filter_data[key][field]) is list:
+							for a_constrain in filter_data[key][field]:
 								q_object = q_object|Q(**{field:a_constrain})
 						else:
-							q_object = q_object|Q(**{field:constrain})
+							q_object = q_object|Q(**{field:filter_data[key][field]})
 				else:
 					filter.update({ key:filter_data[key] })
 
@@ -191,7 +191,7 @@ def categoriesContent(request,category):
 
 	post_list = Post.objects.filter(category=category)
 
-	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list})
+	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list,'category':category})
 
 def exploreUsers(request):
 
