@@ -51,7 +51,7 @@ def post_db(request):
 			# parse the filter dict object
 			filter = {}
 			q_object = Q()
-			sort_option = ""
+			sort_option = "-time"
 			for key in filter_data:
 				# because we don't know how to use the god damn join table, so we still have to deal with user id explicitly
 				if key == 'user_id_id':
@@ -84,7 +84,9 @@ def post_db(request):
 				display_post_count = 1
 			
 			# query all info of a post from database
-			filtered_posts = Post.objects.filter(q_object&Q(**filter)).order_by(sort_option).values(
+			filtered_db_data = Post.objects.filter(q_object&Q(**filter))
+
+			filtered_posts = filtered_db_data.order_by(sort_option).values(
 				'id',
 				'title',
 				'url',

@@ -65,7 +65,8 @@ function start_with_get_follwer_list(){
 
 		// render the post using constrain conditions
 		render_post("post_container", {
-			"limit":10,
+			"username":username_list,
+			"limit":4,
 			"or":{
 			},
 		});
