@@ -19,7 +19,19 @@ function render_post(id_container, filter_object){
 	})
 	.done(function(json_data){
 		var json_object = json_data;
-		render_home_tab_posts(json_object, id_container);
+		if (json_object.posts.length == 0){
+			// handle case that no post is returned
+			$("<div>", {
+				'class':'alert alert-info',
+				'html':'no post',
+			}).appendTo("#"+id_container)
+			
+		}
+		else
+		{
+			// rander out all the posts
+			render_home_tab_posts(json_object, id_container);
+		}
 	})
 	.fail(ajax_fail_handler);
 }
@@ -164,7 +176,7 @@ function render_post_field(post_data, id_post_field){
 		'id':id_field_username,
 	}).appendTo("#"+id_field_user);
 	$("<a>", {
-		'href':'#',
+		'href':'/profile/'+post_data['username']+'/',
 		'html':post_data['username'],
 	}).appendTo("#"+id_field_username);
 
@@ -303,12 +315,16 @@ function comment_input_enter_listener(e){
 		.done(function(response_json){
 			// display the new comment
 			$($input_field).val("");
-			console.log(response_json["comment_content"]);
-			// add the new comment
-			$("<li>", {
-				'class':'list-group-item',
-				'html':response_json["comment_content"],
-			}).appendTo("#"+$post_id+"_comment_list");
+			if (response_json["comment_content"] == ""){
+				// alert("empty comment");
+			} else {
+				// alert("ok!!");
+				// add the new comment
+				$("<li>", {
+					'class':'list-group-item',
+					'html':response_json["comment_content"],
+				}).appendTo("#"+$post_id+"_comment_list");
+			}
 		})
 		.fail(ajax_fail_handler);
 	}

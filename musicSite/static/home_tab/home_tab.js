@@ -38,17 +38,17 @@ function start_with_get_login_user(){
 
 		} else {
 			// render the login user's post and all his followers'
-			start_with_get_follwer_list();
+			start_with_get_follwer_list(result["username"]);
 		}
 	})
 	.fail(ajax_fail_handler);
 }
 
-function start_with_get_follwer_list(){
+function start_with_get_follwer_list(logged_in_username){
 	var request_url = "/post_db/";
 	var json_request = {
 		"request_type":"get_follower_list",
-		"main_user_name":"iriver",
+		"main_user_name":logged_in_username,
 	};
 
 	$.ajax({
@@ -62,10 +62,11 @@ function start_with_get_follwer_list(){
 		// get follwer list		
 		var username_list = result.follower_list;
 		username_list.push(result.login_user_name);
-
+		// console.log('the user list is '+username_list);
 		// render the post using constrain conditions
 		render_post("post_container", {
-			"limit":10,
+			"username":username_list,
+			"limit":4,
 			"or":{
 			},
 		});

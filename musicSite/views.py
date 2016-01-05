@@ -4,6 +4,9 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 import json
 
+# for regular expression
+import re
+
 from django.template.loader import get_template
 from django import template
 from django.template import Context
@@ -51,7 +54,7 @@ def post_db(request):
 			# parse the filter dict object
 			filter = {}
 			q_object = Q()
-			sort_option = ""
+			sort_option = "-time"
 			for key in filter_data:
 				# because we don't know how to use the god damn join table, so we still have to deal with user id explicitly
 				if key == 'user_id_id':
@@ -84,7 +87,9 @@ def post_db(request):
 				display_post_count = 1
 			
 			# query all info of a post from database
-			filtered_posts = Post.objects.filter(q_object&Q(**filter)).order_by(sort_option).values(
+			filtered_db_data = Post.objects.filter(q_object&Q(**filter))
+
+			filtered_posts = filtered_db_data.order_by(sort_option).values(
 				'id',
 				'title',
 				'url',
@@ -119,7 +124,7 @@ def post_db(request):
 				}
 				# collecting comment data
 				comment_query_constrain = {"post_id":one_post["id"]}
-				filtered_comments = Comments.objects.filter(**comment_query_constrain).values("comment_message")
+				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message")
 				comments = []
 				
 				for one_comment in filtered_comments:
@@ -137,20 +142,31 @@ def post_db(request):
 			return JsonResponse(json_object)
 
 		elif request_type == "push_comment_input":
-			Comments.objects.create(
-				comment_message=json_data["comment_message"],
-				post_id=json_data["post_id"],
-				)
-			comment_data = {
-				"commentor":"meee",
-				"comment_content":json_data["comment_message"],
-			}
+			# check comment is blank or not first
+			if re.match('^\s*$',json_data["comment_message"]) is not None:
+				# print "garbage comment"
+				comment_data = {
+					"comment_content":"",
+				}
+			else:
+				# print "good comment"
+				Comment.objects.create(
+					comment_message=json_data["comment_message"],
+					post_id=json_data["post_id"],
+					)
+				comment_data = {
+					"commentor":"meee",
+					"comment_content":json_data["comment_message"],
+				}
+
 			return JsonResponse(comment_data)
 
 		elif request_type == "get_follower_list":
 			requested_user = json_data["main_user_name"]
+			# print "the username requesting is ",requested_user
 			# convert username into user id
 			requested_user_id = CustomUser.objects.filter(username=requested_user).values("id")
+			# print "the user id is ",requested_user_id
 			follower_name_list = Follower.objects.filter(user_id_id=requested_user_id).values("follow")
 			json_object = {
 				"follower_list":[],
@@ -176,7 +192,7 @@ def home_view(request):
 	else:
 		# a access request to website visit
 		# print "username ",request.user
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 	# return render_to_response('playground_main.html')
 
 def base(request):
@@ -189,13 +205,13 @@ def link(request):
 
 def exploreSongCategories(request):
 
-	return render(request,'exploreSongCategories.html')
+	return render(request,'exploreSongCategories.html', {'tab':'explore'})
 
 def categoriesContent(request,category):
 
 	post_list = Post.objects.filter(category=category)
 
-	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list,'category':category})
+	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list,'category':category, 'tab':'explore'})
 
 def exploreUsers(request):
 
@@ -210,7 +226,7 @@ def exploreUsers(request):
 	# 	print (Post.objects.filter(user_id=user.username))
 	# 	print(user.id)
 		
-	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts})
+	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore'})
 
 @csrf_protect
 def user_post(request):
@@ -235,7 +251,7 @@ def user_post(request):
 		new_post.save()
 		return HttpResponseRedirect('/home')
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 
 def profile (request):
 
@@ -250,7 +266,7 @@ def profile (request):
 	#print user_post[1].url
 	#print user_post.post_message[1]
 	#print request.user
-	return render(request,'profile.html',{'user_post': user_post,'data':data})
+	return render(request,'profile.html',{'user_post': user_post,'data':data, 'tab':'profile'})
 
 def profile_user (request,user):
 
@@ -268,14 +284,14 @@ def profile_user (request,user):
 	#print user_post[1].url
 	#print user_post.post_message[1]
 	#print request.user
-	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user})
+	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user, 'tab':'search'})
 
 
 
 def search(request):
 	user_list=CustomUser.objects.all()
 	print (user_list)
-	return render(request,'search.html',{'user_list':user_list})
+	return render(request,'search.html',{'user_list':user_list, 'tab':'search'})
 
 
 
@@ -295,7 +311,7 @@ def follow_add(request):
 		new_post.save()
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 
 def follow_delete(request):
 
@@ -308,7 +324,7 @@ def follow_delete(request):
 		
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 
 def like_add(request):
 
@@ -317,16 +333,16 @@ def like_add(request):
 		#request.POST
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
-		new_post = Likes(
+		new_post = Like(
 			user_id=user,
             post_id=request.POST.get('post_id')
             )
 		print (request.POST.get('post_id'))
 		print ("hello")
 		new_post.save()
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 def like_delete(request):
 
 	context=RequestContext(request)
@@ -334,8 +350,8 @@ def like_delete(request):
 		#request.POST
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
-		Likes.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
+		Like.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
 		
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
