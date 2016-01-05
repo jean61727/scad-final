@@ -6,7 +6,10 @@
         <li class="active"><a href="/profile/">Profile</a></li>
         <li ><a href="/search/">Search</a></li>
 {% endblock %}
-{% block content %}
+{% block content %} 
+<link href="{% static 'css/ihover.css' %}" rel="stylesheet"> 
+    <!-- Customed Bootstrap CSS -->
+    
 {% if user.username %}
 <div  class="col-md-11 col-md-offset-1" style="margin-top:3%; margin-bottom:20px; " >	
 	<ul class="nav nav-pills" role="tablist" id='myTabs'>
@@ -17,8 +20,10 @@
 	    	<a href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
 	    </li>
 	</ul>
+	
 
 </div>
+
 
 <div class="col-md-11 col-md-offset-1">
 	<div class="tab-content" >
@@ -32,18 +37,49 @@
                     
                     	<h3>{{ user.username }}</h3>
 
-                    	<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>
+                    	<!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
                 	
                 </div>
 
                 <div id="player"></div>
-                <input type="text" size="70" id="test-log">
+                
 	        </div>
 
-	        <div class="page-header"><div id="play_list">
+	        <div class="row" >
+				 <div class="col-sm-2" style="">
+				    <!-- normal -->
+				    <div class="ih-item square effect13 top_to_bottom"><a href="#" style="width:50%;">
+				        <div class="img" >
+				        	<img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist()">
+				        </div>
+				        <div class="info">
+				          <h3>My Playlist</h3>
+				          <p>Posted Songs!</p>
+				        </div>
+				    </div>
+				</div>
+				    <!-- end normal -->
+			
+				 <div class="col-sm-2" style="" >
+				    <!-- normal -->
+				    <div class="ih-item square effect13 top_to_bottom"><a href="#" >
+				        <div class="img">
+				        	<img src="{% static 'img/favorites.jpg' %}" alt="img" >
+				        </div>
+				        <div class="info">
+				          <h3>Favorite</h3>
+				          <p>Songs Liked!</p>
+				        </div>
+				    </div>
+				</div>
+
+			</div>
+
+	        <div class="page-header"></div>
+	        <div id="play_list">
 	        	
 
-	        </div></div>
+	        </div>
 	        
 
 	    </div>
@@ -66,13 +102,14 @@
 
 <script type="text/javascript">
 var videos =JSON.parse('{{ data|safe }}');
+
 var video_id_list=[];
 var video_title_list=[];
 var player;
 for (var i=0;i<videos.length;i++){
 		video_id_list[i]=videos[i].fields.url;
         video_title_list[i]=videos[i].fields.title;
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+videos[i].fields.url+"' >"+videos[i].fields.title+"</li>");
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+videos[i].fields.url+"' >"+"<img src=http://img.youtube.com/vi/"+videos[i].fields.url+"/1.jpg>"+videos[i].fields.title+"</li>");
     console.log("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+videos[i].fields.url+"' >"+videos[i].fields.title+"</li>");
         
 	}
@@ -98,7 +135,7 @@ function playlist(user_post){
 	$("#play_list").empty();
 	for (var i=0;i<videos.length;i++){
 		
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+video_id_list[i]+"' >"+video_title_list[i]+"</li>");
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+video_id_list[i]+"' >"+"<img src=http://img.youtube.com/vi/"+videos[i].fields.url+"/1.jpg>"+video_title_list[i]+"</li>");
 	}
 	//console.log(videos);
 
@@ -150,6 +187,7 @@ function stopVideo() {
 
 
 </script>
+    
 {% endblock %}
 
 
