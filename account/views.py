@@ -21,4 +21,4 @@ def account_settings(request):
 	if request.method == 'POST':
 		return HttpResponse("hello it is POST")
 	else:
-		return HttpResponse("heelo it is getTTT")
+		return render(request, 'account_settings.html', {})
