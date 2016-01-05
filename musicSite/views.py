@@ -255,18 +255,22 @@ def user_post(request):
 
 def profile (request):
 
+	like_post=Like.objects.filter(user_id=request.user)
 	user_post=Post.objects.filter(user_id=request.user)
-	video_id_list=[]
-	for post in user_post:
-		video_id_list.append(str(post.url))
-	video_id_list=json.dumps(video_id_list)
-
+	like_post_list=[]
+	print("here")
+	for post in like_post:
+		print(Post.objects.filter(id=post.post_id))
+		like_post_list.append(Post.objects.filter(id=post.post_id)[0])
+	
+	print(like_post_list)
+	print(user_post)
 	data = serializers.serialize("json", user_post)
 
-	#print user_post[1].url
-	#print user_post.post_message[1]
-	#print request.user
-	return render(request,'profile.html',{'user_post': user_post,'data':data, 'tab':'profile'})
+
+	like_data=serializers.serialize("json", like_post_list)
+	print(like_data)
+	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile'})
 
 def profile_user (request,user):
 

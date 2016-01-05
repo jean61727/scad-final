@@ -28,61 +28,55 @@
 	        	<div class="col-md-2">
 	            	<img src="../static/img/user_pic.jpg" class= "img-circle img-responsive img-thumbnail" >
 	        	</div>
-	           	<div class="col-md-2">
+	           	<div class="col-md-10">
                     
                     	<h3>{{ user.username }}</h3>
 
                     	<!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
-                	
+                    	<div  >
+							 <div class="col-sm-2" style="">
+							    <!-- normal -->
+							    <div class="ih-item square effect13 top_to_bottom"><a href="#" style="width:50%;">
+							        <div class="img" >
+							        	<img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
+							        </div>
+							        <div class="info">
+							          <h3>My Playlist</h3>
+							          <p>Posted Songs!</p>
+							        </div>
+							    </div>
+							</div>
+							    <!-- end normal -->
+						
+							 <div class="col-sm-2" style="" >
+							    <!-- normal -->
+							    <div class="ih-item square effect13 top_to_bottom"><a href="#" >
+							        <div class="img">
+							        	<img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
+							        </div>
+							        <div class="info">
+							          <h3>Favorite</h3>
+							          <p>Songs Liked!</p>
+							        </div>
+							    </div>
+							</div>
+
+						</div>
+                	<div class="col-sm-7"id="player" style="float:right;margin-right:10px;" ></div>
                 </div>
 
-                <div id="player"></div>
-                
 	        </div>
-
-	        <div class="row" >
-				 <div class="col-sm-2" style="">
-				    <!-- normal -->
-				    <div class="ih-item square effect13 top_to_bottom"><a href="#" style="width:50%;">
-				        <div class="img" >
-				        	<img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist()">
-				        </div>
-				        <div class="info">
-				          <h3>My Playlist</h3>
-				          <p>Posted Songs!</p>
-				        </div>
-				    </div>
-				</div>
-				    <!-- end normal -->
-			
-				 <div class="col-sm-2" style="" >
-				    <!-- normal -->
-				    <div class="ih-item square effect13 top_to_bottom"><a href="#" >
-				        <div class="img">
-				        	<img src="{% static 'img/favorites.jpg' %}" alt="img" >
-				        </div>
-				        <div class="info">
-				          <h3>Favorite</h3>
-				          <p>Songs Liked!</p>
-				        </div>
-				    </div>
-				</div>
-
-			</div>
 
 	        <div class="page-header"></div>
 	        <div id="play_list">
-	        	
 
 	        </div>
-	        
 
 	    </div>
 
 	    <div role="tabpanel" class="tab-pane fade" id="follow">
 	        <div>
-	            
-	        	 
+ 
 	        </div>
 	  	</div>
 	    
@@ -96,18 +90,14 @@
 
 
 <script type="text/javascript">
+var option_control=0;
 var videos =JSON.parse('{{ data|safe }}');
+var videos_like = JSON.parse('{{ like_data|safe }}');
 
 var video_id_list=[];
 var video_title_list=[];
 var player;
-for (var i=0;i<videos.length;i++){
-		video_id_list[i]=videos[i].fields.url;
-        video_title_list[i]=videos[i].fields.title;
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+videos[i].fields.url+"' >"+"<img src=http://img.youtube.com/vi/"+videos[i].fields.url+"/1.jpg>"+videos[i].fields.title+"</li>");
-    console.log("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+videos[i].fields.url+"' >"+videos[i].fields.title+"</li>");
-        
-	}
+
 $("#play_list").sortable().bind('sortupdate', function (e, ui) {
     /*console.log('現在的順序' + ui.item.index());*/
     $("input#test-log").val($('#play_list').sortable('toArray')); 
@@ -126,19 +116,47 @@ $("#play_list").sortable().bind('sortupdate', function (e, ui) {
 
     });
 
-function playlist(user_post){
+function playlist(option){
+	var target_video;
+	var temp_option = option_control;
+	if(option ==1){
+		option_control=1;
+		target_video = videos;
+	}else if(option==2){
+		option_control=2;
+		target_video = videos_like;
+	}
 	$("#play_list").empty();
-	for (var i=0;i<videos.length;i++){
+
+	if(temp_option!=option_control){
+		if(temp_option!=0){
+			console.log("hihihihihi");
+			player.destroy();
+			console.log(videos[0]);
+			var tag = document.createElement('script');
+			tag.src = "https://www.youtube.com/iframe_api";
+			var firstScriptTag = document.getElementsByTagName('script')[0];
+			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		}
+		for (var i=0;i<target_video.length;i++){
+			video_id_list[i]=target_video[i].fields.url;
+	        video_title_list[i]=target_video[i].fields.title;
+	    }
+	}
+
+	for (var i=0;i<target_video.length;i++){
 		
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+video_id_list[i]+"' >"+"<img src=http://img.youtube.com/vi/"+videos[i].fields.url+"/1.jpg>"+video_title_list[i]+"</li>");
+        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+video_id_list[i]+"' >"+"<img src=http://img.youtube.com/vi/"+target_video[i].fields.url+"/1.jpg>"+video_title_list[i]+"</li>");
 	}
 	//console.log(videos);
 
-		console.log(videos[0]);
-		var tag = document.createElement('script');
-		tag.src = "https://www.youtube.com/iframe_api";
-		var firstScriptTag = document.getElementsByTagName('script')[0];
-		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		if(temp_option==0){
+			console.log(videos[0]);
+			var tag = document.createElement('script');
+			tag.src = "https://www.youtube.com/iframe_api";
+			var firstScriptTag = document.getElementsByTagName('script')[0];
+			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		}
 		onYouTubePlayerAPIReady();
 	
 	
@@ -149,7 +167,7 @@ function playlist(user_post){
 function onYouTubePlayerAPIReady() {
 	player = new YT.Player('player', {
 	  height: '390',
-	  width: '640',
+	  width: '100%',
 	 loadPlaylist:{
 	    listType:'playlist',
 	    list:video_id_list,
