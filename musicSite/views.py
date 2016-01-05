@@ -192,7 +192,7 @@ def home_view(request):
 	else:
 		# a access request to website visit
 		# print "username ",request.user
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 	# return render_to_response('playground_main.html')
 
 def base(request):
@@ -205,13 +205,13 @@ def link(request):
 
 def exploreSongCategories(request):
 
-	return render(request,'exploreSongCategories.html')
+	return render(request,'exploreSongCategories.html', {'tab':'explore'})
 
 def categoriesContent(request,category):
 
 	post_list = Post.objects.filter(category=category)
 
-	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list,'category':category})
+	return render(request,'exploreSongCategoriesContent.html', {'post_list': post_list,'category':category, 'tab':'explore'})
 
 def exploreUsers(request):
 
@@ -226,7 +226,7 @@ def exploreUsers(request):
 	# 	print (Post.objects.filter(user_id=user.username))
 	# 	print(user.id)
 		
-	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts})
+	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore'})
 
 @csrf_protect
 def user_post(request):
@@ -251,7 +251,7 @@ def user_post(request):
 		new_post.save()
 		return HttpResponseRedirect('/home')
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 
 def profile (request):
 
@@ -266,7 +266,7 @@ def profile (request):
 	#print user_post[1].url
 	#print user_post.post_message[1]
 	#print request.user
-	return render(request,'profile.html',{'user_post': user_post,'data':data})
+	return render(request,'profile.html',{'user_post': user_post,'data':data, 'tab':'profile'})
 
 def profile_user (request,user):
 
@@ -284,14 +284,14 @@ def profile_user (request,user):
 	#print user_post[1].url
 	#print user_post.post_message[1]
 	#print request.user
-	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user})
+	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user, 'tab':'search'})
 
 
 
 def search(request):
 	user_list=CustomUser.objects.all()
 	print (user_list)
-	return render(request,'search.html',{'user_list':user_list})
+	return render(request,'search.html',{'user_list':user_list, 'tab':'search'})
 
 
 
@@ -311,7 +311,7 @@ def follow_add(request):
 		new_post.save()
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 
 def follow_delete(request):
 
@@ -324,7 +324,7 @@ def follow_delete(request):
 		
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 
 def like_add(request):
 
@@ -340,9 +340,9 @@ def like_add(request):
 		print (request.POST.get('post_id'))
 		print ("hello")
 		new_post.save()
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 def like_delete(request):
 
 	context=RequestContext(request)
@@ -352,6 +352,6 @@ def like_delete(request):
 		user = CustomUser.objects.get(username=request.user)
 		Like.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
 		
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
-		return render(request, 'playground_main.html', {})
+		return render(request, 'playground_main.html', {'tab':'home'})

@@ -1,11 +1,13 @@
 {% extends 'playground_base.html' %}
 {% load staticfiles %}
+<!-- you can safely delete this
 {% block navbar %}
 	    <li><a href="/home">Home</a></li>
 	    <li><a href="/explore/songcategories/">Explore</a></li>
 	    <li ><a href="/profile/">Profile</a></li>
 	    <li class="active"><a href="/search/">Search</a></li>
 {% endblock %}
+-->
 {% block content %}
 	<ul>
 		{%for profile_user in user_list %}
