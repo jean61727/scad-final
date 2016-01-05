@@ -110,22 +110,26 @@
         <!-- /.container -->
     </nav>
 
+    {% block navbar %}
     <!-- Tab Switcher -->
     <ul class="nav nav-tabs">
-        {% block navbar %}
+        <!-- Home -->
         <li class="{% if tab == 'home' %}active{% endif %}"><a href="/home">Home</a></li>
+        <!-- Explore -->
         <li class="{% if tab == 'explore' %}active{% endif %} dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore<span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li class="active"><a href="/explore/songcategories/">Explore Songs</a></li>
-                <li ><a href="/explore/users/">Explore Users</a></li>
+                <li class=""><a href="/explore/songcategories/">Explore Songs</a></li>
+                <li class=""><a href="/explore/users/">Explore Users</a></li>
             </ul>
         </li>
+        <!-- Profile -->
         <li class="{% if tab == 'profile' %}active{% endif %}"><a href="/profile/">Profile</a></li>
+        <!-- Search -->
         <li class="{% if tab == 'search' %}active{% endif %}"><a href="/search/">Search</a></li>
-         {% endblock %}
     </ul>
-
+    {% endblock %}
+    
     <!-- Implementation of Post and Login Button feature -->
     <!-- Modal -->
     <div class="modal fade bs-example-modal-lg" id="myModal" role="dialog" tabindex="-1">

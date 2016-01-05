@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^post_db/$', post_db),
     # Account Settings
     url(r'^accounts/settings/$', account_settings ),
+    url(r'^accounts/settings/db_update_image/$', db_update_account_image),
     # Backend Administration
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', 'django.contrib.auth.views.login', name='login'),

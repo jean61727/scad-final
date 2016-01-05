@@ -21,4 +21,16 @@ def account_settings(request):
 	if request.method == 'POST':
 		return HttpResponse("hello it is POST")
 	else:
-		return HttpResponse("heelo it is getTTT")
+		return render(request, 'account_settings.html', {})
+
+def db_update_account_image(request):
+	if request.method == "POST":
+		json_data = json.loads(request.body.decode('utf-8'))
+		if json_data["request_type"] == "update_profile_image":
+			# print "now the user is",request.user
+			CustomUser.objects.filter(username=request.user).update(user_image=json_data["image_path"])
+			return HttpResponse("haha updated the db")
+		else:
+			raise PermissionDenied
+	else:
+		raise PermissionDenied

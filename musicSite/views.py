@@ -100,7 +100,8 @@ def post_db(request):
 				'category',
 				'user_id_id',
 				'time',
-				'user_pic_path')[:display_post_count]
+				'user_pic_path' # this field is deprecated
+				)[:display_post_count]
 
 			# start organizing a json object
 			json_object = {
@@ -109,14 +110,14 @@ def post_db(request):
 			for one_post in filtered_posts:
 
 				# make a data set for a single post
-				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username")[0]
+				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username","user_image")[0]
 				post_data = {
 					"post_id":one_post["id"],
 					"is_like":"false",
 					"like_count":one_post["likes"],
 					"video_id":one_post["url"],
 					"video_title": one_post["title"] ,
-					"user_pic":  one_post["user_pic_path"] ,
+					"user_pic":  user_data["user_image"] ,
 					"username": user_data["username"],
 					"user_id": one_post["user_id_id"]  ,
 					"message": one_post["post_message"]  ,
