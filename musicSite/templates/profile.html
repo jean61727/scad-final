@@ -9,7 +9,7 @@
 <div  class="col-md-11 col-md-offset-1" style="margin-top:3%; margin-bottom:20px; " >	
 	<ul class="nav nav-pills" role="tablist" id='myTabs'>
 	    <li role="presentation" class="active">
-	    	<a href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab" aria-expanded="true">User Profile</a>
+	    	<a href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab" >User Profile</a>
 	    </li>
 	    <li role="presentation">
 	    	<a href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
@@ -36,7 +36,7 @@
                     	<div  >
 							 <div class="col-sm-2" style="">
 							    <!-- normal -->
-							    <div class="ih-item square effect13 top_to_bottom"><a href="#" style="width:50%;">
+							    <div class="ih-item square effect13 top_to_bottom">
 							        <div class="img" >
 							        	<img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
 							        </div>
@@ -50,7 +50,7 @@
 						
 							 <div class="col-sm-2" style="" >
 							    <!-- normal -->
-							    <div class="ih-item square effect13 top_to_bottom"><a href="#" >
+							    <div class="ih-item square effect13 top_to_bottom">
 							        <div class="img">
 							        	<img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
 							        </div>
@@ -76,7 +76,13 @@
 
 	    <div role="tabpanel" class="tab-pane fade" id="follow">
 	        <div>
- 				
+ 				<ul>
+ 					
+					{%for profile_user in user_follow %}
+						<li><a href="{% url 'profile_url' profile_user %}">{{profile_user}}</a></li>
+					{%endfor%}
+
+	</ul>
 	        </div>
 	  	</div>
 	    
