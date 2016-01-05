@@ -176,7 +176,7 @@ function render_post_field(post_data, id_post_field){
 		'id':id_field_username,
 	}).appendTo("#"+id_field_user);
 	$("<a>", {
-		'href':'#',
+		'href':'/profile/'+post_data['username']+'/',
 		'html':post_data['username'],
 	}).appendTo("#"+id_field_username);
 

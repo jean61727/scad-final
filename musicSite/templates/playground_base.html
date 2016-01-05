@@ -96,6 +96,9 @@
                     <li>
                         <p class="navbar-text">Hi {{ user.username }} !</p>
                     </li>
+                    <li>
+                        <a href="/accounts/settings/">Account</a>
+                    </li>
                     <li><a href="/logout/">LOGOUT</a></li>
                     {% else %} {% url 'login' as the_url %}
                     <li><a href="{{ the_url }}">LOGIN</a></li>
