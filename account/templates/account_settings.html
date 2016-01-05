@@ -7,4 +7,64 @@
 
 {% block content %}
 <h2>Account Settings</h2>
+<hr>
+
+
+<style type="text/css">
+	img {
+		height: 100px;
+	}
+</style>
+
+<div id="select_profile_image">
+	<h3>Select a photo as profile image!</h3>
+</div>
+
+
+<script type="text/javascript">
+	var selected_image_path = "";
+	$(function(){
+		var system_profile_images = [
+			"{% static 'img/user_pic.jpg' %}",
+			"{% static 'img/user_pic_blue_block.jpg' %}",
+			"{% static 'img/user_pic_blue_heart.gif' %}",
+			"{% static 'img/user_pic_jap_flower.gif' %}",
+			"{% static 'img/user_pic_orange.gif' %}"
+		];
+
+		// show all the image
+		system_profile_images.forEach(function(an_image_path){
+			$("<button>", {
+				'type':'button',
+				'class':'btn btn-default',
+			}).append($("<img>", {
+				'src':an_image_path,
+			}))
+			.appendTo("#select_profile_image")
+			// set up the listener for each image button
+			.bind('click',{
+				image_path:an_image_path,
+			},image_button_clicked);
+		});
+
+	});
+
+	function image_button_clicked(e){
+		var request_json = {
+			"request_type": "update_profile_image",
+			"image_path":e.data.image_path,
+		}
+		// send request to update profile image
+		$.ajax({
+			type:'POST',
+			url:'/accounts/settings/db_update_image/',
+			data:JSON.stringify(request_json),
+		})
+		.done(function(result){
+			console.log(result);
+		})
+		.fail(ajax_fail_handler);
+	}
+</script>
+
 {% endblock %}
