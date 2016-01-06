@@ -41,32 +41,34 @@
                     	<div  >
 							 <div class="col-sm-2" style="">
 							    <!-- normal -->
-							    <div class="ih-item square effect13 top_to_bottom"><a href="#">
-							        <div class="img" >
-							        	<img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
-							        </div>
-							        <div class="info">
-							          <h3>My Playlist</h3>
-							          <p>Posted Songs!</p>
-							        </div>
-
-							    </div>
-							    </a>
+							    <div class="ih-item square effect13 top_to_bottom">
+							    	<a href="#">
+								        <div class="img" >
+								        	<img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
+								        </div>
+								        <div class="info">
+								          <h3>My Playlist</h3>
+								          <p>Posted Songs!</p>
+								        </div>
+									</a>
+							    </div>    
 							</div>
 							    <!-- end normal -->
 						{%block follow%}
 							 <div class="col-sm-2" style="" >
 							    <!-- normal -->
-							    <div class="ih-item square effect13 top_to_bottom"><a href="#">
-							        <div class="img">
-							        	<img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
-							        </div>
-							        <div class="info">
-							          <h3>Favorite</h3>
-							          <p>Songs Liked!</p>
-							        </div>
+							    <div class="ih-item square effect13 top_to_bottom">
+							    	<a href="#">
+								        <div class="img">
+								        	<img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
+								        </div>
+								        <div class="info">
+								          <h3>Favorite</h3>
+								          <p>Songs Liked!</p>
+								        </div>
+								    </a>
 							    </div>
-							    </a>
+							    
 							</div>
 						{%endblock%}
 						</div>
@@ -86,13 +88,25 @@
 	    <div role="tabpanel" class="tab-pane fade" id="follow">
 	        <div>
  				<ul>
- 					
-						{%for follow in user_follow %}
-							<li><a href="{% url 'profile_url' follow %}">{{follow}}</a></li>
-						{%endfor%}
-					
+ 					{%for follow in user_follow %}
+ 						<div class="col-sm-2" style="">
+							    <!-- normal -->
+							    <div class="ih-item circle colored effect17">
+							    	<a href="{% url 'profile_url' follow %}">
+								        <div class="img" >
+								        	<img src='{{follow.user_image}}' alt="img" >
+								        </div>
+								        <center>{{follow}}</center>
+								        <div class="info">
+								          <h3>{{follow}}</h3>
+								          <p>Posted Songs!</p>
+								        </div>
+									</a>
+							    </div>    
+							</div>
 
-	</ul>
+						{%endfor%}
+				</ul>
 	        </div>
 	  	</div>
 	    

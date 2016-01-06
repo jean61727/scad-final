@@ -279,17 +279,20 @@ def profile (request,user):
 
 	like_post_list=[]
 	for post in like_post:
-		print(Post.objects.filter(id=post.post_id))
 		like_post_list.append(Post.objects.filter(id=post.post_id)[0])
+	
+	following_user_list=[]
+	for following in user_follow:
+		following_user_list.append(CustomUser.objects.filter(username=following.follow)[0])
 	
 	
 	data = serializers.serialize("json", user_post)
 	like_data=serializers.serialize("json", like_post_list)
 	be_followed_data = serializers.serialize("json", be_followed_post)
-	print(like_data)
+	
 	if(str(request.user) !=str(user)):
 		return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
-	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':user_follow})
+	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':following_user_list})
 
 '''def profile_user (request,user):
 
