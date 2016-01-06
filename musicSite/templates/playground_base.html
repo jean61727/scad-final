@@ -123,8 +123,9 @@
                 <li class=""><a href="/explore/users/">Explore Users</a></li>
             </ul>
         </li>
+
         <!-- Profile -->
-        <li class="{% if tab == 'profile' %}active{% endif %}"><a href="/profile/">Profile</a></li>
+        <li class="{% if tab == 'profile'%}active{% endif %}"><a href="/profile/{{user.username}}">Profile</a></li>
         <!-- Search -->
         <li class="{% if tab == 'search' %}active{% endif %}"><a href="/search/">Search</a></li>
     </ul>

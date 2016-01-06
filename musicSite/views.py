@@ -267,14 +267,17 @@ def user_post(request):
 	else:
 		return render(request, 'playground_main.html', {'tab':'home'})
 
-def profile (request):
+def profile (request,user):
+	print user
 
 	like_post=Like.objects.filter(user_id=request.user)
 	user_post=Post.objects.filter(user_id=request.user)
 	user_follow=Follower.objects.filter(user_id_id=request.user)
-	print(user_follow)
+
+	user_be_followed = CustomUser.objects.get(username=user)
+	be_followed_post=Post.objects.filter(user_id=user_be_followed)
+
 	like_post_list=[]
-	
 	for post in like_post:
 		print(Post.objects.filter(id=post.post_id))
 		like_post_list.append(Post.objects.filter(id=post.post_id)[0])
@@ -282,19 +285,18 @@ def profile (request):
 	
 	data = serializers.serialize("json", user_post)
 	like_data=serializers.serialize("json", like_post_list)
+	be_followed_data = serializers.serialize("json", be_followed_post)
 	print(like_data)
+	if(str(request.user) !=str(user)):
+		return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user})
 	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':user_follow})
 
-def profile_user (request,user):
+'''def profile_user (request,user):
 
 	user = CustomUser.objects.get(username=user)
 	user_post=Post.objects.filter(user_id=user)
 	print (user)
-	video_id_list=[]
-	for post in user_post:
-		video_id_list.append(str(post.url))
-		print (str(post.url))
-	video_id_list=json.dumps(video_id_list)
+
 
 	data = serializers.serialize("json", user_post)
 
@@ -303,7 +305,7 @@ def profile_user (request,user):
 	#print request.user
 	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user, 'tab':'search'})
 
-
+'''
 
 def search(request):
 	user_list=CustomUser.objects.all()

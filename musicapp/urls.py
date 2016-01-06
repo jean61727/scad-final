@@ -15,8 +15,8 @@ urlpatterns = patterns('',
     url(r'^explore/songcategories/content/(?P<category>\w+)/', categoriesContent),
     url(r'^explore/songcategories/$',exploreSongCategories),
     url(r'^explore/users/$',exploreUsers),
-    url(r'^profile/$',profile),
-    url(r'^profile/(?P<user>\w+)',profile_user,name="profile_url"),
+    url(r'^profile/(?P<user>\w+)',profile,name="profile_url"),
+    #url(r'^profile/(?P<user>\w+)',profile_user,name="profile_url"),
     url(r'^search/$',search),
 
     # Database Access
