@@ -337,8 +337,10 @@ def follow_delete(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
+		print "here i am "
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
+		print user
 		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
 		
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
