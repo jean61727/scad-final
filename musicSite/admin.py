@@ -20,9 +20,9 @@ admin.site.register(CustomUser, UserViewAdmin)
 class  FollowerViewAdmin(admin.ModelAdmin):
 	"""docstring for  FollowerViewAdmin"""
 	list_display = ('id','user_id_id', 'follow',)
-admin.site.register(Follower)
+admin.site.register(Follower, FollowerViewAdmin)
 
 class LikeViewAdmin(admin.ModelAdmin):
 	"""docstring for LikeViewAdmin"""
 	list_display = ('id', 'post_id', 'user_id')
-admin.site.register(Like)
+admin.site.register(Like, LikeViewAdmin)
