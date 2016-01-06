@@ -1,237 +1,240 @@
-{% extends 'playground_base.html' %}
-{% load staticfiles %}
+{% extends 'playground_base.html' %} {% load staticfiles %}
 
-{% block content %} 
-<link href="{% static 'css/ihover.css' %}" rel="stylesheet"> 
-    <!-- Customed Bootstrap CSS -->
-    
-{% if user.username %}
-{%block head%}
-<div  class="col-md-11 col-md-offset-1" style="margin-top:3%; margin-bottom:20px; " >	
-	<ul class="nav nav-pills" role="tablist" id='myTabs'>
-	    <li role="presentation" class="active">
-	    	<a href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab" >User Profile</a>
-	    </li>
-	    <li role="presentation">
-	    	<a href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
-	    </li>
-	</ul>
-	
+{% block content %}
+<link href="{% static 'css/ihover.css' %}" rel="stylesheet">
+ <script type="text/javascript" src="{% static 'home_tab/home_tab.js' %}"></script>
+<!-- Customed Bootstrap CSS -->
+
+{% if user.username %} {%block head%}
+<div class="col-md-11 col-md-offset-1" style="margin-top:3%; margin-bottom:20px; ">
+    <ul class="nav nav-pills" role="tablist" id='myTabs'>
+        <li role="presentation" class="active">
+            <a href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab">User Profile</a>
+        </li>
+        <li role="presentation">
+            <a href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
+        </li>
+    </ul>
+
 
 </div>
-{%endblock%}
-
-{%block profile%}
+{%endblock%} {%block profile%}
 <div class="col-md-11 col-md-offset-1">
-	<div class="tab-content" >
-	    <div role="tabpanel" class="tab-pane fade in active" id="user_profile">
-	    	
-	        <div class = 'row'>
-	        	<div class="col-md-2">
-	        		{%block image%}
-	            	<img src='{{user.user_image}}' class= "img-circle img-responsive img-thumbnail" >
-	            	{%endblock%}
-	        	</div>
-	           	<div class="col-md-10">
-                    	{%block name%}
-                    	<h3>{{ user.username }}</h3>
-                    	{%endblock%}
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="user_profile">
+            <div class='row'>
+            <div class="col-md-8">
+                <div class='row'>
+                    <div class="col-md-2">
+                        {%block image%}
+                        <img src='{{user.user_image}}' class="img-circle img-responsive img-thumbnail"> {%endblock%}
 
-                    	<!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
-                    	<div  >
-							 <div class="col-sm-2" style="">
-							    <!-- normal -->
-							    <div class="ih-item square effect13 top_to_bottom">
-							    	<a href="#">
-								        <div class="img" >
-								        	<img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
-								        </div>
-								        <div class="info">
-								          <h3>My Playlist</h3>
-								          <p>Posted Songs!</p>
-								        </div>
-									</a>
-							    </div>    
-							</div>
-							    <!-- end normal -->
-						{%block follow%}
-							 <div class="col-sm-2" style="" >
-							    <!-- normal -->
-							    <div class="ih-item square effect13 top_to_bottom">
-							    	<a href="#">
-								        <div class="img">
-								        	<img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
-								        </div>
-								        <div class="info">
-								          <h3>Favorite</h3>
-								          <p>Songs Liked!</p>
-								        </div>
-								    </a>
-							    </div>
-							    
-							</div>
-						{%endblock%}
-						</div>
+                    </div>
+                    <div class="col-md-6">
+                        {%block name%}
+                        <h3>{{ user.username }}</h3> {%endblock%}
 
-                	<div class="col-sm-7"id="player" style="float:right;margin-right:10px;" ></div>
+                        <!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
+                        <div>
+                            <div class="col-sm-5" style="">
+                                <!-- normal -->
+                                <div class="ih-item square effect13 top_to_bottom">
+                                    <a href="#">
+                                        <div class="img">
+                                            <img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
+                                        </div>
+                                        <div class="info">
+                                            <h3>My Playlist</h3>
+                                            <p>Posted Songs!</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- end normal -->
+                            {%block follow%}
+                            <div class="col-sm-5" style="">
+                                <!-- normal -->
+                                <div class="ih-item square effect13 top_to_bottom">
+                                    <a href="#">
+                                        <div class="img">
+                                            <img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
+                                        </div>
+                                        <div class="info">
+                                            <h3>Favorite</h3>
+                                            <p>Songs Liked!</p>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            {%endblock%}
+                        </div>
+
+                    </div>
+
+
+                  
+
+                </div>
+                <div class='row'>
+                    <div class="col-sm-6" id="player" style="float:left;margin:10px;">
+
+                    </div>
+
                 </div>
 
-	        </div>
+                <div class='row'>
+                    <div class="col-sm-6" id="play_list" style="float:left;margin:10px;"></div>
+                </div>
+                <div class="page-header"></div>
 
-	        <div class="page-header"></div>
-	        <div id="play_list">
 
-	        </div>
+            
 
-	    </div>
+            <div role="tabpanel" class="tab-pane fade" id="follow">
+                <div>
+                    <ul>
+                        {%for follow in user_follow %}
+                        <div class="col-sm-2" style="">
+                            <!-- normal -->
+                            <div class="ih-item circle colored effect17">
+                                <a href="{% url 'profile_url' follow %}">
+                                    <div class="img">
+                                        <img src='{{follow.user_image}}' alt="img">
+                                    </div>
+                                    <center>{{follow}}</center>
+                                    <div class="info">
+                                        <h3>{{follow}}</h3>
+                                        <p>Posted Songs!</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
 
-	    <div role="tabpanel" class="tab-pane fade" id="follow">
-	        <div>
- 				<ul>
- 					{%for follow in user_follow %}
- 						<div class="col-sm-2" style="">
-							    <!-- normal -->
-							    <div class="ih-item circle colored effect17">
-							    	<a href="{% url 'profile_url' follow %}">
-								        <div class="img" >
-								        	<img src='{{follow.user_image}}' alt="img" >
-								        </div>
-								        <center>{{follow}}</center>
-								        <div class="info">
-								          <h3>{{follow}}</h3>
-								          <p>Posted Songs!</p>
-								        </div>
-									</a>
-							    </div>    
-							</div>
-
-						{%endfor%}
-				</ul>
-	        </div>
-	  	</div>
-	    
-	</div>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+        </div>
+            <div class="col-md-6" style="float:right;margin-right:10px;">
+            <div id='post_container' class="container-fluid"></div>
+            </div>
+            </div>
+    </div>
 </div>
-{%endblock%}
-{% else %}
-<h3 align="center">Please Login !</h3>
-{% endif %}
-
-
-
-{%block scripts%}
+{%endblock%} {% else %}
+<h3 align="center">Please Login !</h3> {% endif %} {%block scripts%}
 <script type="text/javascript">
-var option_control=0;
-var videos =JSON.parse('{{ data|safe }}');
-var videos_like = JSON.parse('{{ like_data|safe }}');
+    var option_control = 0;
+    var videos = JSON.parse('{{ data|safe }}');
+    var videos_like = JSON.parse('{{ like_data|safe }}');
 
-var video_id_list=[];
-var video_title_list=[];
-var player;
+    var video_id_list = [];
+    var video_title_list = [];
+    var player;
 
-$("#play_list").sortable().bind('sortupdate', function (e, ui) {
-    /*console.log('現在的順序' + ui.item.index());*/
-    $("input#test-log").val($('#play_list').sortable('toArray')); 
-    console.log(ui.item);
-    for(var i=0 ; i<$('#play_list').sortable('toArray').length;i++){
-    /*console.log($('#play_list').sortable('toArray')[i]);*/
-    //console.log($("#"+$('#play_list').sortable('toArray')[i]).attr('value'));
-    video_id_list[i]=$("#"+$('#play_list').sortable('toArray')[i]).attr('value');
-         //console.log($('#play_list').sortable('toArray')[i]);
-    //console.log($("#"+$('#play_list').sortable('toArray')[i]).text());
-    video_title_list[i]=$("#"+$('#play_list').sortable('toArray')[i]).text();
-    }
-    console.log(video_id_list);
-    //onYouTubePlayerAPIReady();
-	player.destroy();
+    $("#play_list").sortable().bind('sortupdate', function(e, ui) {
+        /*console.log('現在的順序' + ui.item.index());*/
+        $("input#test-log").val($('#play_list').sortable('toArray'));
+        console.log(ui.item);
+        for (var i = 0; i < $('#play_list').sortable('toArray').length; i++) {
+            /*console.log($('#play_list').sortable('toArray')[i]);*/
+            //console.log($("#"+$('#play_list').sortable('toArray')[i]).attr('value'));
+            video_id_list[i] = $("#" + $('#play_list').sortable('toArray')[i]).attr('value');
+            //console.log($('#play_list').sortable('toArray')[i]);
+            //console.log($("#"+$('#play_list').sortable('toArray')[i]).text());
+            video_title_list[i] = $("#" + $('#play_list').sortable('toArray')[i]).text();
+        }
+        console.log(video_id_list);
+        //onYouTubePlayerAPIReady();
+        player.destroy();
 
     });
 
-function playlist(option){
-	var target_video;
-	var temp_option = option_control;
-	if(option ==1){
-		option_control=1;
-		target_video = videos;
-	}else if(option==2){
-		option_control=2;
-		target_video = videos_like;
-	}
-	$("#play_list").empty();
+    function playlist(option) {
+        var target_video;
+        var temp_option = option_control;
+        if (option == 1) {
+            option_control = 1;
+            target_video = videos;
+        } else if (option == 2) {
+            option_control = 2;
+            target_video = videos_like;
+        }
+        $("#play_list").empty();
 
-	if(temp_option!=option_control){
-		if(temp_option!=0){
-			console.log("hihihihihi");
-			player.destroy();
-			console.log(videos[0]);
-			var tag = document.createElement('script');
-			tag.src = "https://www.youtube.com/iframe_api";
-			var firstScriptTag = document.getElementsByTagName('script')[0];
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-		}
-		for (var i=0;i<target_video.length;i++){
-			video_id_list[i]=target_video[i].fields.url;
-	        video_title_list[i]=target_video[i].fields.title;
-	    }
-	}
+        if (temp_option != option_control) {
+            if (temp_option != 0) {
+                console.log("hihihihihi");
+                player.destroy();
+                console.log(videos[0]);
+                var tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            }
+            for (var i = 0; i < target_video.length; i++) {
+                video_id_list[i] = target_video[i].fields.url;
+                video_title_list[i] = target_video[i].fields.title;
+            }
+        }
 
-	for (var i=0;i<target_video.length;i++){
-		
-        $("#play_list").append("<li id="+ i +" class='list-group-item list-group-item-info span3' value='"+video_id_list[i]+"' >"+"<img src=http://img.youtube.com/vi/"+target_video[i].fields.url+"/1.jpg>"+video_title_list[i]+"</li>");
-	}
-	//console.log(videos);
+        for (var i = 0; i < target_video.length; i++) {
 
-		if(temp_option==0){
-			console.log(videos[0]);
-			var tag = document.createElement('script');
-			tag.src = "https://www.youtube.com/iframe_api";
-			var firstScriptTag = document.getElementsByTagName('script')[0];
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-		}
-		onYouTubePlayerAPIReady();
-	
-	
-	
-}
+            $("#play_list").append("<li id=" + i + " class='list-group-item list-group-item-info span3' value='" + video_id_list[i] + "' >" + "<img src=http://img.youtube.com/vi/" + target_video[i].fields.url + "/1.jpg>" + video_title_list[i] + "</li>");
+        }
+        //console.log(videos);
+
+        if (temp_option == 0) {
+            console.log(videos[0]);
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+        onYouTubePlayerAPIReady();
 
 
-function onYouTubePlayerAPIReady() {
-	player = new YT.Player('player', {
-	  height: '390',
-	  width: '100%',
-	 loadPlaylist:{
-	    listType:'playlist',
-	    list:video_id_list,
-	    index:parseInt(0),
-	    suggestedQuality:'small'
-	 },
-	  events: {
-	    'onReady': onPlayerReady,
-	    'onStateChange': onPlayerStateChange
-	  }
-	});
-}
-function onPlayerReady(event) {
-	event.target.loadPlaylist(video_id_list);
-}
-var done = false;
-function onPlayerStateChange(event) {
-	if (event.data == YT.PlayerState.PLAYING && !done) {
-	  setTimeout(stopVideo, 6000);
-	  done = true;
-	}
-	setTimeout(stopVideo, 6000);
-}
-function stopVideo() {
-	//player.stopVideo();
-	//console.log('here');
-	//player.destroy();
-}
+
+    }
 
 
+    function onYouTubePlayerAPIReady() {
+        player = new YT.Player('player', {
+            height: '250',
+            width: '100%',
+            loadPlaylist: {
+                listType: 'playlist',
+                list: video_id_list,
+                index: parseInt(0),
+                suggestedQuality: 'small'
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        event.target.loadPlaylist(video_id_list);
+    }
+    var done = false;
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            setTimeout(stopVideo, 6000);
+            done = true;
+        }
+        setTimeout(stopVideo, 6000);
+    }
+
+    function stopVideo() {
+        //player.stopVideo();
+        //console.log('here');
+        //player.destroy();
+    }
 
 </script>
- {% endblock %}   
-{% endblock %}
-
-
+   
+{% endblock %} {% endblock %}
