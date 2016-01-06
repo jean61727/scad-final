@@ -132,6 +132,7 @@ def post_db(request):
 					"like_count":one_post["likes"],
 					"video_id":one_post["url"],
 					"video_title": one_post["title"] ,
+					"start_time":one_post["start_time"],
 					"user_pic":  user_data["user_image"] ,
 					"username": user_data["username"],
 					"user_id": one_post["user_id_id"]  ,

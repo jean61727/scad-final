@@ -1,11 +1,15 @@
 {% extends 'playground_base.html' %}
 {% load staticfiles %}
 {% block content %}
+<script type="text/javascript" src="{% static 'js/initialize_youtube_api.js' %}"></script>
+
 <h3>Search user, search songs...</h3>
 <script>
 	$(function(){
-		$("#search_input").bind('keyup', {
-		}, trigger_search);
+		function onYouTubeIframeAPIReady() {
+			$("#search_input").bind('keyup', {
+			}, trigger_search);
+		}
 	});
 
 	function trigger_search(e){

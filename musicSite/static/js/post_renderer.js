@@ -101,7 +101,13 @@ function render_post_body(json_data, id_container){
 }// home tab content render ended
 
 function render_post_video(post_data, id_post_video){
-	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://example.com";
+	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://youboxapp.herokuapp.com&controls=2&modestbranding=1&rel=0";
+
+	// set start time
+	youtube_url = youtube_url + "&start="+post_data["start_time"];
+	// set end time
+	youtube_url = youtube_url + "&end=";
+
 	id_player = post_data['post_id']+'_player';
 	$("<div>", {
 		'id':id_player,
