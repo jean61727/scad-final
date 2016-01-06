@@ -304,7 +304,7 @@ def profile_user (request,user):
 	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user, 'tab':'search'})
 
 
-
+# deprecated
 def search(request):
 	user_list=CustomUser.objects.all()
 	print (user_list)

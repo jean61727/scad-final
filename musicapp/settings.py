@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'musicSite',
     'posts',
     'account',
+    'search',
 )
 
 MIDDLEWARE_CLASSES = (
