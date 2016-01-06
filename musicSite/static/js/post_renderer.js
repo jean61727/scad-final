@@ -1,3 +1,4 @@
+var global_comment_profile_image_height = "46";
 // this is the starter of the whole render chain functions
 function render_post(id_container, filter_object){
 	// acquire post data for rendering
@@ -237,7 +238,7 @@ function render_post_comment(post_data, id_post_body){
 	console.log(comment_data);
 	comment_data.forEach(function(comment){
 		// a comment line
-		render_comment(id_comment_list, comment);
+		render_comment(id_comment_list, comment, post_id);
 	});
 
 	// panel body
@@ -254,23 +255,29 @@ function render_post_comment(post_data, id_post_body){
 		'class':'panel-footer',
 		'id':id_comment_footer,
 	}).appendTo("#"+id_comment_collapse);
-	
+	// commentor - the logged in user - 's profile image
+
 	// comment input field
+	// render_comment(id_comment_footer, {
+	// 	'commentor':"",
+	// 	'commentor_image':post_data["user_pic"],
+	// 	'comment_content':"",
+	// }, post_id);
 	id_comment_input = post_id+"_comment_input";
 	$("<input>", {
 		'class':'form-control',
 		'type':'text',
 		'id':id_comment_input,
-	/*}).appendTo("#"+id_comment_panel_heading);*/
 	})
 	//.keyup(comment_input_enter_listener)
 	.appendTo("#"+id_comment_footer)
+
 	.bind('keyup', {
 		postid: post_id
 	}, comment_input_enter_listener);
 }
 
-function render_comment(id_comment_list_accordin, comment){
+function render_comment(id_comment_list_accordin, comment, post_id){
 	// a comment line
 	$comment_item = $("<li>", {
 		'class':'list-group-item',
@@ -279,6 +286,7 @@ function render_comment(id_comment_list_accordin, comment){
 	$comment_row = $("<div>", {
 		'class':'row',
 	}).appendTo($comment_item);
+	
 	// commentor image and name
 	$commentor_profile = $("<div>", {
 		'class':'col-xs-2',
@@ -291,19 +299,41 @@ function render_comment(id_comment_list_accordin, comment){
 	})
 	.appendTo($commentor_profile)
 	.css({
-		"height":"50px",
+		"height":global_comment_profile_image_height+"px",
 	});
-	$profile_name = $("<a>", {
-		'html':"<strong>"+comment["commentor"]+"</strong>",
-		'href':'/profile/'+comment["commentor"]+"/",
-	})
-	.appendTo($commentor_profile);
 
-	// comment message
-	$comment_message = $("<div>", {
-		'class':'col-xs-10',
-		'html':comment['comment_content'],
-	}).appendTo($comment_row);
+	if (comment["commentor"] === ""){
+		// the bottom input field
+		// comment input field
+		$comment_input_field = $("<div>",{
+			'class':'col-xs-10',
+		}).appendTo($comment_row);
+
+		var id_comment_input = post_id+"_comment_input";
+		$("<input>", {
+			'class':'form-control',
+			'type':'text',
+			'id':id_comment_input,
+		})
+		.appendTo($comment_input_field)
+		.bind('keyup', {
+			postid: post_id
+		}, comment_input_enter_listener);
+	}
+	else {
+		$profile_name = $("<a>", {
+			'html':"<strong>"+comment["commentor"]+"</strong>",
+			'href':'/profile/'+comment["commentor"]+"/",
+		})
+		.appendTo($commentor_profile);
+
+		// comment message
+		$comment_message = $("<div>", {
+			'class':'col-xs-10',
+			'html':comment['comment_content'],
+		}).appendTo($comment_row);
+	}
+	
 }
 
 function comment_input_enter_listener(e){
@@ -336,7 +366,7 @@ function comment_input_enter_listener(e){
 			} else {
 				// alert("ok!!");
 				// add the new comment
-				render_comment($post_id+"_comment_list", response_json);
+				render_comment($post_id+"_comment_list", response_json, $post_id);
 			}
 		})
 		.fail(ajax_fail_handler);
@@ -362,5 +392,4 @@ function like(item,post_id){
 		
 	}
 }
-
 
