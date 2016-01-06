@@ -24,6 +24,9 @@ from django.core import serializers
 # for using OR operation in db query
 from django.db.models import Q
 
+# exceptions for queryset get() function
+from django.core.exceptions import ObjectDoesNotExist
+
 # Create your views here.
 def post_db(request):
 	if request.method == "POST":
@@ -110,7 +113,12 @@ def post_db(request):
 			for one_post in filtered_posts:
 
 				# make a data set for a single post
-				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username","user_image")[0]
+				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username","user_image")
+				if len(user_data) == 0:
+					return HttpResponse("Cannot retrieve post. No such post id.")
+				else:
+					user_data = user_data[0]
+
 				post_data = {
 					"post_id":one_post["id"],
 					"is_like":"false",
@@ -130,9 +138,11 @@ def post_db(request):
 				
 				for one_comment in filtered_comments:
 					# collecting commentor data
-					commentor_data = CustomUser.objects.filter(id=one_comment["user_id"]).values("username", "user_image")[0]
+					commentor_data = CustomUser.objects.filter(id=one_comment["user_id"]).values("username", "user_image")
+
 					# pack up comment data
-					if commentor_data is not None:
+					if len(commentor_data) != 0:
+						commentor_data = commentor_data[0]
 						comment_data = {
 							"commentor":commentor_data["username"],
 							"comment_content":one_comment["comment_message"],
