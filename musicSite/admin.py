@@ -6,7 +6,7 @@ class PostViewAdmin(admin.ModelAdmin):
 	list_display = ('post_message', 'user_id_id', 'time')
 
 class CommentViewAdmin(admin.ModelAdmin):
-	list_display = ('comment_message', 'post_id','time')
+	list_display = ('comment_message', 'user_id', 'post_id','time')
 
 
 admin.site.register(Post, PostViewAdmin)
