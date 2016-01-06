@@ -30,13 +30,13 @@ function render_post(id_container, filter_object){
 		else
 		{
 			// rander out all the posts
-			render_home_tab_posts(json_object, id_container);
+			render_post_body(json_object, id_container);
 		}
 	})
 	.fail(ajax_fail_handler);
 }
 
-function render_home_tab_posts(json_data, id_container){
+function render_post_body(json_data, id_container){
 	// console.log("returned object:");
 	// console.log(json_data);
 
@@ -234,11 +234,10 @@ function render_post_comment(post_data, id_post_body){
 		'id':id_comment_list,
 	}).appendTo("#"+id_comment_collapse);
 	// comment item
+	console.log(comment_data);
 	comment_data.forEach(function(comment){
-		$("<li>", {
-			'class':'list-group-item',
-			'html':comment['comment_content'],
-		}).appendTo("#"+id_comment_list);
+		// a comment line
+		render_comment(id_comment_list, comment);
 	});
 
 	// panel body
@@ -271,25 +270,42 @@ function render_post_comment(post_data, id_post_body){
 	}, comment_input_enter_listener);
 }
 
+function render_comment(id_comment_list_accordin, comment){
+	// a comment line
+	$comment_item = $("<li>", {
+		'class':'list-group-item',
+	}).appendTo("#"+id_comment_list_accordin);
+	// a comment top level grid system
+	$comment_row = $("<div>", {
+		'class':'row',
+	}).appendTo($comment_item);
+	// commentor image and name
+	$commentor_profile = $("<div>", {
+		'class':'col-xs-2',
+	}).appendTo($comment_row);
+	
+	// commentor profile: image and name
+	$profile_image = $("<img>", {
+		'src':comment['commentor_image'],
+		'class':'commentor img-circle',
+	})
+	.appendTo($commentor_profile)
+	.css({
+		"height":"50px",
+	});
+	$profile_name = $("<a>", {
+		'html':"<strong>"+comment["commentor"]+"</strong>",
+		'href':'/profile/'+comment["commentor"]+"/",
+	})
+	.appendTo($commentor_profile);
 
-function like(item,post_id){
-	
-	if($(item).attr('class')=='fa fa-heart-o button'){
-		$(item).prop('class','glyphicon glyphicon-heart button');
-		$.post('/like/',{
-			"post_id":post_id
-		});
-		
-	
-	}
-	else{
-		$(item).prop('class','fa fa-heart-o button');
-		$.post('/unlike/',{
-			"post_id":post_id
-		});
-		
-	}
+	// comment message
+	$comment_message = $("<div>", {
+		'class':'col-xs-10',
+		'html':comment['comment_content'],
+	}).appendTo($comment_row);
 }
+
 function comment_input_enter_listener(e){
 	// if enter is pressed
 	if(e.keyCode == 13){
@@ -320,13 +336,31 @@ function comment_input_enter_listener(e){
 			} else {
 				// alert("ok!!");
 				// add the new comment
-				$("<li>", {
-					'class':'list-group-item',
-					'html':response_json["comment_content"],
-				}).appendTo("#"+$post_id+"_comment_list");
+				render_comment($post_id+"_comment_list", response_json);
 			}
 		})
 		.fail(ajax_fail_handler);
 	}
 
 }
+
+function like(item,post_id){
+	
+	if($(item).attr('class')=='fa fa-heart-o button'){
+		$(item).prop('class','glyphicon glyphicon-heart button');
+		$.post('/like/',{
+			"post_id":post_id
+		});
+		
+	
+	}
+	else{
+		$(item).prop('class','fa fa-heart-o button');
+		$.post('/unlike/',{
+			"post_id":post_id
+		});
+		
+	}
+}
+
+

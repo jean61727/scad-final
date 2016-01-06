@@ -125,13 +125,17 @@ def post_db(request):
 				}
 				# collecting comment data
 				comment_query_constrain = {"post_id":one_post["id"]}
-				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message")
+				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message", "user_id")
 				comments = []
 				
 				for one_comment in filtered_comments:
+					# collecting commentor data
+					commentor_data = CustomUser.objects.filter(id=one_comment["user_id"]).values("username", "user_image")[0]
+					# pack up comment data
 					comment_data = {
-						"commentor":"me",
+						"commentor":commentor_data["username"],
 						"comment_content":one_comment["comment_message"],
+						"commentor_image":commentor_data["user_image"],
 					}
 					comments.append(comment_data)
 
@@ -151,13 +155,17 @@ def post_db(request):
 				}
 			else:
 				# print "good comment"
+				# the commentor is the one currently logged in
 				Comment.objects.create(
 					comment_message=json_data["comment_message"],
 					post_id=json_data["post_id"],
+					user_id=request.user.id,
 					)
+				commentor_image = CustomUser.objects.filter(username=request.user).values("user_image")[0]
 				comment_data = {
-					"commentor":"meee",
+					"commentor":str(request.user),
 					"comment_content":json_data["comment_message"],
+					"commentor_image":commentor_image["user_image"],
 				}
 
 			return JsonResponse(comment_data)

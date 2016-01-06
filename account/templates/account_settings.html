@@ -1,9 +1,10 @@
 {% extends 'playground_base.html' %}
 {% load staticfiles %}
 
-<!-- wipe out the navigator bar -->
-{% block navbar %}
-{% endblock %}
+<!-- wipe out the navigator bar 
+// block navbar //
+// endblock //
+-->
 
 {% block content %}
 <h2>Account Settings</h2>
@@ -17,7 +18,7 @@
 </style>
 
 <div id="select_profile_image">
-	<h3>Select a photo as profile image!</h3>
+	<h3>{{ user.username }}, let's select a photo as profile image !</h3>
 </div>
 
 
