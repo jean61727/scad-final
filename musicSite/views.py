@@ -288,7 +288,7 @@ def profile (request,user):
 	be_followed_data = serializers.serialize("json", be_followed_post)
 	print(like_data)
 	if(str(request.user) !=str(user)):
-		return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user})
+		return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
 	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':user_follow})
 
 '''def profile_user (request,user):
@@ -305,8 +305,8 @@ def profile (request,user):
 	#print request.user
 	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user, 'tab':'search'})
 
+<<<<<<< HEAD
 '''
-
 def search(request):
 	user_list=CustomUser.objects.all()
 	print (user_list)

@@ -2,6 +2,9 @@
 {%block head%}
 	<div style="margin-top:80px;"></div>
 {%endblock%}
+{%block image%}
+	<img src='{{follow_user.user_image}}' class= "img-circle img-responsive img-thumbnail" >
+{%endblock%}
 {%block name%}
 <h3>{{ follow_user}}
 	<input type="button" class="btn btn-primary btn-xs" style="margin-left:10px" onclick='follow(this)' value='+follow'/></h3>

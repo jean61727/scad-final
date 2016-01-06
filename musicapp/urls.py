@@ -3,6 +3,7 @@ from django.contrib import admin
 from login.views import *
 from musicSite.views import *
 from account.views import *
+from search.views import *
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^explore/users/$',exploreUsers),
     url(r'^profile/(?P<user>\w+)',profile,name="profile_url"),
     #url(r'^profile/(?P<user>\w+)',profile_user,name="profile_url"),
-    url(r'^search/$',search),
+    url(r'^search/$', search_tab_view),
+
 
     # Database Access
     url(r'^post_db/$', post_db),
