@@ -1,0 +1,75 @@
+{% extends 'playground_base.html' %}
+{% load staticfiles %}
+{% block content %}
+<h3>Search user, search songs...</h3>
+<script>
+	$(function(){
+		$("#search_input").bind('keyup', {
+		}, trigger_search);
+	});
+
+	function trigger_search(e){
+		if(e.keyCode == 13){
+			var $input_field = this;
+
+			// prepare variables
+			var search_text = $(this).val();
+
+			// ready to ajax
+			var request_json = {
+				"request_type":"search",
+				"search_text": search_text,
+			};
+
+			$.ajax({
+				type:"POST",
+				url:'/search/user/',
+				data:JSON.stringify(request_json),
+			})
+			.done(function(result){
+				console.log(result);
+				// clean up the input field
+				$($input_field).val("");
+				// clean up previous posts
+				$("#post_container").html("");
+
+				// display the posts
+				var post_id_list = []
+				result['post_ids'].forEach(function(a_post_id){
+					post_id_list.push(a_post_id);
+				});
+
+				if (post_id_list.length == 0) {
+					$("#post_container").html("<h4>No Result</h4>");
+				}
+				else {
+					render_post("post_container", {
+						"limit":5,
+						"or":{
+							"id":post_id_list,
+						}
+					});
+				}
+				
+			})
+			.fail(ajax_fail_handler);
+		}
+		
+	}
+</script>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Search by Post Message</div>
+	<div class="panel-body">
+		<div class="form-group">
+			<input type="text" class="form-control" id="search_input">
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-body">
+		<div id="post_container" class="container-fluid"></div>
+	</div>
+</div>
+{% endblock %}

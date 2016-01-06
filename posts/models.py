@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime 
+from datetime import datetime
+
+from watson import search as watson
+
 # Create your models here.
 class Post(models.Model):
     #post_id = models.CharField(max_length=50)
@@ -17,14 +20,15 @@ class Post(models.Model):
     category = models.CharField(max_length=20,null=True)
 
     time = models.DateTimeField(default=datetime.now)
-    def __str__(self):
+    def __unicode__(self):
         return self.post_message
- 
+watson.register(Post, store=("post_message", "id"))
+
 class Follower(models.Model):
     user_id = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE)
     follow =  models.CharField(max_length=50)
-    def __str__(self):
-        return self.follow
+    # def __str__(self):
+    #     return self.follow
 
 class Comment(models.Model):
     # Django sqlite will automatically generate a unique primary key
@@ -37,8 +41,8 @@ class Comment(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     user_id = models.CharField(max_length=100, null=True)
 
-    def __str__(self):
-        return self.comment_message
+    # def __str__(self):
+    #     return self.comment_message
 
 class Like(models.Model):
 

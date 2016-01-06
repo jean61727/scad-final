@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'posts',
     'account',
     'search',
+    'watson',
 )
 
 MIDDLEWARE_CLASSES = (

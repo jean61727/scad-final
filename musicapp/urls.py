@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<user>\w+)',profile_user,name="profile_url"),
     # url(r'^search/$',search),
     url(r'^search/$', search_tab_view),
+    url(r'^search/user/$', full_text_search),
 
     # Database Access
     url(r'^post_db/$', post_db),
