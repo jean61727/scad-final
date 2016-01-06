@@ -261,7 +261,7 @@ def user_post(request):
 		return render(request, 'playground_main.html', {'tab':'home'})
 
 def profile (request,user):
-	print user
+	print (user)
 
 	like_post=Like.objects.filter(user_id=request.user)
 	user_post=Post.objects.filter(user_id=request.user)
@@ -333,10 +333,10 @@ def follow_delete(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		print "here i am "
+		print ("here i am ")
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
-		print user
+		print (user)
 		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
 		
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
