@@ -231,16 +231,9 @@ def exploreUsers(request):
 
 	all_users = CustomUser.objects.all()
 	all_posts = Post.objects.all()
-
-	user_posts = {}
-
-	# for user in all_users:
-	# 	user_posts.update({'user.id': Post.objects.filter(user_id=user.username)})
-	# 	#user_posts[user.id] = Post.objects.filter(user_id=user.username)
-	# 	print (Post.objects.filter(user_id=user.username))
-	# 	print(user.id)
+	follower = Follower.objects.filter(user_id=request.user)
 		
-	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore'})
+	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 
 @csrf_protect
 def user_post(request):
@@ -267,34 +260,39 @@ def user_post(request):
 	else:
 		return render(request, 'playground_main.html', {'tab':'home'})
 
-def profile (request):
+def profile (request,user):
+	print (user)
 
 	like_post=Like.objects.filter(user_id=request.user)
 	user_post=Post.objects.filter(user_id=request.user)
 	user_follow=Follower.objects.filter(user_id_id=request.user)
-	print(user_follow)
+
+	user_be_followed = CustomUser.objects.get(username=user)
+	be_followed_post=Post.objects.filter(user_id=user_be_followed)
+
 	like_post_list=[]
-	
 	for post in like_post:
-		print(Post.objects.filter(id=post.post_id))
 		like_post_list.append(Post.objects.filter(id=post.post_id)[0])
+	
+	following_user_list=[]
+	for following in user_follow:
+		following_user_list.append(CustomUser.objects.filter(username=following.follow)[0])
 	
 	
 	data = serializers.serialize("json", user_post)
 	like_data=serializers.serialize("json", like_post_list)
-	print(like_data)
-	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':user_follow})
+	be_followed_data = serializers.serialize("json", be_followed_post)
+	
+	if(str(request.user) !=str(user)):
+		return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
+	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':following_user_list})
 
-def profile_user (request,user):
+'''def profile_user (request,user):
 
 	user = CustomUser.objects.get(username=user)
 	user_post=Post.objects.filter(user_id=user)
 	print (user)
-	video_id_list=[]
-	for post in user_post:
-		video_id_list.append(str(post.url))
-		print (str(post.url))
-	video_id_list=json.dumps(video_id_list)
+
 
 	data = serializers.serialize("json", user_post)
 
@@ -303,8 +301,8 @@ def profile_user (request,user):
 	#print request.user
 	return render(request,'search.html',{'user_post': user_post,'data':data,'user_other':user, 'tab':'search'})
 
-
-# deprecated
+<<<<<<< HEAD
+'''
 def search(request):
 	user_list=CustomUser.objects.all()
 	print (user_list)
@@ -335,8 +333,10 @@ def follow_delete(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
+		print ("here i am ")
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
+		print (user)
 		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
 		
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
