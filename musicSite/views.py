@@ -132,13 +132,15 @@ def post_db(request):
 					# collecting commentor data
 					commentor_data = CustomUser.objects.filter(id=one_comment["user_id"]).values("username", "user_image")[0]
 					# pack up comment data
-					comment_data = {
-						"commentor":commentor_data["username"],
-						"comment_content":one_comment["comment_message"],
-						"commentor_image":commentor_data["user_image"],
-					}
-					comments.append(comment_data)
-
+					if commentor_data is not None:
+						comment_data = {
+							"commentor":commentor_data["username"],
+							"comment_content":one_comment["comment_message"],
+							"commentor_image":commentor_data["user_image"],
+						}
+						comments.append(comment_data)
+					else:
+						return HttpResponse("Comment exist but getting commentor data failed")
 				# append to json object
 				post_data["comments"] = comments
 
@@ -162,11 +164,14 @@ def post_db(request):
 					user_id=request.user.id,
 					)
 				commentor_image = CustomUser.objects.filter(username=request.user).values("user_image")[0]
-				comment_data = {
-					"commentor":str(request.user),
-					"comment_content":json_data["comment_message"],
-					"commentor_image":commentor_image["user_image"],
-				}
+				if commentor_image is not None:
+					comment_data = {
+						"commentor":str(request.user),
+						"comment_content":json_data["comment_message"],
+						"commentor_image":commentor_image["user_image"],
+					}
+				else:
+					return HttpResponse("While pushing comment, unable to reach commentor's data")
 
 			return JsonResponse(comment_data)
 
