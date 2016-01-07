@@ -38,7 +38,8 @@
 
 
                              {% for post in all_posts%}
-                                {% if post.user_id|stringformat:"s" == traverse_user.username|stringformat:"s"%}
+
+                                {% if post.user_id|stringformat:"s" == traverse_user.id|stringformat:"s"%}
                                   <a href="#" class="list-group-item">{{ post.title }}</a>
                                  {%endif%}
 
@@ -66,8 +67,9 @@
 
 
                          {% for post in all_posts%}
+                             {{post.user_id_username}}
 
-                                {% if post.user_id|stringformat:"s" ==  traverse_user.username|stringformat:"s" %}
+                                {% if post.user_id|stringformat:"s" ==  traverse_user.id|stringformat:"s" %}
                               <a href="#" class="list-group-item">{{ post.title }}</a>
                                  {%endif%}
 
