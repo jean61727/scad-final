@@ -194,7 +194,7 @@ def post_db(request):
 					post_id=json_data["post_id"],
 					user_id=request.user.id,
 					)
-				commentor_image = CustomUser.objects.filter(username=request.user).values("user_image")[0]
+				commentor_image = CustomUser.objects.filter(id=request.user.id).values("user_image")[0]
 				if commentor_image is not None:
 					comment_data = {
 						"commentor":str(request.user),
@@ -313,7 +313,7 @@ def user_post(request):
 		#request.POST
 		user = CustomUser.objects.get(id=request.POST.get('user'))
 		new_post = Post(
-			user_id=user,
+			user_id=user.id,
 			url=request.POST.get('vidsID'),
 			start_time=request.POST.get('input_start'),
 			post_message=request.POST.get('post_message'),
@@ -404,7 +404,7 @@ def follow_delete(request):
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		print (user)
-		Follower.objects.filter(user_id=user , follow=request.POST.get('follow')).delete()
+		Follower.objects.filter(user_id=user.id , follow=request.POST.get('follow')).delete()
 		
 		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
 	else:
@@ -432,7 +432,7 @@ def like_delete(request):
 		#request.POST
 		# print (request.user)
 		user = CustomUser.objects.get(username=request.user)
-		Like.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
+		Like.objects.filter(user_id=user.id , post_id=request.POST.get('post_id')).delete()
 		
 		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
