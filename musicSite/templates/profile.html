@@ -19,7 +19,8 @@
 
 
 </div>
-{%endblock%} {%block profile%}
+{%endblock%} 
+{%block profile%}
 <div class="col-md-11 col-md-offset-1">
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="user_profile">
@@ -73,9 +74,6 @@
 
                     </div>
 
-
-                  
-
                 </div>
                 <div class='row'>
                     <div class="col-md-8" id="player" style="float:left;margin:10px;">
@@ -89,8 +87,15 @@
                 </div>
                 <div class="page-header"></div>
 
+            </div>
+            <div  class="col-md-6" style="float:right;margin-right:10px;">
+                <div   style="background-color:#AAAAAA;" id='post_container' class="container-fluid">
+                </div>
+            </div>
 
-            
+        </div>
+    </div>
+
 
             <div role="tabpanel" class="tab-pane fade" id="follow">
                 <div>
@@ -116,13 +121,10 @@
                     </ul>
                 </div>
             </div>
-        </div>
-            <div  class="col-md-6" style="float:right;margin-right:10px;">
-            <div   style="background-color:#AAAAAA;" id='post_container' class="container-fluid"></div>
-            </div>
-            </div>
     </div>
 </div>
+            
+    
 {%endblock%} {% else %}
 <h3 align="center">Please Login !</h3> {% endif %} {%block scripts%}
 <script type="text/javascript">
