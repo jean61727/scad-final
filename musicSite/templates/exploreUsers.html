@@ -16,74 +16,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    
 
-
     {% if all_users %}
     <div class="bg-1">
         <div class="container" id="user-grid-container">
         <div class="row text-center">
-        {% for user in all_users %}
+        {% for traverse_user in all_users %}
 
 
-                {% if user ==  user_self%}
+                {% if traverse_user ==  user_self%}
 
                 {% else %}
 
-                {% for user_follow in follower %} 
+                    {% for user_follow in follower %} 
 
-                
-                {% if user.username|stringformat:"s" !=  user_follow.follow|stringformat:"s" %}
+                        {% ifnotequal traverse_user.username user_follow.follow %}
 
-                  <div class="col-sm-4">
-                    <div class="thumbnail">
-                    <img src="{% static 'img/user_pic.jpg' %}" class= "img-circle img-responsive img-thumbnail" style="width:70px; height: 70px;" >
-                      <p><strong>{{ user.username }}</strong></p>
-                    <div class="list-group">
+                        {{traverse_user.user_image}}
 
-
-                     {% for post in all_posts%}
-
-                        {% if post.user_id|stringformat:"s" == user.username|stringformat:"s" %}
-                          <a href="#" class="list-group-item">{{ post.title }}</a>
-                         {%endif%}
-
-                    {% endfor %} 
+                          <div class="col-sm-4">
+                            <div class="thumbnail">
+                            <img src='{{traverse_user.user_image}}' class= "img-circle img-responsive img-thumbnail" style="width:70px; height: 70px;" >
+                              <p><strong>{{ traverse_user.username }}</strong></p>
+                            <div class="list-group">
 
 
+                             {% for post in all_posts%}
 
-                    </div>
+                                {% ifequal post.user_id  traverse_user.username%}
+                                  <a href="#" class="list-group-item">{{ post.title }}</a>
+                                 {%endifequal%}
 
-                      <a href="/profile/{{user.username}}" class="btn">More Posts</a>
-                    </div>
-                  </div>
-
-                  {% endif %}
-
-                  {% empty %}
-
-                  <div class="col-sm-4">
-                    <div class="thumbnail">
-                    <img src="{% static 'img/user_pic.jpg' %}" class= "img-circle img-responsive img-thumbnail" style="width:70px; height: 70px;" >
-                      <p><strong>{{ user.username }}</strong></p>
-                    <div class="list-group">
-
-
-                     {% for post in all_posts%}
-
-                        {% if post.user_id|stringformat:"s" == user.username|stringformat:"s" %}
-                          <a href="#" class="list-group-item">{{ post.title }}</a>
-                         {%endif%}
-
-                    {% endfor %} 
+                              {% endfor %} 
 
 
 
-                    </div>
+                            </div>
 
-                      <a href="/profile/{{user.username}}" class="btn">More Posts</a>
-                    </div>
-                  </div>
+                              <a href="/profile/{{user.username}}" class="btn">More Posts</a>
+                            </div>
+                          </div>
 
-                  {% endfor %}
+                          {% endifnotequal %}
+
+                      {% empty %}
+
+
+
+                      <div class="col-sm-4">
+                        <div class="thumbnail">
+                        <img src="{{traverse_user.user_image}}" class= "img-circle img-responsive img-thumbnail" style="width:70px; height: 70px;" >
+                          <p><strong>{{ traverse_user.username }}</strong></p>
+                        <div class="list-group">
+
+
+                         {% for post in all_posts%}
+
+                                {% ifequal post.user_id  traverse_user.username%}
+                              <a href="#" class="list-group-item">{{ post.title }}</a>
+                                 {%endifequal%}
+
+                          {% endfor %} 
+
+
+
+                        </div>
+
+                          <a href="/profile/{{user.username}}" class="btn">More Posts</a>
+                        </div>
+                      </div>
+
+                      {% endfor %}
 
                   {% endif %}
  

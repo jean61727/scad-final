@@ -284,7 +284,14 @@ def exploreUsers(request):
 	all_users = CustomUser.objects.all()
 	all_posts = Post.objects.all()
 	follower = Follower.objects.filter(user_id=request.user)
-		
+	# constrain = ~Q(id=request.user)
+
+	# for follow in follower:
+	# 	follow_id = CustomUser.objects.get(username = follow.follow).id;
+	# 	constrain = constrain | ~Q(id=follow_id)
+
+	# all_users = CustomUser.objects.filter(constrain)
+
 	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 
 @csrf_protect
