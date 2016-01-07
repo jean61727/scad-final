@@ -29,7 +29,7 @@
 
                     {% for user_follow in follower %} 
 
-                        {% ifequal traverse_user.username traverse_user.username %}
+                        {% if traverse_user.username|stringformat:"s" != traverse_user.username|stringformat:"s" %}
 
                           <div class="col-sm-4">
                             <div class="thumbnail">
@@ -39,10 +39,9 @@
 
 
                              {% for post in all_posts%}
-
-                                {% ifequal post.user_id  traverse_user.username%}
+                                {% if post.user_id|stringformat:"s" ==  traverse_user.username|stringformat:"s"%}
                                   <a href="#" class="list-group-item">{{ post.title }}</a>
-                                 {%endifequal%}
+                                 {%endif%}
 
                               {% endfor %} 
 
@@ -54,7 +53,7 @@
                             </div>
                           </div>
 
-                          {% endifequal %}
+                          {% endif %}
 
                       {% empty %}
 
@@ -69,9 +68,9 @@
 
                          {% for post in all_posts%}
 
-                                {% ifequal post.user_id  traverse_user.username%}
+                                {% if post.user_id|stringformat:"s" ==  traverse_user.username|stringformat:"s" %}
                               <a href="#" class="list-group-item">{{ post.title }}</a>
-                                 {%endifequal%}
+                                 {%endif%}
 
                           {% endfor %} 
 
