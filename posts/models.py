@@ -46,6 +46,6 @@ class Comment(models.Model):
 
 class Like(models.Model):
 
-    post = models.ForeignKey('posts.Post',on_delete=models.CASCADE,null=True)
-    user = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE,null=True)
+    post = models.ForeignKey('posts.Post',db_column='post_id', on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey('login.CustomUser',db_column='user_id', on_delete=models.CASCADE,null=True)
     

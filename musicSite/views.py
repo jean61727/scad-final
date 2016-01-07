@@ -82,7 +82,13 @@ def post_db(request):
 							q_object = q_object|Q(**{field:filter_data[key][field]})
 				elif key == 'is_like':
 					# we take "strict" approach here. is_like will be AND with other conditions
-					pass
+					if filter_data[key]["value"] == "true":
+						liked_result = Like.objects.filter(user_id__username=filter_data[key]["username"]).values_list("post_id", flat=True)
+						for liked_post_id in liked_result:
+							q_is_like_post = q_is_like_post|Q(id=liked_post_id)
+						pass
+					else:
+						pass
 				elif key == 'sort_by':
 					# we also implement sort function for post API
 					sort_option = filter_data[key]
@@ -97,9 +103,9 @@ def post_db(request):
 				display_post_count = 1
 			
 			# query all info of a post from database
-			filtered_db_data = Post.objects.filter(q_object&Q(**filter))
+			filtered_db_data = Post.objects.filter(q_object&Q(**filter)&q_is_like_post)
 
-			# print Like.objects.filter(customuser__username="iriver")
+			# print "........is ",Post.objects.filter(user_id__username="yeahchristine")
 
 			# order the result and access it
 			filtered_posts = filtered_db_data.order_by(sort_option).values(
@@ -313,8 +319,8 @@ def user_post(request):
 			category=request.POST.get('category'),
 			title=request.POST.get('vidsTitle'),
             )
-		print (request.POST.get('category'))
-		print ("hello")
+		# print (request.POST.get('category'))
+		# print ("hello")
 		new_post.save()
 		return HttpResponseRedirect('/home')
 	else:
@@ -409,13 +415,11 @@ def like_add(request):
 	if request.method == 'POST':
 		#request.POST
 		# print (request.user)
-		user = CustomUser.objects.get(username=request.user)
+		user_id = CustomUser.objects.get(username=request.user).id
 		new_post = Like(
-			user_id=user,
+			user_id=user_id,
             post_id=request.POST.get('post_id')
             )
-		# print (request.POST.get('post_id'))
-		# print ("hello")
 		new_post.save()
 		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
