@@ -15,7 +15,6 @@
     <!-- thumbnail CSS -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
    
-
     {% if all_users %}
     <div class="bg-1">
         <div class="container" id="user-grid-container">
@@ -29,7 +28,7 @@
 
                     {% for user_follow in follower %} 
 
-                        {% if traverse_user.username|stringformat:"s" != traverse_user.username|stringformat:"s" %}
+                        {% if traverse_user.username|stringformat:"s" != user_follow.follow|stringformat:"s" %}
 
                           <div class="col-sm-4">
                             <div class="thumbnail">
@@ -39,7 +38,7 @@
 
 
                              {% for post in all_posts%}
-                                {% if post.user_id|stringformat:"s" ==  traverse_user.username|stringformat:"s"%}
+                                {% if post.user_id|stringformat:"s" == traverse_user.username|stringformat:"s"%}
                                   <a href="#" class="list-group-item">{{ post.title }}</a>
                                  {%endif%}
 
