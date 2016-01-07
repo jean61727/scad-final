@@ -29,9 +29,7 @@
 
                     {% for user_follow in follower %} 
 
-                        {% ifnotequal traverse_user.username user_follow.follow %}
-
-                        {{traverse_user.user_image}}
+                        {% ifequal traverse_user.username traverse_user.username %}
 
                           <div class="col-sm-4">
                             <div class="thumbnail">
@@ -52,11 +50,11 @@
 
                             </div>
 
-                              <a href="/profile/{{user.username}}" class="btn">More Posts</a>
+                              <a href="/profile/{{traverse_user.username}}" class="btn">More Posts</a>
                             </div>
                           </div>
 
-                          {% endifnotequal %}
+                          {% endifequal %}
 
                       {% empty %}
 
@@ -81,7 +79,7 @@
 
                         </div>
 
-                          <a href="/profile/{{user.username}}" class="btn">More Posts</a>
+                          <a href="/profile/{{traverse_user.username}}" class="btn">More Posts</a>
                         </div>
                       </div>
 
