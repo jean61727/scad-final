@@ -42,7 +42,7 @@ $("#search-button").click(function () {
 function showRadioValue() {
  //alert($('input[name="optradio"]:checked').val());
     
-    alert($('input[name="optradio"]:checked').attr('id'));
+    
     $('#searchvidsID').val($('input[name="optradio"]:checked').val());
     $('#searchvidsTitle').val($('input[name="optradio"]:checked').attr('id'));
 }

@@ -1,8 +1,5 @@
-{% extends 'playground_base.html' %} {% load staticfiles %}
-
-{% block content %}
+{% extends 'playground_base.html' %} {% load staticfiles %} {% block content %}
 <link href="{% static 'css/ihover.css' %}" rel="stylesheet">
- <script type="text/javascript" src="{% static 'home_tab/home_tab.js' %}"></script>
 
 <!-- Customed Bootstrap CSS -->
 
@@ -19,115 +16,120 @@
 
 
 </div>
-{%endblock%} 
-{%block profile%}
+{%endblock%} {%block profile%}
 <div class="col-md-11 col-md-offset-1">
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="user_profile">
             <div class='row'>
-            <div class="col-md-8"  style="width:45%;">
-                <div class='row'>
-                    <div class="col-md-2">
-                        {%block image%}
-                        <img src='{{user.user_image}}' class="img-circle img-responsive img-thumbnail"> {%endblock%}
+                <div class="col-md-8" style="width:45%;">
+                    <div class='row'>
+                        <div class="col-md-2">
+                            {%block image%}
+                            <img src='{{user.user_image}}' class="img-circle img-responsive img-thumbnail"> {%endblock%}
+
+                        </div>
+                        <div class="col-md-6">
+                            {%block name%}
+                            <h3>{{ user.username }}</h3> {%endblock%}
+
+                            <!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
+                            <div>
+                                <div class="col-sm-5" style="">
+                                    <!-- normal -->
+                                    <div class="ih-item square effect13 top_to_bottom">
+                                        <a href="#">
+                                            <div class="img">
+                                                <img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
+                                            </div>
+                                            <div class="info">
+                                                <h3>My Playlist</h3>
+                                                <p>Posted Songs!</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- end normal -->
+                                {%block follow%}
+                                <div class="col-sm-5" style="">
+                                    <!-- normal -->
+                                    <div class="ih-item square effect13 top_to_bottom">
+                                        <a href="#">
+                                            <div class="img">
+                                                <img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
+                                            </div>
+                                            <div class="info">
+                                                <h3>Favorite</h3>
+                                                <p>Songs Liked!</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                {%endblock%}
+                            </div>
+
+                        </div>
 
                     </div>
-                    <div class="col-md-6">
-                        {%block name%}
-                        <h3>{{ user.username }}</h3> {%endblock%}
+                    <div class='row'>
+                        <div class="col-md-8" id="player" style="float:left;margin:10px;">
 
-                        <!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
-                        <div>
-                            <div class="col-sm-5" style="">
-                                <!-- normal -->
-                                <div class="ih-item square effect13 top_to_bottom">
-                                    <a href="#">
-                                        <div class="img">
-                                            <img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
-                                        </div>
-                                        <div class="info">
-                                            <h3>My Playlist</h3>
-                                            <p>Posted Songs!</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- end normal -->
-                            {%block follow%}
-                            <div class="col-sm-5" style="">
-                                <!-- normal -->
-                                <div class="ih-item square effect13 top_to_bottom">
-                                    <a href="#">
-                                        <div class="img">
-                                            <img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
-                                        </div>
-                                        <div class="info">
-                                            <h3>Favorite</h3>
-                                            <p>Songs Liked!</p>
-                                        </div>
-                                    </a>
-                                </div>
-
-                            </div>
-                            {%endblock%}
                         </div>
 
                     </div>
 
-                </div>
-                <div class='row'>
-                    <div class="col-md-8" id="player" style="float:left;margin:10px;">
+                    <div class='row'>
+                        <div class="col-md-11" id="play_list" style="float:left;margin:10px;"></div>
+                    </div>
+                    <div class="page-header"></div>
 
+                </div>
+                <div class="col-md-6" style="float:right;margin-right:10px;">
+                    <div style="background-color:#ececec;" id='post_container' class="container-fluid">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane fade" id="follow">
+            <div>
+                <ul>
+                    {%for follow in user_follow %}
+                    <div class="col-sm-2" style="">
+                        <!-- normal -->
+                        <div class="ih-item circle colored effect17">
+                            <a href="{% url 'profile_url' follow %}">
+                                <div class="img">
+                                    <img src='{{follow.user_image}}' alt="img">
+                                </div>
+                                <center>{{follow}}</center>
+                                <div class="info">
+                                    <h3>{{follow}}</h3>
+                                    <p>Posted Songs!</p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
 
-                </div>
-
-                <div class='row'>
-                    <div class="col-md-11" id="play_list" style="float:left;margin:10px;"></div>
-                </div>
-                <div class="page-header"></div>
-
+                    {%endfor%}
+                </ul>
             </div>
-            <div  class="col-md-6" style="float:right;margin-right:10px;">
-                <div   style="background-color:#AAAAAA;" id='post_container' class="container-fluid">
-                </div>
-            </div>
-
         </div>
     </div>
-
-
-            <div role="tabpanel" class="tab-pane fade" id="follow">
-                <div>
-                    <ul>
-                        {%for follow in user_follow %}
-                        <div class="col-sm-2" style="">
-                            <!-- normal -->
-                            <div class="ih-item circle colored effect17">
-                                <a href="{% url 'profile_url' follow %}">
-                                    <div class="img">
-                                        <img src='{{follow.user_image}}' alt="img">
-                                    </div>
-                                    <center>{{follow}}</center>
-                                    <div class="info">
-                                        <h3>{{follow}}</h3>
-                                        <p>Posted Songs!</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        {%endfor%}
-                    </ul>
-                </div>
-            </div>
-    </div>
 </div>
-            
-    
+
+
 {%endblock%} {% else %}
 <h3 align="center">Please Login !</h3> {% endif %} {%block scripts%}
 <script type="text/javascript">
+    
+var tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    onYouTubePlayerAPIReady(2);
     var option_control = 0;
     var videos = JSON.parse('{{ data|safe }}');
     var videos_like = JSON.parse('{{ like_data|safe }}');
@@ -195,28 +197,35 @@
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
-        onYouTubePlayerAPIReady();
+        onYouTubePlayerAPIReady(1);
 
 
 
     }
 
 
-    function onYouTubePlayerAPIReady() {
-        player = new YT.Player('player', {
-            height: '250',
-            width: '100%',
-            loadPlaylist: {
-                listType: 'playlist',
-                list: video_id_list,
-                index: parseInt(0),
-                suggestedQuality: 'small'
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
+    function onYouTubePlayerAPIReady(num) {
+        if (num == 1) {
+            player = new YT.Player('player', {
+                height: '250',
+                width: '100%',
+                loadPlaylist: {
+                    listType: 'playlist',
+                    list: video_id_list,
+                    index: parseInt(0),
+                    suggestedQuality: 'small'
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+else if (num!=1){
+        render_post('post_container', {
+            "username": '{{ user.username }}',
+            "limit": 3
+        });}
     }
 
     function onPlayerReady(event) {
@@ -239,5 +248,5 @@
     }
 
 </script>
-   
+
 {% endblock %} {% endblock %}

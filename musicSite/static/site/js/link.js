@@ -13,7 +13,7 @@ $(function(){
         var url = $('#input_link').val();
         var vidId = getVidID(url);
         
-        alert("影片ID為 " + vidId);
+        
         
         if(checkVidURL(url))
         {   if($('#input_start').val()==null){
@@ -21,7 +21,7 @@ $(function(){
             $('#vidsTitle').val(data.items[0].snippet.title);
             console.log(data.item[0]);
             });
-            alert("正確");
+            
               $('#link_video').append('<iframe width="100%" height="350px" style="margin-top:25px; margin-right:100px;"   src="http://www.youtube.com/embed/' + vidId + '"></iframe>');
             $('#vidsID').val(vidId);
         }
@@ -30,7 +30,7 @@ $(function(){
             console.log(data.items[0].snippet.title);
             $('#vidsTitle').val(data.items[0].snippet.title);
             });
-         alert("正確" );
+         
               $('#link_video').append('<iframe width="100%" height="350px" style="margin-top:25px; margin-right:100px;"   src="http://www.youtube.com/embed/' + vidId + '?start='+ $('#input_start').val() +'"></iframe>');
              $('#vidsID').val(vidId);
          }
