@@ -37,8 +37,8 @@ def post_db(request):
 		json_data = json.loads(request.body.decode('utf-8'))
 		request_type = json_data['request_type']
 		if request_type == "get_post":
-			# we don't know how to join tables, so we first get user id
 			# resolve the username into user id
+			# we don't know how to join tables, so we first get user id
 			filter_data = json_data["filter"]
 			if "username" in filter_data:
 				if type(filter_data["username"]) is list:
@@ -47,23 +47,24 @@ def post_db(request):
 						id_list.append(CustomUser.objects.filter(username=a_name).values("id"))
 					del filter_data["username"]
 					filter_data.update({
-						"user_id_id":id_list
+						"user_id":id_list
 					})
 				else:
 					user_id = CustomUser.objects.filter(username=filter_data["username"]).values("id")
 					del filter_data["username"]
 					filter_data.update({
-						"user_id_id":user_id
+						"user_id":user_id
 					})
-
 
 			# parse the filter dict object
 			filter = {}
+			# q object is specially for OR operation
 			q_object = Q()
+			q_is_like_post = Q()
 			sort_option = "-time"
 			for key in filter_data:
 				# because we don't know how to use the god damn join table, so we still have to deal with user id explicitly
-				if key == 'user_id_id':
+				if key == 'user_id':
 					# if we have multiple ids then iterate it
 					# finally, add them to the Q object
 					if type(filter_data[key]) is list:
@@ -79,6 +80,9 @@ def post_db(request):
 								q_object = q_object|Q(**{field:a_constrain})
 						else:
 							q_object = q_object|Q(**{field:filter_data[key][field]})
+				elif key == 'is_like':
+					# we take "strict" approach here. is_like will be AND with other conditions
+					pass
 				elif key == 'sort_by':
 					# we also implement sort function for post API
 					sort_option = filter_data[key]
@@ -95,6 +99,9 @@ def post_db(request):
 			# query all info of a post from database
 			filtered_db_data = Post.objects.filter(q_object&Q(**filter))
 
+			# print Like.objects.filter(customuser__username="iriver")
+
+			# order the result and access it
 			filtered_posts = filtered_db_data.order_by(sort_option).values(
 				'id',
 				'title',
@@ -104,7 +111,7 @@ def post_db(request):
 				'likes',
 				'people_listening',
 				'category',
-				'user_id_id',
+				'user_id',
 				'time',
 				'user_pic_path' # this field is deprecated
 				)[:display_post_count]
@@ -116,7 +123,7 @@ def post_db(request):
 			for one_post in filtered_posts:
 
 				# collecting post user profile info
-				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username","user_image")
+				user_data = CustomUser.objects.filter(id=one_post["user_id"]).values("username","user_image")
 				if len(user_data) == 0:
 					return HttpResponse("Cannot retrieve post. No such post id.")
 				else:
@@ -133,11 +140,11 @@ def post_db(request):
 					"video_id":one_post["url"],
 					"video_title": one_post["title"] ,
 					"start_time":one_post["start_time"],
-					"user_pic":  user_data["user_image"] ,
+					"user_pic": user_data["user_image"] ,
 					"username": user_data["username"],
-					"user_id": one_post["user_id_id"]  ,
+					"user_id": one_post["user_id"]  ,
 					"message": one_post["post_message"]  ,
-					"comments":[]
+					"comments":[],
 				}
 				# collecting comment data
 				comment_query_constrain = {"post_id":one_post["id"]}
@@ -199,7 +206,7 @@ def post_db(request):
 			# convert username into user id
 			requested_user_id = CustomUser.objects.filter(username=requested_user).values("id")
 			# print "the user id is ",requested_user_id
-			follower_name_list = Follower.objects.filter(user_id_id=requested_user_id).values("follow")
+			follower_name_list = Follower.objects.filter(user_id=requested_user_id).values("follow")
 			json_object = {
 				"follower_list":[],
 				"login_user_name":str(request.user),
@@ -225,7 +232,7 @@ def post_db(request):
 				like_count = liked_post.likes
 				liked_post.likes = F('likes') + 1
 				liked_post.save()
-				# Post.objects.filter(id=json_data["post_id"],user_id_id=request.user).update(likes=F('likes') + 1)
+				# Post.objects.filter(id=json_data["post_id"],user_id=request.user).update(likes=F('likes') + 1)
 				json_response = {
 					"state":"ok",
 					"like_count":like_count + 1,
@@ -241,7 +248,7 @@ def post_db(request):
 				like_count = liked_post.likes
 				liked_post.likes = F('likes') - 1
 				liked_post.save()
-				# Post.objects.filter(id=json_data["post_id"],user_id_id=request.user).update(likes=F('likes') + 1)
+				# Post.objects.filter(id=json_data["post_id"],user_id=request.user).update(likes=F('likes') + 1)
 				json_response = {
 					"state":"ok",
 					"like_count":like_count - 1,
@@ -318,7 +325,7 @@ def profile (request,user):
 
 	like_post=Like.objects.filter(user_id=request.user)
 	user_post=Post.objects.filter(user_id=request.user)
-	user_follow=Follower.objects.filter(user_id_id=request.user)
+	user_follow=Follower.objects.filter(user_id=request.user)
 
 	user_be_followed = CustomUser.objects.get(username=user)
 	be_followed_post=Post.objects.filter(user_id=user_be_followed)

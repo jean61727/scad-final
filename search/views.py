@@ -24,6 +24,7 @@ def full_text_search(request):
 		request_type = json_data['request_type']
 
 		if request_type == "search":
+			print "json search text is ", json_data["search_text"]
 			search_results = watson.search(json_data["search_text"])
 			# print "object is ",search_results
 			json_response = {

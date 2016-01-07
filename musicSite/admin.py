@@ -5,7 +5,7 @@ from login.models import CustomUser
 
 # Register your models here.
 class PostViewAdmin(admin.ModelAdmin):
-	list_display = ('id','title', 'user_id_id', 'likes','post_message','category', 'url','start_time','people_listening', 'time')
+	list_display = ('id','title', 'user_id', 'likes','post_message','category', 'url','start_time','people_listening', 'time')
 admin.site.register(Post, PostViewAdmin)
 
 class CommentViewAdmin(admin.ModelAdmin):
@@ -19,7 +19,7 @@ admin.site.register(CustomUser, UserViewAdmin)
 
 class  FollowerViewAdmin(admin.ModelAdmin):
 	"""docstring for  FollowerViewAdmin"""
-	list_display = ('id','user_id_id', 'follow',)
+	list_display = ('id','user_id', 'follow',)
 admin.site.register(Follower, FollowerViewAdmin)
 
 class LikeViewAdmin(admin.ModelAdmin):

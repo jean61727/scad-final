@@ -6,11 +6,14 @@
 <h3>Search user, search songs...</h3>
 <script>
 	$(function(){
-		function onYouTubeIframeAPIReady() {
-			$("#search_input").bind('keyup', {
-			}, trigger_search);
-		}
+		
 	});
+
+	function onYouTubeIframeAPIReady() {
+		// alert("haha");
+		$("#search_input").bind('keyup', {
+		}, trigger_search);
+	}
 
 	function trigger_search(e){
 		if(e.keyCode == 13){

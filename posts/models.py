@@ -15,7 +15,7 @@ class Post(models.Model):
     # comments = models.TextField(max_length=100)
     likes = models.IntegerField(null=True)
     people_listening = models.IntegerField(null=True)
-    user_id = models.ForeignKey('login.CustomUser', on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey('login.CustomUser', on_delete=models.CASCADE,null=True)
     user_pic_path = models.CharField(max_length=200, null=True);
     category = models.CharField(max_length=20,null=True)
 
@@ -25,7 +25,7 @@ class Post(models.Model):
 watson.register(Post, store=("post_message", "id"))
 
 class Follower(models.Model):
-    user_id = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE)
+    user = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE,null=True)
     follow =  models.CharField(max_length=50)
     # def __str__(self):
     #     return self.follow
@@ -36,16 +36,16 @@ class Comment(models.Model):
     # comment_id = models.CharField(max_length=50)
     # commented user id or username? should be discussed
     # comment_user_id = models.CharField(max_length=50)
-    post_id = models.CharField(max_length=100, null=True)
+    post = models.ForeignKey('posts.Post',on_delete=models.CASCADE,null=True)
     comment_message = models.CharField(max_length=300)
     time = models.DateTimeField(auto_now_add=True)
-    user_id = models.CharField(max_length=100, null=True)
+    user = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE,null=True)
 
     # def __str__(self):
     #     return self.comment_message
 
 class Like(models.Model):
 
-    post_id = models.CharField(max_length=100,null=True)
-    user_id = models.CharField(max_length=100,null=True)
+    post = models.ForeignKey('posts.Post',on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey('login.CustomUser',on_delete=models.CASCADE,null=True)
     
