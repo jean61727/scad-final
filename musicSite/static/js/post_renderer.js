@@ -104,6 +104,7 @@ function render_post_video(post_data, id_post_video){
 	$("<div>", {
 		'id':id_player,
 		'class':'embed-responsive embed-responsive-16by9',
+        'style':"margin:10px"
 	})
 	.append($("<iframe>", {
 		'src': youtube_url,
