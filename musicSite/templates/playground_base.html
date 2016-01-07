@@ -47,11 +47,13 @@
 
 <body>
     <!-- Resolving Django POST request forbidden issue-->
-    {% csrf_token %}
+    <!-- % csrf_token % -->
+    <!-- <script type="text/javascript" scr="{% static 'js/csrf_validate.js' %}"></script> -->
     <script>
         $(function() {
             // resolving POST request forbidden issue
-            var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+            var csrftoken = '{{ csrf_token }}';
+            //$('input[name="csrfmiddlewaretoken"]').val();
 
             function csrfSafeMethod(method) {
                 // these HTTP methods do not require CSRF protection
@@ -66,7 +68,6 @@
                 }
             });
         });
-
     </script>
 
     <!-- Navigation -->

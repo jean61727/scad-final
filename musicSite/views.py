@@ -37,6 +37,7 @@ def post_db(request):
 		json_data = json.loads(request.body.decode('utf-8'))
 		request_type = json_data['request_type']
 		if request_type == "get_post":
+			# print ("we are geting posttttt!!!")
 			# resolve the username into user id
 			# we don't know how to join tables, so we first get user id
 			filter_data = json_data["filter"]
@@ -88,6 +89,7 @@ def post_db(request):
 							q_is_like_post = q_is_like_post|Q(id=liked_post_id)
 						pass
 					else:
+						# print ("is false!!!!!!!!!")
 						pass
 				elif key == 'sort_by':
 					# we also implement sort function for post API
@@ -104,9 +106,9 @@ def post_db(request):
 			
 			# query all info of a post from database
 			filtered_db_data = Post.objects.filter(q_object&Q(**filter)&q_is_like_post)
+			# filtered_db_data = Post.objects.filter(user_id=2)
 
-			# print "........is ",Post.objects.filter(user_id__username="yeahchristine")
-
+			# print ("!!!!!!!!!is ", filtered_db_data)
 			# order the result and access it
 			filtered_posts = filtered_db_data.order_by(sort_option).values(
 				'id',
@@ -122,6 +124,7 @@ def post_db(request):
 				'user_pic_path' # this field is deprecated
 				)[:display_post_count]
 
+			# print ("!!!!!!! is ", filtered_posts)
 			# start organizing a json object
 			json_object = {
 				"posts":[]
@@ -129,7 +132,9 @@ def post_db(request):
 			for one_post in filtered_posts:
 
 				# collecting post user profile info
+				# print ("one is!!!!!!!! ", one_post["user_id"])
 				user_data = CustomUser.objects.filter(id=one_post["user_id"]).values("username","user_image")
+				# print ("the user is !!!!!!!!!", user_data)
 				if len(user_data) == 0:
 					return HttpResponse("Cannot retrieve post. No such post id.")
 				else:
@@ -311,9 +316,10 @@ def user_post(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		user = CustomUser.objects.get(id=request.POST.get('user'))
+		# user = CustomUser.objects.get(id=request.POST.get('user'))
+		# print ("isssss ",request.POST.get('user'))
 		new_post = Post(
-			user_id=user.id,
+			user_id=request.POST.get('user'),
 			url=request.POST.get('vidsID'),
 			start_time=request.POST.get('input_start'),
 			post_message=request.POST.get('post_message'),
@@ -327,6 +333,7 @@ def user_post(request):
 	else:
 		return render(request, 'playground_main.html', {'tab':'home'})
 
+@csrf_protect
 def profile (request,user):
 	print (user)
 

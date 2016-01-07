@@ -64,14 +64,15 @@ function start_with_get_follwer_list(logged_in_username){
 		username_list.push(result.login_user_name);
 		// console.log('the user list is '+username_list);
 		// render the post using constrain conditions
+		// console.log(username_list);
 		render_post("post_container", {
 			"username":username_list,
-			"limit":6,
+			// "limit":4,
 			"sort_by":"-time",
-			"is_like":{
-				"username":"iriver",
-				"value":"false",
-			},
+			// "is_like":{
+			// 	"username":"iriver",
+			// 	"value":"true",
+			// },
 			"or":{
 			},
 		});
