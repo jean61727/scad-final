@@ -1,6 +1,7 @@
 musicapp.back/
 deprecated/
 venv/
+youbox_venv/
 __pycache__
 staticfiles
 db.sqlite3
