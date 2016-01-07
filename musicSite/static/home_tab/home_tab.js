@@ -4,7 +4,7 @@ $(function(){
 });
 
 function onYouTubeIframeAPIReady() {
-	console.log("youtube iframe ready");
+	// console.log("youtube iframe ready");
 	start_with_get_login_user();
 	// restreive follower list
 }
@@ -66,7 +66,8 @@ function start_with_get_follwer_list(logged_in_username){
 		// render the post using constrain conditions
 		render_post("post_container", {
 			"username":username_list,
-			"limit":4,
+			"limit":6,
+			"sort_by":"-time",
 			"or":{
 			},
 		});

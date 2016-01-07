@@ -1,4 +1,6 @@
 var global_comment_profile_image_height = "46";
+var global_unhearted_class = 'fa fa-heart-o button';
+var global_hearted_class = 'glyphicon glyphicon-heart button';
 // this is the starter of the whole render chain functions
 function render_post(id_container, filter_object){
 	// acquire post data for rendering
@@ -99,7 +101,20 @@ function render_post_body(json_data, id_container){
 }// home tab content render ended
 
 function render_post_video(post_data, id_post_video){
-	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1&origin=http://example.com";
+	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1";
+
+	// player layout settings
+	youtube_url = youtube_url + "&controls=2&modestbranding=1&rel=0";
+
+	// security settings
+	youtube_url = youtube_url + "&origin=";
+	// youtube_url = youtube_url + "&origin="+"https://youboxapp.herokuapp.com"
+	
+	// set start time
+	youtube_url = youtube_url + "&start="+post_data["start_time"];
+	// set end time
+	youtube_url = youtube_url + "&end=";
+
 	id_player = post_data['post_id']+'_player';
 	$("<div>", {
 		'id':id_player,
@@ -127,10 +142,31 @@ function render_post_field(post_data, id_post_field){
 	})
 	.appendTo("#"+id_post_field);
 	// {like}
-	heart_icon = $("<i>", {
-		'class':'fa fa-heart-o button',
-		'onclick':'like(this,'+post_id+')',
+	if(post_data["is_like"]){
+		heart_icon = $("<i>", {
+			'class':global_hearted_class,
+		})
+		.appendTo("#"+id_field_title_bar)
+		.bind('click', {
+			post_id:post_id,
+		}, like_clicked);
+	}
+	else{
+		heart_icon = $("<i>", {
+			'class':global_unhearted_class,
+		})
+		.appendTo("#"+id_field_title_bar)
+		.bind('click', {
+			post_id:post_id,
+		}, like_clicked);
+	}
+	// {like count}
+	var id_field_like_count = post_id + "_field_like_count";
+	$("<span>", {
+		'html':post_data["like_count"],
+		'id':id_field_like_count,
 	}).appendTo("#"+id_field_title_bar);
+	
 	// {title}
 	
 	// {pic, username, message} := content
@@ -236,7 +272,7 @@ function render_post_comment(post_data, id_post_body){
 		'id':id_comment_list,
 	}).appendTo("#"+id_comment_collapse);
 	// comment item
-	console.log(comment_data);
+	// console.log(comment_data);
 	comment_data.forEach(function(comment){
 		// a comment line
 		render_comment(id_comment_list, comment, post_id);
@@ -375,22 +411,61 @@ function comment_input_enter_listener(e){
 
 }
 
-function like(item,post_id){
-	
-	if($(item).attr('class')=='fa fa-heart-o button'){
-		$(item).prop('class','glyphicon glyphicon-heart button');
+function like_clicked(e){
+	var post_id = e.data.post_id;
+	var item = this;
+	// console.log("post_id is "+post_id);
+	// console.log(item);
+
+	if($(item).attr('class')== global_unhearted_class ){
+		// previously unhearted
+		// now we want to heart it
+		$(item).prop('class',global_hearted_class);
 		$.post('/like/',{
 			"post_id":post_id
 		});
 		
-	
+		// increment like count of the post
+		var request_json = {
+			"request_type":"uprate_like",
+			"post_id":post_id,
+		};
+		$.ajax({
+			'type':'POST',
+			'url':'/post_db/',
+			data: JSON.stringify(request_json),
+		})
+		.done(function(response){
+			// console.log(response);
+			// get resulting like count here
+			$("#"+post_id+"_field_like_count").html(response.like_count);
+		})
+		.fail(ajax_fail_handler);
 	}
 	else{
-		$(item).prop('class','fa fa-heart-o button');
+		// already hearted
+		// now we want to unheart it
+		$(item).prop('class',global_unhearted_class);
 		$.post('/unlike/',{
 			"post_id":post_id
 		});
 		
+		// decrement like count of the post
+		var request_json = {
+			"request_type":"downrate_like",
+			"post_id":post_id,
+		};
+		$.ajax({
+			'type':'POST',
+			'url':'/post_db/',
+			data: JSON.stringify(request_json),
+		})
+		.done(function(response){
+			// console.log(response);
+			// get resulting like count here
+			$("#"+post_id+"_field_like_count").html(response.like_count);
+		})
+		.fail(ajax_fail_handler);
 	}
 }
 

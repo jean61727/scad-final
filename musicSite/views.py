@@ -24,6 +24,9 @@ from django.core import serializers
 # for using OR operation in db query
 from django.db.models import Q
 
+# used for increment a table field
+from django.db.models import F
+
 # exceptions for queryset get() function
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -112,19 +115,24 @@ def post_db(request):
 			}
 			for one_post in filtered_posts:
 
-				# make a data set for a single post
+				# collecting post user profile info
 				user_data = CustomUser.objects.filter(id=one_post["user_id_id"]).values("username","user_image")
 				if len(user_data) == 0:
 					return HttpResponse("Cannot retrieve post. No such post id.")
 				else:
 					user_data = user_data[0]
 
+				# check if the user likes the post
+				is_like = Like.objects.filter(user_id=request.user,post_id=one_post["id"]).exists()
+
+				# make a data set for a single post
 				post_data = {
 					"post_id":one_post["id"],
-					"is_like":"false",
+					"is_like":is_like,
 					"like_count":one_post["likes"],
 					"video_id":one_post["url"],
 					"video_title": one_post["title"] ,
+					"start_time":one_post["start_time"],
 					"user_pic":  user_data["user_image"] ,
 					"username": user_data["username"],
 					"user_id": one_post["user_id_id"]  ,
@@ -205,6 +213,40 @@ def post_db(request):
 				"username":str(request.user),
 			}
 			return JsonResponse(json_object)
+		
+		elif request_type == "uprate_like":
+			like_count = Post.objects.get(id=json_data["post_id"],)
+			# caes that no such post, is not handled
+			if like_count.likes == None:
+				Post.objects.filter(id=json_data["post_id"],).update(likes=1)
+				return HttpResponse("Likes count is None. We have initialize it to 0 and increment 1")
+			else:
+				liked_post = Post.objects.get(id=json_data["post_id"],)
+				like_count = liked_post.likes
+				liked_post.likes = F('likes') + 1
+				liked_post.save()
+				# Post.objects.filter(id=json_data["post_id"],user_id_id=request.user).update(likes=F('likes') + 1)
+				json_response = {
+					"state":"ok",
+					"like_count":like_count + 1,
+				}
+				return JsonResponse(json_response)
+		elif request_type == "downrate_like":
+			like_count = Post.objects.get(id=json_data["post_id"],)
+			if like_count.likes == None:
+				Post.objects.filter(id=json_data["post_id"],).update(likes=0)
+				return HttpResponse("Likes count is None. We have initialize it to 0")
+			else:
+				liked_post = Post.objects.get(id=json_data["post_id"],)
+				like_count = liked_post.likes
+				liked_post.likes = F('likes') - 1
+				liked_post.save()
+				# Post.objects.filter(id=json_data["post_id"],user_id_id=request.user).update(likes=F('likes') + 1)
+				json_response = {
+					"state":"ok",
+					"like_count":like_count - 1,
+				}
+				return JsonResponse(json_response)
 		else:
 			return HttpResponse("view.py: Invalid request type")
 	else:
@@ -358,14 +400,14 @@ def like_add(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		print (request.user)
+		# print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		new_post = Like(
 			user_id=user,
             post_id=request.POST.get('post_id')
             )
-		print (request.POST.get('post_id'))
-		print ("hello")
+		# print (request.POST.get('post_id'))
+		# print ("hello")
 		new_post.save()
 		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
@@ -375,7 +417,7 @@ def like_delete(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		print (request.user)
+		# print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		Like.objects.filter(user_id=user , post_id=request.POST.get('post_id')).delete()
 		

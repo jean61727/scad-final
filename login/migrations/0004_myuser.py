@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 
-from django.db import migrations, models
 from django.conf import settings
+from django.db import migrations, models
+import django.db.models.deletion
+
 
 
 class Migration(migrations.Migration):
@@ -16,9 +19,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MyUser',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                 ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
                 ('user_image', models.TextField(max_length=100)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+
             ],
         ),
     ]
