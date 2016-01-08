@@ -428,10 +428,10 @@ def like_add(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		# print (request.user)
-		user_id = CustomUser.objects.get(username=request.user)
 		new_post = Like(
-			user_id=user_id,
+			# the user will always be the logged in user
+			# because a user can only create a entry for "his" like
+			user_id=request.user.id,
             post_id=request.POST.get('post_id')
             )
 		new_post.save()
@@ -477,6 +477,10 @@ def user_user(request):
 	recommend_dict={}
 	for idx, user in enumerate(all_users):
 		recommend_dict[user]= similarity[0][idx]
+
+
+	# ranked_rec_dict=sorted(recommend_dict.iteritems(), key=lambda (k,v): (v,k),reverse=True)
+	# http://stackoverflow.com/questions/32534822/sort-out-the-content-displayed-by-the-highest-number
 
 	ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
 	print (recommend_dict)

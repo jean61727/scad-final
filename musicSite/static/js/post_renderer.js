@@ -1,5 +1,6 @@
-var global_comment_profile_image_height = "46";
-var global_unhearted_class = 'fa fa-heart-o button';
+var global_comment_profile_image_height = "40";
+var global_post_profile_image_height = "80";
+var global_unhearted_class = 'glyphicon glyphicon-heart-empty button';
 var global_hearted_class = 'glyphicon glyphicon-heart button';
 // this is the starter of the whole render chain functions
 function render_post(id_container, filter_object){
@@ -35,13 +36,17 @@ function render_post(id_container, filter_object){
 			// rander out all the posts
 			render_post_body(json_object, id_container);
 		}
+		// console.log("success!");
 	})
-	.fail(ajax_fail_handler);
+	// .fail(ajax_fail_handler);
+	.fail(function(xhr, textStatus, errorThrown){
+		console.log("render post ajax failed");
+		// console.log("text status: "+textStatus);
+		// console.log(xhr.responseText);
+	})
 }
 
 function render_post_body(json_data, id_container){
-	// console.log("returned object:");
-	// console.log(json_data);
 
 	// render post data
 	// we will have the following fields to render for each post:
@@ -50,13 +55,23 @@ function render_post_body(json_data, id_container){
 	// iterate the json object, and render out the post
 	// console.log(json_data);
 	json_data.posts.forEach(function(obj){
+
 		// render post main body - the row
 		post_id = obj['post_id'];
+		$post_main = $("<div>", {
+			'class':'row thumbnail',
+		}).appendTo("#"+id_container);
+
+		// top level structure
 		id_post_body = post_id+"_row";
 		$("<div>", {
 			'class':'row',
 			'id':id_post_body,
-		}).appendTo("#"+id_container);
+		}).appendTo($post_main);
+
+		$comment_body = $("<div>", {
+			'class':'row',
+		}).appendTo($post_main);
 
 		// left side - video view
 		id_post_video = post_id + "_video";
@@ -75,30 +90,15 @@ function render_post_body(json_data, id_container){
 		}).appendTo("#"+id_post_body);
 		render_post_field(obj, id_post_field);
 
-		$("#"+id_post_body).after("<hr>");
+		// $("#"+id_post_body).after("<hr>");
 
-		// render comment field
-		render_post_comment(obj, id_post_body);
+		// below -  comment field
+		
+		render_post_comment(obj, $comment_body);
 
-	});// post render ended
+	});// a post render ended
 
-	// render header
-	// id_home_tab_header_row = 'home_tab_header';
-	// $("<div>", {
-	// 	'class':'row',
-	// 	id:id_home_tab_header_row
-	// }).prependTo("#post_container");
-	// id_home_tab_header_col = 'home_tab_header_col1'
-	// $("<div>", {
-	// 	'class':'col-xs-12',
-	// 	id:id_home_tab_header_col,
-	// }).appendTo("#"+id_home_tab_header_row);
-	// $("<h1>", {
-	// 	'class':'page-header',
-	// 	'html':'Post Feed <small>Check out what people listen to!</small>'
-	// }).appendTo("#"+id_home_tab_header_col);
-
-}// home tab content render ended
+}// home tab all posts render ended
 
 function render_post_video(post_data, id_post_video){
 	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1";
@@ -136,36 +136,11 @@ function render_post_field(post_data, id_post_field){
 	id_field_title_bar =  post_id + "_field_title_bar";
 	id_field_content = post_id + "_field_content";
 	// {like, title} := title bar
-	$("<div>", {
-		'class':'row',
-		'id':id_field_title_bar,
-	})
-	.appendTo("#"+id_post_field);
-	// {like}
-	if(post_data["is_like"]){
-		heart_icon = $("<i>", {
-			'class':global_hearted_class,
-		})
-		.appendTo("#"+id_field_title_bar)
-		.bind('click', {
-			post_id:post_id,
-		}, like_clicked);
-	}
-	else{
-		heart_icon = $("<i>", {
-			'class':global_unhearted_class,
-		})
-		.appendTo("#"+id_field_title_bar)
-		.bind('click', {
-			post_id:post_id,
-		}, like_clicked);
-	}
-	// {like count}
-	var id_field_like_count = post_id + "_field_like_count";
-	$("<span>", {
-		'html':post_data["like_count"],
-		'id':id_field_like_count,
-	}).appendTo("#"+id_field_title_bar);
+	// $("<div>", {
+	// 	'class':'row',
+	// 	'id':id_field_title_bar,
+	// })
+	// .appendTo("#"+id_post_field);
 	
 	// {title}
 	
@@ -180,14 +155,14 @@ function render_post_field(post_data, id_post_field){
 	id_field_message = post_id + "_field_message";
 	// {pic, username} := user
 	$("<div>", {
-		'class':'col-xs-4 text-center',
+		'class':'col-xs-3 text-center',
 		'id':id_field_user,
 	})
 	// .css({'background-color':'grey'})
 	.appendTo("#"+id_field_content);
 	// {message}
 	$("<div>", {
-		'class':'col-xs-8',
+		'class':'col-xs-9',
 		'html':post_data['message'],
 		'id':id_field_message,
 	})
@@ -205,7 +180,7 @@ function render_post_field(post_data, id_post_field){
 		'src':post_data['user_pic'],
 		'class':'img-circle img-responsive img-thumbnail',
 		'alt':'user picture',
-		'width':'100px',
+		'width': global_post_profile_image_height+'px',
 	}).appendTo("#"+id_field_pic);
 	// console.log(post_data['user_pic']);
 	// {username}
@@ -217,134 +192,118 @@ function render_post_field(post_data, id_post_field){
 		'href':'/profile/'+post_data['username']+'/',
 		'html':post_data['username'],
 	}).appendTo("#"+id_field_username);
+	// {like}
+	$like_body = $("<div>", {
+		'class':'row',
+	}).appendTo("#"+id_field_user);
+	if(post_data["is_like"]){
+		heart_icon = $("<i>", {
+			'class':global_hearted_class,
+		})
+		.appendTo($like_body)
+		.bind('click', {
+			post_id:post_id,
+		}, like_clicked);
+	}
+	else{
+		heart_icon = $("<i>", {
+			'class':global_unhearted_class,
+		})
+		.appendTo($like_body)
+		.bind('click', {
+			post_id:post_id,
+		}, like_clicked);
+	}
+	// {like count}
+	var id_field_like_count = post_id + "_field_like_count";
+	$("<span>", {
+		'html':post_data["like_count"],
+		'id':id_field_like_count,
+	}).appendTo($like_body);
 
 }
 
-function render_post_comment(post_data, id_post_body){
+function render_post_comment(post_data, $comment_body){
 	post_id = post_data['post_id'];
 	comment_data = post_data['comments'];
 
+	// comment top level: col
 	id_comment_col = post_id+"_col";
 	$("<div>", {
 		'class':'col-xs-12',
 		'id':id_comment_col,
-	}).appendTo("#"+id_post_body);
+	}).appendTo($comment_body);
 
-	// structuring collapse accordin
-	id_comment_panel_group = post_id+"_comment_panel_group";
-	$("<div>", {
-		'class':'panel-group',
-		'id':id_comment_panel_group,
-	}).appendTo("#"+id_comment_col);
-	id_comment_panel = post_id+"_comment_panel";
-	$("<div>", {
-		'class':'panel panel-default',
-		'id':id_comment_panel,
-	}).appendTo("#"+id_comment_panel_group);
-	id_comment_panel_heading = post_id+"_comment_panel_heading";
-	$("<div>", {
-		'class':'panel-heading',
-		'id':id_comment_panel_heading,
-	}).appendTo("#"+id_comment_panel);
-	id_comment_panel_title = post_id+"_comment_panel_title";
-	$("<h4>", {
-		'class':'panel-title',
-		'id':id_comment_panel_title,
-	}).appendTo("#"+id_comment_panel_heading);
-
+	// collapsed block
 	id_comment_collapse = post_id+"_collapse";
-	$("<a>", {
-		'data-toggle':'collapse',
-		'href':'#'+id_comment_collapse,
-		'html':'Comments...',
-	}).appendTo("#"+id_comment_panel_title);
+	// collapse control toggler
+	id_comment_collapse_control = post_id+"_comment_collapse_control";
 
-	// collapse part
+	// collapse controller
 	$("<div>", {
-		'class':'panel-collapse collapse',
-		'id':id_comment_collapse,
-	}).appendTo("#"+id_comment_panel);
+		'class':'btn btn-primary',
+		// the following 2 attributes will carry collapse toggle function
+		'data-toggle':'collapse',
+		'data-target':'#'+id_comment_collapse,
+		'id':id_comment_collapse_control,
+		'html':'Comments...',
+	}).appendTo("#"+id_comment_col);
 
-	// comment list
+	// block to be collapsed
+	$("<div>", {
+		'class':'collapse',
+		'id':id_comment_collapse,
+	}).appendTo("#"+id_comment_col);
+	// comments ul list
 	id_comment_list = post_id+"_comment_list";
 	$("<ul>", {
 		'class':'list-group',
 		'id':id_comment_list,
 	}).appendTo("#"+id_comment_collapse);
-	// comment item
-	// console.log(comment_data);
+
+	// comment input
+	// comment footer for input field
+	// id_comment_item_last = post_id+"_comment_item_last";
+	// $("<li>", {
+	// 	// 'class':'panel-footer',
+	// 	'class':'list-group-item',
+	// 	'id':id_comment_item_last,
+	// }).appendTo("#"+id_comment_list); // also hide the panel footer at first
+	// // comment input field
+	// id_comment_input = post_id+"_comment_input";
+	// $("<input>", {
+	// 	'class':'form-control',
+	// 	'type':'text',
+	// 	'id':id_comment_input,
+	// })
+	// .appendTo("#"+id_comment_item_last)
+	// .bind('keyup', {
+	// 	postid: post_id
+	// }, comment_input_enter_listener);
+
+	render_comment(id_comment_list,{"commentor":""},post_id);
+
+	// comment li item
 	comment_data.forEach(function(comment){
-		// a comment line
-		render_comment(id_comment_list, comment, post_id);
+		render_comment(post_id+"_comment_item_last", comment, post_id);
 	});
 
-	// panel body
-	/*
-	$("<div>", {
-		"class":'panel-body',
-		'html':'panel body',
-	}).appendTo("#"+id_comment_collapse);
-	*/
-
-	// panel footer
-	id_comment_footer = post_id+"_comment_footer";
-	$("<div>", {
-		'class':'panel-footer',
-		'id':id_comment_footer,
-	}).appendTo("#"+id_comment_collapse);
-	// commentor - the logged in user - 's profile image
-
-	// comment input field
-	// render_comment(id_comment_footer, {
-	// 	'commentor':"",
-	// 	'commentor_image':post_data["user_pic"],
-	// 	'comment_content':"",
-	// }, post_id);
-	id_comment_input = post_id+"_comment_input";
-	$("<input>", {
-		'class':'form-control',
-		'type':'text',
-		'id':id_comment_input,
-	})
-	//.keyup(comment_input_enter_listener)
-	.appendTo("#"+id_comment_footer)
-
-	.bind('keyup', {
-		postid: post_id
-	}, comment_input_enter_listener);
+	
 }
 
-function render_comment(id_comment_list_accordin, comment, post_id){
-	// a comment line
-	$comment_item = $("<li>", {
-		'class':'list-group-item',
-	}).appendTo("#"+id_comment_list_accordin);
-	// a comment top level grid system
-	$comment_row = $("<div>", {
-		'class':'row',
-	}).appendTo($comment_item);
+function render_comment(id_target, comment, post_id){
 	
-	// commentor image and name
-	$commentor_profile = $("<div>", {
-		'class':'col-xs-2',
-	}).appendTo($comment_row);
-	
-	// commentor profile: image and name
-	$profile_image = $("<img>", {
-		'src':comment['commentor_image'],
-		'class':'commentor img-circle',
-	})
-	.appendTo($commentor_profile)
-	.css({
-		"height":global_comment_profile_image_height+"px",
-	});
-
 	if (comment["commentor"] === ""){
+		console.log("id  taret is " + id_target);
+		// console.log("inside!!!");
 		// the bottom input field
-		// comment input field
-		$comment_input_field = $("<div>",{
-			'class':'col-xs-10',
-		}).appendTo($comment_row);
+		// a comment line
+		var id_comment_item_last = post_id+"_comment_item_last"
+		$comment_item = $("<li>", {
+			'class':'list-group-item',
+			'id':id_comment_item_last,
+		}).appendTo("#"+id_target);
+
 
 		var id_comment_input = post_id+"_comment_input";
 		$("<input>", {
@@ -352,23 +311,65 @@ function render_comment(id_comment_list_accordin, comment, post_id){
 			'type':'text',
 			'id':id_comment_input,
 		})
-		.appendTo($comment_input_field)
+		.appendTo($comment_item)
 		.bind('keyup', {
 			postid: post_id
 		}, comment_input_enter_listener);
+
+
+
+		////////
+		// comment input field
+		// var id_comment_input = post_id+"_comment_input";
+		// $("<input>", {
+		// 	'class':'form-control',
+		// 	'type':'text',
+		// 	'id':id_comment_input,
+		// })
+		// .appendTo("#"+id_comment_item_last)
+		// .bind('keyup', {
+		// 	postid: post_id
+		// }, comment_input_enter_listener);
 	}
 	else {
-		$profile_name = $("<a>", {
-			'html':"<strong>"+comment["commentor"]+"</strong>",
-			'href':'/profile/'+comment["commentor"]+"/",
-		})
-		.appendTo($commentor_profile);
+		$comment_item = $("<li>", {
+			'class':'list-group-item',
+		}).insertBefore("#"+id_target);
 
-		// comment message
-		$comment_message = $("<div>", {
-			'class':'col-xs-10',
-			'html':comment['comment_content'],
+		// a comment top level grid system
+		$comment_row = $("<div>", {
+			'class':'row',
+		}).appendTo($comment_item);
+
+		$a_comment_col = $("<div>", {
+			'class':'col-xs-12 media',
 		}).appendTo($comment_row);
+
+		// commentor image
+		$commentor_profile = $("<div>", {
+			'class':'media-left',
+		}).appendTo($a_comment_col);
+		
+		// commentor profile: image
+		$profile_image = $("<img>", {
+			'src':comment['commentor_image'],
+			'class':'commentor img-circle media-object',
+		}).appendTo($commentor_profile)
+		.css({
+			"height":global_comment_profile_image_height+"px",
+		});
+
+		// comment media block for name and message
+		$comment_media_message = $("<div>", {
+			'class':'media-body',
+			'html':comment['comment_content'],
+		}).appendTo($a_comment_col);
+		// name
+		$comment_heading = $("<a>", {
+			'class':'media-heading',
+			'html':"<strong>"+comment["commentor"]+"</strong><br>",
+			'href':'/profile/'+comment["commentor"]+"/1/",
+		}).prependTo($comment_media_message);
 	}
 	
 }
@@ -403,7 +404,7 @@ function comment_input_enter_listener(e){
 			} else {
 				// alert("ok!!");
 				// add the new comment
-				render_comment($post_id+"_comment_list", response_json, $post_id);
+				render_comment($post_id+"_comment_item_last", response_json, $post_id);
 			}
 		})
 		.fail(ajax_fail_handler);
