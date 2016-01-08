@@ -3,6 +3,8 @@ from django.http import HttpResponse,Http404
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 import json
+
+
 #rec
 from sklearn.metrics.pairwise import cosine_similarity
 # for regular expression
@@ -476,7 +478,7 @@ def user_user(request):
 	for idx, user in enumerate(all_users):
 		recommend_dict[user]= similarity[0][idx]
 
-	ranked_rec_dict=sorted(recommend_dict.iteritems(), key=lambda (k,v): (v,k),reverse=True)
+	ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
 	print (recommend_dict)
 	print (ranked_rec_dict)# sorted dict that ranks the users most similar to you 
 	# this version still includes the current logged in user itself 
