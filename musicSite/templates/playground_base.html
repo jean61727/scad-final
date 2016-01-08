@@ -23,6 +23,15 @@
     
     <!-- Customed Bootstrap CSS -->
     <link href="{% static 'bootstrap/css/1-col-portfolio.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'css/agency.css' %}" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
     
     <!-- Font Awesome -->
     <link href="{% static 'font-awesome-4.5.0/css/font-awesome.min.css' %}" rel="stylesheet">
@@ -275,8 +284,15 @@
         </div>
     </div>
 
+
+    <section class="bg-darkest-gray" >
+        <div class="container"> 
+
     <!-- Tab Content implement by separate html templates -->
     {% block content %} {% endblock %}
+
+        </div>
+    </section>
 
     <!-- The Overall Website Footer -->
     <div id='footer_container' class="container-fluid">
@@ -288,6 +304,28 @@
             </div>
         </footer>
     </div>
+
+    <style>
+        .portfolio-hover {
+            color: rgb(72, 72, 147);
+        }
+        /* centered columns styles */
+        .row-centered {
+            text-align:center;
+        }
+        .col-centered {
+            display:inline-block;
+            float:none;
+            /* reset the text-align */
+            text-align:left;
+            /* inline-block space fix */
+            margin-right:-4px;
+        }
+        .section-heading{
+            color: rgb(255,215,0);
+        }
+    </style>
+
 </body>
 
 </html>
