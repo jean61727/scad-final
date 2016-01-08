@@ -335,9 +335,10 @@ def user_post(request):
 		return render(request, 'playground_main.html', {'tab':'home'})
 
 @csrf_protect
-def profile (request,user):
+def profile (request,user,control):
 	print (user)
-
+	print (control)
+	print (int(control)==2)
 	like_post=Like.objects.filter(user_id=request.user)
 	user_post=Post.objects.filter(user_id=request.user)
 	user_follow=Follower.objects.filter(user_id=request.user)
@@ -359,6 +360,8 @@ def profile (request,user):
 	be_followed_data = serializers.serialize("json", be_followed_post)
 	
 	if(str(request.user) !=str(user)):
+		if(int(control)==2):
+			return render(request,'explore_user_profile.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
 		return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
 	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':following_user_list})
 
@@ -393,13 +396,13 @@ def follow_add(request):
 		print (request.user)
 		user = CustomUser.objects.get(username=request.user)
 		new_post = Follower(
-			user_id=user,
+			user_id=user.id,
 			follow=request.POST.get('follow')
 			)
 		print (request.POST.get('follow'))
 		print ("hello")
 		new_post.save()
-		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow')+"/1")
 	else:
 		return render(request, 'playground_main.html', {'tab':'home'})
 
@@ -414,7 +417,7 @@ def follow_delete(request):
 		print (user)
 		Follower.objects.filter(user_id=user.id , follow=request.POST.get('follow')).delete()
 		
-		return HttpResponseRedirect('/profile/'+request.POST.get('follow'))
+		return HttpResponseRedirect('/profile/'+request.POST.get('follow')+"/1")
 	else:
 		return render(request, 'playground_main.html', {'tab':'home'})
 
@@ -424,7 +427,7 @@ def like_add(request):
 	if request.method == 'POST':
 		#request.POST
 		# print (request.user)
-		user_id = CustomUser.objects.get(username=request.user).id
+		user_id = CustomUser.objects.get(username=request.user)
 		new_post = Like(
 			user_id=user_id,
             post_id=request.POST.get('post_id')
