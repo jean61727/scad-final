@@ -41,6 +41,7 @@ urlpatterns = patterns('',
     url(r'^unlike/$',like_delete),
     url(r'^follow/$',follow_add),
     url(r'^unfollow/$',follow_delete),
+    url(r'^rec/$',user_user),
     
 
 

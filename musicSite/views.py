@@ -3,7 +3,8 @@ from django.http import HttpResponse,Http404
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 import json
-
+#rec
+from sklearn.metrics.pairwise import cosine_similarity
 # for regular expression
 import re
 
@@ -444,3 +445,36 @@ def like_delete(request):
 		return render(request, 'playground_main.html', {'tab':'home'})
 	else:
 		return render(request, 'playground_main.html', {'tab':'home'})
+
+def user_user(request):
+
+	categories = ['rock','hip_hop','pop','post_rock','punk','indie','acoustic','electronic','randb','country','jazz','classical']
+
+	all_users=CustomUser.objects.all()
+	all_user_category_array=[]
+	user_index=0# the index of the current user
+
+	for idx, user in enumerate(all_users):
+		if(user==request.user):
+			user_index=idx
+		user_category_array=[]
+		for category in categories:
+			user_in_category=Post.objects.filter(category=category,user_id=user)
+			user_category_array.append(len(user_in_category))
+		all_user_category_array.append(user_category_array)
+	
+	rec_array=all_user_category_array
+	
+	similarity=cosine_similarity(all_user_category_array[user_index], all_user_category_array)
+	print (rec_array)
+	print (similarity)
+	
+	recommend_dict={}
+	for idx, user in enumerate(all_users):
+		recommend_dict[user]= similarity[0][idx]
+
+	ranked_rec_dict=sorted(recommend_dict.iteritems(), key=lambda (k,v): (v,k),reverse=True)
+	print (recommend_dict)
+	print (ranked_rec_dict)# sorted dict that ranks the users most similar to you 
+	# this version still includes the current logged in user itself 
+	return render(request, 'playground_main.html', {'tab':'home'})
