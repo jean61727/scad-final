@@ -129,7 +129,7 @@ var tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
                 var firstScriptTag = document.getElementsByTagName('script')[0];
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    onYouTubePlayerAPIReady(2);
+    // onYouTubePlayerAPIReady(2);
     var option_control = 0;
     var videos = JSON.parse('{{ data|safe }}');
     var videos_like = JSON.parse('{{ like_data|safe }}');
@@ -222,6 +222,7 @@ var tag = document.createElement('script');
             });
         }
 else if (num!=1){
+        console.log("youtube onready called once");
         render_post('post_container', {
             "username": '{{ user.username }}',
             "limit": 3

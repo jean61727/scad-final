@@ -67,7 +67,7 @@ function start_with_get_follwer_list(logged_in_username){
 		// console.log(username_list);
 		render_post("post_container", {
 			"username":username_list,
-			// "limit":4,
+			"limit":4,
 			"sort_by":"-time",
 			// "is_like":{
 			// 	"username":"iriver",

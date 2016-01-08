@@ -35,8 +35,14 @@ function render_post(id_container, filter_object){
 			// rander out all the posts
 			render_post_body(json_object, id_container);
 		}
+		console.log("success!");
 	})
-	.fail(ajax_fail_handler);
+	// .fail(ajax_fail_handler);
+	.fail(function(xhr, textStatus, errorThrown){
+		console.log("render post ajax failed");
+		// console.log("text status: "+textStatus);
+		// console.log(xhr.responseText);
+	})
 }
 
 function render_post_body(json_data, id_container){
