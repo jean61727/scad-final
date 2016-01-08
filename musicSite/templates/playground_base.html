@@ -54,7 +54,7 @@
 
 </head>
 
-<body>
+<body class="bg-darkest-gray">
     <!-- Resolving Django POST request forbidden issue-->
     {% csrf_token %}
     <!-- <script type="text/javascript" scr="{% static 'js/csrf_validate.js' %}"></script> -->
@@ -77,7 +77,7 @@
             });
         });
     </script>
-
+    
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -284,18 +284,11 @@
         </div>
     </div>
 
-
-    <section class="bg-darkest-gray" >
-        <div class="container"> 
-
     <!-- Tab Content implement by separate html templates -->
     {% block content %} {% endblock %}
 
-        </div>
-    </section>
-
     <!-- The Overall Website Footer -->
-    <div id='footer_container' class="container-fluid">
+    <div id='footer_container' class="container-fluid bg-light-gray" >
         <footer>
             <div class="row">
                 <div class="col-lg-12 text-center">
