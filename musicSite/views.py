@@ -426,10 +426,10 @@ def like_add(request):
 	context=RequestContext(request)
 	if request.method == 'POST':
 		#request.POST
-		# print (request.user)
-		user_id = CustomUser.objects.get(username=request.user)
 		new_post = Like(
-			user_id=user_id,
+			# the user will always be the logged in user
+			# because a user can only create a entry for "his" like
+			user_id=request.user.id,
             post_id=request.POST.get('post_id')
             )
 		new_post.save()
