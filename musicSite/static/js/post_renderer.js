@@ -59,18 +59,14 @@ function render_post_body(json_data, id_container){
 		// render post main body - the row
 		post_id = obj['post_id'];
 		$post_main = $("<div>", {
-			'class':'row thumbnail',
+			'class':'post-main',
 		}).appendTo("#"+id_container);
 
-		// top level structure
+		// up side - left and right
 		id_post_body = post_id+"_row";
 		$("<div>", {
 			'class':'row',
 			'id':id_post_body,
-		}).appendTo($post_main);
-
-		$comment_body = $("<div>", {
-			'class':'row',
 		}).appendTo($post_main);
 
 		// left side - video view
@@ -92,8 +88,10 @@ function render_post_body(json_data, id_container){
 
 		// $("#"+id_post_body).after("<hr>");
 
-		// below -  comment field
-		
+		// downside -  comment field
+		$comment_body = $("<div>", {
+			'class':'row',
+		}).appendTo($post_main);
 		render_post_comment(obj, $comment_body);
 
 	});// a post render ended
@@ -241,7 +239,7 @@ function render_post_comment(post_data, $comment_body){
 
 	// collapse controller
 	$("<div>", {
-		'class':'btn btn-primary',
+		'class':'',
 		// the following 2 attributes will carry collapse toggle function
 		'data-toggle':'collapse',
 		'data-target':'#'+id_comment_collapse,
