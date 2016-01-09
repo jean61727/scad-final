@@ -102,7 +102,7 @@ function render_post_body(json_data, id_container){
 
 function render_post_video(post_data, id_post_video){
 	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1";
-
+    var vidid=post_data['video_id'];
 	// player layout settings
 	youtube_url = youtube_url + "&controls=2&modestbranding=1&rel=0";
 
@@ -128,6 +128,9 @@ function render_post_video(post_data, id_post_video){
 		'class':'embed-responsive-item',
 	}))
 	.appendTo("#"+id_post_video);
+    $("#"+id_post_video).append("<a href='http://www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=" + vidid+ " ' style='text-decoration:none;color:#8d8d8d;margin:10px'> <strong>Download MP3</strong></a>"
+    
+    );
 }
 
 function render_post_field(post_data, id_post_field){
