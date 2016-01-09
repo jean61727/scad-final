@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-md-6">
                                 {%block name%}
-                                <h3>{{ user.username }}</h3> {%endblock%}
+                                <h3 id="username">{{ user.username }}</h3> {%endblock%}
 
                                 <!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
                                 <div>
@@ -86,7 +86,6 @@
                         <div class='row'>
                             <div class="col-md-11" id="play_list" style="float:left;margin:10px;"></div>
                         </div>
-                        <div class="page-header"></div>
 
                     </div>
                     <div class="col-md-6" style="float:right;margin-right:10px;">
@@ -257,6 +256,12 @@
     }
 
 </script>
+
+<style>
+#username{
+    color: rgb(255,215,0);
+}
+</style>
 
 {% endblock %} 
 {% endblock %}
