@@ -13,10 +13,10 @@
             <a href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
         </li>
     </ul>
-
-
 </div>
+
 {%endblock%} {%block profile%}
+
 <div class="col-md-11 col-md-offset-1">
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="user_profile">
@@ -125,10 +125,10 @@
 <h3 align="center">Please Login !</h3> {% endif %} {%block scripts%}
 <script type="text/javascript">
     
-var tag = document.createElement('script');
-                tag.src = "https://www.youtube.com/iframe_api";
-                var firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     // onYouTubePlayerAPIReady(2);
     var option_control = 0;
     var videos = JSON.parse('{{ data|safe }}');
@@ -198,9 +198,6 @@ var tag = document.createElement('script');
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
         onYouTubePlayerAPIReady(1);
-
-
-
     }
 
 
@@ -221,12 +218,13 @@ var tag = document.createElement('script');
                 }
             });
         }
-else if (num!=1){
-        console.log("youtube onready called once");
-        render_post('post_container', {
-            "username": '{{ user.username }}',
-            "limit": 3
-        });}
+        else if (num!=1){
+            console.log("youtube onready called once");
+            render_post('post_container', {
+                "username": '{{ user.username }}',
+                "limit": 3
+            });
+        }
     }
 
     function onPlayerReady(event) {
