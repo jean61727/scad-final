@@ -100,7 +100,7 @@ function render_post_body(json_data, id_container){
 
 function render_post_video(post_data, id_post_video){
 	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1";
-    var vidid=post_data['video_id'];
+    // var vidid=post_data['video_id'];
 	// player layout settings
 	youtube_url = youtube_url + "&controls=2&modestbranding=1&rel=0";
 
@@ -126,9 +126,6 @@ function render_post_video(post_data, id_post_video){
 		'class':'embed-responsive-item',
 	}))
 	.appendTo("#"+id_post_video);
-    $("#"+id_post_video).append("<a href='http://www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=" + vidid+ " ' style='text-decoration:none;color:#8d8d8d;margin:10px'> <strong>Download MP3</strong></a>"
-    
-    );
 }
 
 function render_post_field(post_data, id_post_field){
@@ -222,6 +219,27 @@ function render_post_field(post_data, id_post_field){
 		'id':id_field_like_count,
 	}).appendTo($like_body);
 
+	// { donwload }
+	var link_text = 'http://www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=' + post_data["video_id"];
+	$download_body = $("<div>", {
+		'class':'row',
+	}).appendTo("#"+id_field_user);
+	$download_col = $("<div>", {
+		'class':'col-xs-12',
+		'html':'<a class="glyphicon glyphicon-download" href="'+link_text+'"></a>',
+	}).appendTo($download_body);
+
+	// console.log(href);
+	// $donwload_button = $("<div>", {
+		// 'class':'',
+		// 'onclick':'location.href="'+href+'"',
+	// }).appendTo($download_col);
+	// $donwload_link = $("<a>", {
+		// 'class':'glyphicon glyphicon-download',
+		// 'href':link_text,
+		// 'html':'<strong>Download MP3</strong>'
+	// }).appendTo($download_col);
+
 }
 
 function render_post_comment(post_data, $comment_body){
@@ -242,7 +260,7 @@ function render_post_comment(post_data, $comment_body){
 
 	// collapse controller
 	$("<div>", {
-		'class':'',
+		'class':'btn btn-primary',
 		// the following 2 attributes will carry collapse toggle function
 		'data-toggle':'collapse',
 		'data-target':'#'+id_comment_collapse,
