@@ -32,7 +32,6 @@
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-    
     <!-- Font Awesome -->
     <link href="{% static 'font-awesome-4.5.0/css/font-awesome.min.css' %}" rel="stylesheet">
     
@@ -46,12 +45,33 @@
     <!--Load Youtube API-->
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
 
-    <!-- Customed JavaScript for rendering post -->
+    <!-- JavaScript for rendering post -->
     <script type="text/javascript" src="{% static 'js/site_utilities.js' %}"></script>
 
     <script type="text/javascript" src="{% static 'js/post_renderer.js' %}"></script>
 
+    <!-- This Base HTML Style -->
+    <style>
 
+        .portfolio-hover {
+            color: rgb(72, 72, 147);
+        }
+        /* centered columns styles */
+        .row-centered {
+            text-align:center;
+        }
+        .col-centered {
+            display:inline-block;
+            float:none;
+            /* reset the text-align */
+            text-align:left;
+            /* inline-block space fix */
+            margin-right:-4px;
+        }
+        .section-heading{
+            color: rgb(255,215,0);
+        }
+    </style>
 </head>
 
 <body class="bg-darkest-gray">
@@ -297,27 +317,6 @@
             </div>
         </footer>
     </div>
-
-    <style>
-        .portfolio-hover {
-            color: rgb(72, 72, 147);
-        }
-        /* centered columns styles */
-        .row-centered {
-            text-align:center;
-        }
-        .col-centered {
-            display:inline-block;
-            float:none;
-            /* reset the text-align */
-            text-align:left;
-            /* inline-block space fix */
-            margin-right:-4px;
-        }
-        .section-heading{
-            color: rgb(255,215,0);
-        }
-    </style>
 
 </body>
 
