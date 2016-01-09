@@ -1,6 +1,12 @@
 {% extends 'playground_base.html' %}
 {% load staticfiles %}
 {% block content %}
+<style type="text/css">
+	.post-main{
+		color: white;
+	}
+</style>
+
 <script>
     var __static_img_path = "{% static 'img/' %}";
 </script>
@@ -12,7 +18,7 @@
 <div class="row">
 	<div class="col-xs-1"></div>
 		<div id='post_container' class="col-xs-10 container-fluid"><br></div>
-	</div>
+	<div class="col-xs-1"></div>
 </div>
 
 <!-- /.container -->
