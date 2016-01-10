@@ -156,7 +156,6 @@ function render_post_field(post_data, id_post_field){
 		'class':'col-xs-3 text-center',
 		'id':id_field_user,
 	})
-	// .css({'background-color':'grey'})
 	.appendTo("#"+id_field_content);
 	// {message}
 	$("<div>", {
@@ -164,7 +163,6 @@ function render_post_field(post_data, id_post_field){
 		'html':post_data['message'],
 		'id':id_field_message,
 	})
-	//.css({'background-color':'pink'})
 	.appendTo("#"+id_field_content);
 	// Split into {pic}, {username}
 	id_field_pic = post_id + "_field_pic";
