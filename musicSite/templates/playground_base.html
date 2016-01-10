@@ -13,41 +13,41 @@
 
     <!-- jQuery and its plugins -->
     <script src="{% static 'bootstrap/js/jquery.js' %}"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
     
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    
-    <!-- Customed Bootstrap CSS -->
+    <!-- ??? Bootstrap CSS -->
     <link href="{% static 'bootstrap/css/1-col-portfolio.css' %}" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- External CSS -->
     <link href="{% static 'css/agency.css' %}" rel="stylesheet">
 
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome for icons besides bootstrap glyphicon -->
     <link href="{% static 'font-awesome-4.5.0/css/font-awesome.min.css' %}" rel="stylesheet">
     
-    <!-- Customed JavaScript for Navigator 'POST' and 'LOGIN' -->
+    <!-- Customized JavaScript for Navigator 'POST' and 'LOGIN' -->
     <script src="{% static 'site/js/post.js' %}" type="text/javascript"></script>
     <script src="{% static 'site/js/search.js' %}" type="text/javascript"></script>
     <script src="{% static 'site/js/playlist.js' %}" type="text/javascript"></script>
     <script src="{% static 'site/js/link.js' %}" type="text/javascript"></script>
+    <!-- For Playlist drag and drop -->
     <script src="{% static 'js/jquery-ui.js' %}"></script>
     
-    <!--Load Youtube API-->
+    <!-- Load Youtube API -->
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
 
-    <!-- JavaScript for rendering post -->
+    <!-- Customized JavaScript Function for global use -->
     <script type="text/javascript" src="{% static 'js/site_utilities.js' %}"></script>
 
+    <!-- Customized JavaScript for rendering post -->
     <script type="text/javascript" src="{% static 'js/post_renderer.js' %}"></script>
 
     <!-- This Base HTML Style -->
@@ -69,9 +69,14 @@
             margin-right:-4px;
         }
         .section-heading{
-            color: rgb(255,215,0);
+            color: #FFD700;
+            /*the yellow*/
+            /*color: rgb(255,215,0);*/
         }
-
+        body{
+            background-color: #222;
+            /*the darkest gray*/
+        }
         .glyphicon {
             font-size: 50px;
         }
@@ -79,10 +84,9 @@
     </style>
 </head>
 
-<body class="bg-darkest-gray">
+<body>
     <!-- Resolving Django POST request forbidden issue-->
     {% csrf_token %}
-    <!-- <script type="text/javascript" scr="{% static 'js/csrf_validate.js' %}"></script> -->
     <script>
         $(function() {
             // resolving POST request forbidden issue
@@ -144,7 +148,7 @@
         <!-- /.container -->
     </nav>
 
-    {% block navbar %}
+    {% block tabbar %}
     <!-- Tab Switcher -->
     <ul class="nav nav-tabs">
         <!-- Home -->
