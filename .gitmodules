@@ -1,0 +1,3 @@
+[submodule "musicSite/static/bootstrap/official_git_repo"]
+	path = musicSite/static/bootstrap/official_git_repo
+	url = https://github.com/twbs/bootstrap.git
