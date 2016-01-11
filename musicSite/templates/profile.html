@@ -5,8 +5,9 @@
 
 {% if user.username %} {%block head%}
 
+<!-- Nav Pills: { User Profile, Follow } -->
 <div class="row">
-    <div class="col-md-11 col-md-offset-1" style="margin-top:3%; margin-bottom:20px; ">
+    <div class="col-md-10 col-md-offset-2">
         <ul class="nav nav-pills" role="tablist" id='myTabs'>
             <li role="presentation" class="active">
                 <a href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab">User Profile</a>
@@ -21,7 +22,7 @@
 {%endblock%} {%block profile%}
 
 <div class="row">
-    <div class="col-md-11 col-md-offset-1">
+    <div class="col-md-12">
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="user_profile">
                 <div class='row'>
