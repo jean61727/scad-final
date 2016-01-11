@@ -1,0 +1,39 @@
+// Although you can assign values in cutom_variable.less, some bootstrap CSS values is originally hardcoded in their component less file. For such value, you better use the same manner and hardcode them here. You can still use variables from custom_variable.less.
+
+//
+// List groups
+// --------------------------------------------------
+
+.list-group-item {
+	padding: 10px 15px;
+	// padding: @padding-base-vertical @padding-base-horizontal;
+}
+
+//
+// Individual Settings
+// --------------------------------------------------
+
+img {
+
+	&.commentor {
+		height: 45px;
+	}
+
+	&.user {
+		width: 80px;
+	}
+}
+
+.glyphicon {
+    
+    font-size: 45px;
+
+    &.glyphicon-heart, &.glyphicon-heart-empty {
+    	font-size: 30px;
+    }
+}
+
+#comment_text {
+	// Controls the thickness of fonts for comment text
+	font-weight: 300;
+}

@@ -21,14 +21,14 @@
     <!-- ??? Bootstrap CSS -->
     <link href="{% static 'bootstrap/css/1-col-portfolio.css' %}" rel="stylesheet">
 
-    <!-- External CSS -->
-    <link href="{% static 'css/agency.css' %}" rel="stylesheet">
 
     <!-- Fonts -->
+    <!-- Montserrat -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <!-- Roboto+Slab -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:300,400' rel='stylesheet' type='text/css'>
 
     <!-- Font Awesome for icons besides bootstrap glyphicon -->
     <link href="{% static 'font-awesome-4.5.0/css/font-awesome.min.css' %}" rel="stylesheet">
@@ -52,7 +52,8 @@
 
     <!-- This Base HTML Style -->
     <style>
-
+        /* this defines the curtain effect when hover on a category 
+         currently only used in category page */
         .portfolio-hover {
             color: rgb(72, 72, 147);
         }
@@ -73,13 +74,7 @@
             /*the yellow*/
             /*color: rgb(255,215,0);*/
         }
-        body{
-            background-color: #222;
-            /*the darkest gray*/
-        }
-        .glyphicon {
-            font-size: 50px;
-        }
+        
 
     </style>
 </head>

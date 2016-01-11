@@ -1,5 +1,5 @@
-var global_comment_profile_image_height = "40";
-var global_post_profile_image_height = "80";
+// var global_comment_profile_image_height = "45";
+// var global_post_profile_image_height = "80";
 var global_unhearted_class = 'glyphicon glyphicon-heart-empty button';
 var global_hearted_class = 'glyphicon glyphicon-heart button';
 // this is the starter of the whole render chain functions
@@ -56,142 +56,103 @@ function render_post_body(json_data, id_container){
 	// console.log(json_data);
 	json_data.posts.forEach(function(obj){
 
-		// render post main body - the row
+		// render post main
 		post_id = obj['post_id'];
 		$post_main = $("<div>", {
-			'class':'post-main',
+			'class':'post-main panel panel-default',
 		}).appendTo("#"+id_container);
 
-		// up side - left and right
-		id_post_body = post_id+"_row";
-		$("<div>", {
-			'class':'row',
-			'id':id_post_body,
+		// upper body left and right
+		// id_post_gadget = post_id+"_row";
+		$post_gadget = $("<div>", {
+			'class':'row panel-body',
 		}).appendTo($post_main);
-
-		// left side - video view
-		id_post_video = post_id + "_video";
+		// left side - post profile
+		id_post_profile = post_id + "_profile";
 		$("<div>", {
-			'class':'col-xs-6',
-			'id':id_post_video,
-			//'class':'embed-responsive',
-		}).appendTo("#"+id_post_body);
-		render_post_video(obj, id_post_video);
+			'class':'col-xs-2',
+			'id':id_post_profile,
+		}).appendTo($post_gadget);
+		render_post_profile(obj, "#"+id_post_profile);
+		// right side - video view
+		$video_col = $("<div>", {
+			'class':'col-xs-10',
+		}).appendTo($post_gadget);
+		render_post_video(obj, $video_col);
 
-		// right side - post detail view
-		id_post_field = post_id + "_field";
-		$("<div>", {
-			'class':'col-xs-6',
-			'id':id_post_field,
-		}).appendTo("#"+id_post_body);
-		render_post_field(obj, id_post_field);
-
-		// $("#"+id_post_body).after("<hr>");
-
-		// downside -  comment field
-		$comment_body = $("<div>", {
+		// downside - post field := {post messange, comment}
+		$post_field = $("<div>", {
 			'class':'row',
 		}).appendTo($post_main);
-		render_post_comment(obj, $comment_body);
+		$post_field_col = $("<div>", {
+			'class':'col-xs-12',
+		}).appendTo($post_field);
+		// downside I - post field = {post content}
+		$post_message = $("<div>", {
+			'class':'row panel-body',
+		}).appendTo($post_field_col);
+		$post_message_col = $("<div>", {
+			'class':'col-xs-12',
+		}).appendTo($post_message);
+		render_post_message(obj, $post_message_col);
+		// downside II - {comment}
+		$comment_field = $("<div>", {
+			'class':'row panel-body',
+		}).appendTo($post_field_col);
+		$comment_field_col = $("<div>", {
+			'class':'col-xs-12',
+		}).appendTo($comment_field);
+		render_post_comment(obj, $comment_field_col);
 
 	});// a post render ended
 
 }// home tab all posts render ended
 
-function render_post_video(post_data, id_post_video){
-	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1";
-    // var vidid=post_data['video_id'];
-	// player layout settings
-	youtube_url = youtube_url + "&controls=2&modestbranding=1&rel=0";
-
-	// security settings
-	youtube_url = youtube_url + "&origin=";
-	// youtube_url = youtube_url + "&origin="+"https://youboxapp.herokuapp.com"
-	
-	// set start time
-	youtube_url = youtube_url + "&start="+post_data["start_time"];
-	// set end time
-	youtube_url = youtube_url + "&end=";
-
-	id_player = post_data['post_id']+'_player';
-	$("<div>", {
-		'id':id_player,
-		'class':'embed-responsive embed-responsive-16by9',
-        'style':"margin:10px"
-	})
-	.append($("<iframe>", {
-		'src': youtube_url,
-		// 'type':'text/html',
-		'frameborder':'0',
-		'class':'embed-responsive-item',
-	}))
-	.appendTo("#"+id_post_video);
-}
-
-function render_post_field(post_data, id_post_field){
+function render_post_profile(post_data, $post_profile_container){
 	// Split into {like, title} and {pic, username, message}
 	post_id = post_data['post_id'];
-	id_field_title_bar =  post_id + "_field_title_bar";
-	id_field_content = post_id + "_field_content";
-	// {like, title} := title bar
-	// $("<div>", {
-	// 	'class':'row',
-	// 	'id':id_field_title_bar,
-	// })
-	// .appendTo("#"+id_post_field);
-	
-	// {title}
+	// id_field_title_bar =  post_id + "_field_title_bar";
+	// id_field_content = post_id + "_field_content";
 	
 	// {pic, username, message} := content
-	$("<div>", {
+	$field_content = $("<div>", {
 		'class':'row',
-		'id':id_field_content,
-	})
-	.appendTo("#"+id_post_field);
-	// Split into {pic, username} and {message}
-	id_field_user = post_id + "_field_user";
-	id_field_message = post_id + "_field_message";
+	}).appendTo($post_profile_container);
+	// Split into {pic, username}
 	// {pic, username} := user
-	$("<div>", {
-		'class':'col-xs-3 text-center',
-		'id':id_field_user,
-	})
-	.appendTo("#"+id_field_content);
-	// {message}
-	$("<div>", {
-		'class':'col-xs-9',
-		'html':post_data['message'],
-		'id':id_field_message,
-	})
-	.appendTo("#"+id_field_content);
+	$field_user = $("<div>", {
+		'class':'col-xs-12 text-center',
+		// 'id':id_field_user,
+	}).appendTo($field_content);
+
 	// Split into {pic}, {username}
-	id_field_pic = post_id + "_field_pic";
-	id_field_username = post_id + "_field_username";
+	// id_field_pic = post_id + "_field_pic";
+	// id_field_username = post_id + "_field_username";
 	// {pic}
-	$("<div>", {
+	$field_pic = $("<div>", {
 		'class':'row',
-		'id':id_field_pic,
-	}).appendTo("#"+id_field_user);
+		// 'id':id_field_pic,
+	}).appendTo($field_user);
 	$("<img>", {
 		'src':post_data['user_pic'],
-		'class':'img-circle img-responsive img-thumbnail',
+		'class':'user img-circle img-responsive img-thumbnail',
 		'alt':'user picture',
-		'width': global_post_profile_image_height+'px',
-	}).appendTo("#"+id_field_pic);
+		// 'width': global_post_profile_image_height+'px',
+	}).appendTo($field_pic);
 	// console.log(post_data['user_pic']);
 	// {username}
-	$("<div>", {
+	$field_username = $("<div>", {
 		'class':'row',
-		'id':id_field_username,
-	}).appendTo("#"+id_field_user);
+		// 'id':id_field_username,
+	}).appendTo($field_user);
 	$("<a>", {
 		'href':'/profile/'+post_data['username']+'/',
 		'html':post_data['username'],
-	}).appendTo("#"+id_field_username);
+	}).appendTo($field_username);
 	// {like}
 	$like_body = $("<div>", {
 		'class':'row',
-	}).appendTo("#"+id_field_user);
+	}).appendTo($field_user);
 	if(post_data["is_like"]){
 		heart_icon = $("<i>", {
 			'class':global_hearted_class,
@@ -221,30 +182,82 @@ function render_post_field(post_data, id_post_field){
 	var link_text = 'http://www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=' + post_data["video_id"];
 	$download_body = $("<div>", {
 		'class':'row',
-	}).appendTo("#"+id_field_user);
+	}).appendTo($field_user);
 	$download_col = $("<div>", {
 		'class':'col-xs-12',
 		'html':'<a class="glyphicon glyphicon-download" href="'+link_text+'"></a>',
 	}).appendTo($download_body);
+}
 
-	// console.log(href);
-	// $donwload_button = $("<div>", {
-		// 'class':'',
-		// 'onclick':'location.href="'+href+'"',
-	// }).appendTo($download_col);
-	// $donwload_link = $("<a>", {
-		// 'class':'glyphicon glyphicon-download',
-		// 'href':link_text,
-		// 'html':'<strong>Download MP3</strong>'
-	// }).appendTo($download_col);
+function render_post_video(post_data, $post_video_container){
+	$video_body = $("<div>", {
+		'class':'row',
+	}).appendTo($post_video_container);
+	$video_col = $("<div>", {
+		'class':'col-xs-12',
+	}).appendTo($video_body);
+
+	var youtube_url = "https://www.youtube.com/embed/"+post_data['video_id']+"?enablejsapi=1";
+    // var vidid=post_data['video_id'];
+	// player layout settings
+	youtube_url = youtube_url + "&controls=2&modestbranding=1&rel=0";
+
+	// security settings
+	youtube_url = youtube_url + "&origin=";
+	// youtube_url = youtube_url + "&origin="+"https://youboxapp.herokuapp.com"
+	
+	// set start time
+	youtube_url = youtube_url + "&start="+post_data["start_time"];
+	// set end time
+	youtube_url = youtube_url + "&end=";
+
+	id_player = post_data['post_id']+'_player';
+	$("<div>", {
+		'id':id_player,
+		'class':'embed-responsive embed-responsive-16by9',
+        'style':"margin:10px"
+	})
+	.append($("<iframe>", {
+		'src': youtube_url,
+		// 'type':'text/html',
+		'frameborder':'0',
+		'class':'embed-responsive-item',
+	}))
+	.appendTo($video_col);
+}
+
+function render_post_message(post_data, $post_msg_container){
+	// Split into {like, title} and {pic, username, message}
+	post_id = post_data['post_id'];
+	id_field_content = post_id + "_field_content";
+	
+	// {pic, username, message} := content
+	$("<div>", {
+		'class':'row',
+		'id':id_field_content,
+	})
+	.appendTo($post_msg_container);
+
+	id_field_message = post_id + "_field_message";
+
+	// {message}
+	$("<div>", {
+		'class':'col-xs-12',
+		'html':post_data['message'],
+		'id':id_field_message,
+	})
+	.appendTo("#"+id_field_content);
 
 }
 
-function render_post_comment(post_data, $comment_body){
+function render_post_comment(post_data, $comment_container){
 	post_id = post_data['post_id'];
 	comment_data = post_data['comments'];
 
-	// comment top level: col
+	// comment top level: row and col
+	$comment_body = $("<div>", {
+		'class':'row'
+	}).appendTo($comment_container);
 	id_comment_col = post_id+"_col";
 	$("<div>", {
 		'class':'col-xs-12',
@@ -278,26 +291,7 @@ function render_post_comment(post_data, $comment_body){
 		'id':id_comment_list,
 	}).appendTo("#"+id_comment_collapse);
 
-	// comment input
-	// comment footer for input field
-	// id_comment_item_last = post_id+"_comment_item_last";
-	// $("<li>", {
-	// 	// 'class':'panel-footer',
-	// 	'class':'list-group-item',
-	// 	'id':id_comment_item_last,
-	// }).appendTo("#"+id_comment_list); // also hide the panel footer at first
-	// // comment input field
-	// id_comment_input = post_id+"_comment_input";
-	// $("<input>", {
-	// 	'class':'form-control',
-	// 	'type':'text',
-	// 	'id':id_comment_input,
-	// })
-	// .appendTo("#"+id_comment_item_last)
-	// .bind('keyup', {
-	// 	postid: post_id
-	// }, comment_input_enter_listener);
-
+	// render comment input li item
 	render_comment(id_comment_list,{"commentor":""},post_id);
 
 	// comment li item
@@ -334,21 +328,10 @@ function render_comment(id_target, comment, post_id){
 		}, comment_input_enter_listener);
 
 
-
-		////////
-		// comment input field
-		// var id_comment_input = post_id+"_comment_input";
-		// $("<input>", {
-		// 	'class':'form-control',
-		// 	'type':'text',
-		// 	'id':id_comment_input,
-		// })
-		// .appendTo("#"+id_comment_item_last)
-		// .bind('keyup', {
-		// 	postid: post_id
-		// }, comment_input_enter_listener);
 	}
 	else {
+		var profile_href = '/profile/'+comment["commentor"]+"/1/";
+
 		$comment_item = $("<li>", {
 			'class':'list-group-item',
 		}).insertBefore("#"+id_target);
@@ -363,30 +346,32 @@ function render_comment(id_target, comment, post_id){
 		}).appendTo($comment_row);
 
 		// commentor image
-		$commentor_profile = $("<div>", {
+		$commentor_profile = $("<a>", {
 			'class':'media-left',
+			'href':profile_href,
 		}).appendTo($a_comment_col);
 		
 		// commentor profile: image
 		$profile_image = $("<img>", {
 			'src':comment['commentor_image'],
-			'class':'commentor img-circle media-object',
-		}).appendTo($commentor_profile)
-		.css({
-			"height":global_comment_profile_image_height+"px",
-		});
+			'class':'commentor img-circle',
+		}).appendTo($commentor_profile);
 
 		// comment media block for name and message
-		$comment_media_message = $("<div>", {
+		$comment_media_body = $("<div>", {
 			'class':'media-body',
-			'html':comment['comment_content'],
+			// 'html':comment['comment_content'],
 		}).appendTo($a_comment_col);
+		$commment_message = $("<span>", {
+			'id':'comment_text',
+			'html':comment['comment_content'],
+		}).appendTo($comment_media_body);
 		// name
 		$comment_heading = $("<a>", {
 			'class':'media-heading',
 			'html':"<strong>"+comment["commentor"]+"</strong><br>",
-			'href':'/profile/'+comment["commentor"]+"/1/",
-		}).prependTo($comment_media_message);
+			'href': profile_href,
+		}).prependTo($comment_media_body);
 	}
 	
 }
