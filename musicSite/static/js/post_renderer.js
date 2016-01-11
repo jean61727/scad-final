@@ -59,35 +59,29 @@ function render_post_body(json_data, id_container){
 		// render post main
 		post_id = obj['post_id'];
 		$post_main = $("<div>", {
-			'class':'post-main panel panel-default',
+			'class':'row panel panel-default',
 		}).appendTo("#"+id_container);
 
-		// upper body left and right
-		// id_post_gadget = post_id+"_row";
-		$post_gadget = $("<div>", {
-			'class':'row panel-body',
-		}).appendTo($post_main);
 		// left side - post profile
-		id_post_profile = post_id + "_profile";
-		$("<div>", {
-			'class':'col-xs-2',
-			'id':id_post_profile,
-		}).appendTo($post_gadget);
-		render_post_profile(obj, "#"+id_post_profile);
-		// right side - video view
-		$video_col = $("<div>", {
+		$post_profile = $("<div>", {
+			'class':'col-xs-2 panel-body',
+		}).appendTo($post_main);
+		render_post_profile(obj, $post_profile);
+
+		// rightside - post field := {video, post messange, comment}
+		$post_field_col = $("<div>", {
 			'class':'col-xs-10',
-		}).appendTo($post_gadget);
+		}).appendTo($post_main);
+		// rightside - video view
+		$post_video = $("<div>", {
+			'class':'row',
+		}).appendTo($post_field_col);
+		$video_col = $("<div>", {
+			'class':'col-xs-12',
+		}).appendTo($post_video);
 		render_post_video(obj, $video_col);
 
-		// downside - post field := {post messange, comment}
-		$post_field = $("<div>", {
-			'class':'row',
-		}).appendTo($post_main);
-		$post_field_col = $("<div>", {
-			'class':'col-xs-12',
-		}).appendTo($post_field);
-		// downside I - post field = {post content}
+		// rightside - post message
 		$post_message = $("<div>", {
 			'class':'row panel-body',
 		}).appendTo($post_field_col);
@@ -95,7 +89,7 @@ function render_post_body(json_data, id_container){
 			'class':'col-xs-12',
 		}).appendTo($post_message);
 		render_post_message(obj, $post_message_col);
-		// downside II - {comment}
+		// rightside - comment
 		$comment_field = $("<div>", {
 			'class':'row panel-body',
 		}).appendTo($post_field_col);
