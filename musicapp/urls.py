@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.contrib.auth.views import login
 from login.views import *
 from musicSite.views import *
 from account.views import *
 from search.views import *
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     # url(r'^$', 'musicapp.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
@@ -29,9 +30,9 @@ urlpatterns = patterns('',
     url(r'^accounts/settings/db_update_image/$', db_account_image),
     # Backend Administration
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^login/', 'django.contrib.auth.views.login', name='login'),
+    url(r'^login/', login, name='login'),
     url(r'^logout/$', logout_page),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'), # If user is not login it will redirect to login page
+    url(r'^accounts/login/$', login), # If user is not login it will redirect to login page
     url(r'^register/$', register),
     url(r'^register/success/$', register_success),
     url(r'^app/$', base,name = 'mainpage'),
@@ -43,6 +44,4 @@ urlpatterns = patterns('',
     url(r'^unfollow/$',follow_delete),
     url(r'^rec/$',user_user),
     
-
-
-)
+]
