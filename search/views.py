@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 
 import json
@@ -10,6 +11,7 @@ import json
 from watson import search as watson
 
 # Create your views here.
+@login_required
 def search_tab_view(request):
 	if request.method == "GET":
 		return render(request, "search_tab.html", {
@@ -18,13 +20,14 @@ def search_tab_view(request):
 	else:
 		return PermissionDenied
 
+@login_required
 def full_text_search(request):
 	if request.method == "POST":
 		json_data = json.loads(request.body.decode('utf-8'))
 		request_type = json_data['request_type']
 
 		if request_type == "search":
-			print ("json search text is ", json_data["search_text"])
+			# print ("json search text is ", json_data["search_text"])
 			search_results = watson.search(json_data["search_text"])
 			# print "object is ",search_results
 			json_response = {

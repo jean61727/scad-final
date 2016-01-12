@@ -1,5 +1,6 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 import json
@@ -17,12 +18,14 @@ from django.db.models import Q
 
 
 # Create your views here.
+@login_required
 def account_settings(request):
 	if request.method == 'POST':
 		return HttpResponse("hello it is POST")
 	else:
 		return render(request, 'account_settings.html', {})
 
+@login_required
 def db_account_image(request):
 	if request.method == "POST":
 		json_data = json.loads(request.body.decode('utf-8'))

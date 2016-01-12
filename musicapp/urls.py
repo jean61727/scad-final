@@ -12,22 +12,22 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     # Main View Tab Content
-    url(r'^$', home_view, name='home'),
-    url(r'^home/$', home_view, name='home'),
+    url(r'^$', home_view, name='home'), # login required
+    url(r'^home/$', home_view, name='home'), # login required
     url(r'^explore/songcategories/content/(?P<category>\w+)/', categoriesContent),
     url(r'^explore/songcategories/$',exploreSongCategories),
     url(r'^explore/users/$',exploreUsers),
     url(r'^profile/(?P<user>\w+)/(?P<control>[1-2]{1})/$',profile,name="profile_url"),
     #url(r'^profile/(?P<user>\w+)',profile_user,name="profile_url"),
-    url(r'^search/$', search_tab_view),
-    url(r'^search/user/$', full_text_search),
+    url(r'^search/$', search_tab_view), # login required
+    url(r'^search/user/$', full_text_search), # login required
 
 
     # Database Access
     url(r'^post_db/$', post_db),
     # Account Settings
-    url(r'^accounts/settings/$', account_settings ),
-    url(r'^accounts/settings/db_update_image/$', db_account_image),
+    url(r'^accounts/settings/$', account_settings ), # login required
+    url(r'^accounts/settings/db_update_image/$', db_account_image), # login required
     # Backend Administration
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', login, name='login'),
