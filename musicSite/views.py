@@ -318,16 +318,28 @@ def user_post(request):
 	#print request.POST['input_link']
 	context=RequestContext(request)
 	if request.method == 'POST':
-		#request.POST
-		# user = CustomUser.objects.get(id=request.POST.get('user'))
-		# print ("isssss ",request.POST.get('user'))
+
+		# handle start time form field
+		if request.POST.get('input_start'):
+			start_time = request.POST.get('input_start')
+		else:
+			start_time = 0
+		# prepare user profile image
+		try:
+			user_pic_path = CustomUser.objects.get(id=request.user.id).user_image
+		except:
+			raise Http404("We try to reach user's profile info when storing the new post, but such user either is not registered yet, or we have multiple instance of his/her")
+
 		new_post = Post(
 			user_id=request.POST.get('user'),
 			url=request.POST.get('vidsID'),
-			start_time=request.POST.get('input_start'),
+			start_time=start_time,
 			post_message=request.POST.get('post_message'),
 			category=request.POST.get('category'),
 			title=request.POST.get('vidsTitle'),
+			likes=0,
+			people_listening=0, # TODO
+			user_pic_path=user_pic_path,
             )
 		# print (request.POST.get('category'))
 		# print ("hello")
