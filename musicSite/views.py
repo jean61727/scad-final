@@ -1,37 +1,39 @@
+# Response to client
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,Http404
-from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
-import json
-
-
-#rec
-from sklearn.metrics.pairwise import cosine_similarity
-# for regular expression
-import re
-
-from django.template.loader import get_template
-from django import template
-from django.template import Context
 
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 
+# Signals toward client side
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
+
+#rec
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Processing data
+import json
+from django.core import serializers
+import re
+
+# Database model importing
 from posts.models import *
 from login.models import CustomUser
-
-from django.core import serializers
-
 # for using OR operation in db query
 from django.db.models import Q
-
-# used for increment a table field
+# used for increment a table field value
 from django.db.models import F
-
 # exceptions for queryset get() function
 from django.core.exceptions import ObjectDoesNotExist
+
+# Template View importing
+from django.template.loader import get_template
+from django import template
+from django.template import Context
 
 # Create your views here.
 def post_db(request):
@@ -273,6 +275,7 @@ def post_db(request):
 	else:
 		raise PermissionDenied
 
+@login_required
 def home_view(request):
 	if request.method == "POST":
 		raise PermissionDenied

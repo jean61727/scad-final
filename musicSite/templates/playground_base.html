@@ -71,13 +71,7 @@
             /* inline-block space fix */
             margin-right:-4px;
         }
-        .section-heading{
-            /*color: #FFD700;*/
-            /*the yellow*/
-            /*color: rgb(255,215,0);*/
-        }
-        
-
+    
     </style>
 </head>
 
@@ -119,6 +113,8 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- require login -->
+                {% if user.username %}
                 {% block post_button %}
                 <ul class="nav navbar-nav">
                     <li>
@@ -126,14 +122,13 @@
                     </li>
                 </ul>
                 {% endblock %}
+                {% endif %}
                 <ul class="nav navbar-nav navbar-right">
+                    <!-- require login -->
                     {% if user.username %}
                     <li>
                         <a href="/accounts/settings/">Hi {{ user.username }} !</a>
                     </li>
-                    <!-- <li>
-                        <a href="/accounts/settings/">Account</a>
-                    </li> -->
                     <li><a href="/logout/">LOGOUT</a></li>
                     {% else %} {% url 'login' as the_url %}
                     <li><a href="{{ the_url }}">LOGIN</a></li>
@@ -145,170 +140,182 @@
         <!-- /.container -->
     </nav>
 
-    {% block tabbar %}
-    <!-- Tab Switcher -->
-    <ul class="nav nav-tabs">
-        <!-- Home -->
-        <li class="{% if tab == 'home' %}active{% endif %}"><a href="/home">Home</a></li>
-        <!-- Explore -->
-        <li class="{% if tab == 'explore' %}active{% endif %} dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li class=""><a href="/explore/songcategories/">Explore Songs</a></li>
-                <li class=""><a href="/explore/users/">Explore Users</a></li>
-            </ul>
-        </li>
+    <!-- require login -->
+    {% if user.username %}
+        {% block tabbar %}
+        <!-- Tab Switcher -->
+        <ul class="nav nav-tabs">
+            <!-- Home -->
+            <li class="{% if tab == 'home' %}active{% endif %}"><a href="/home">Home</a></li>
+            <!-- Explore -->
+            <li class="{% if tab == 'explore' %}active{% endif %} dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class=""><a href="/explore/songcategories/">Explore Songs</a></li>
+                    <li class=""><a href="/explore/users/">Explore Users</a></li>
+                </ul>
+            </li>
 
-        <!-- Profile -->
-        <li class="{% if tab == 'profile'%}active{% endif %}"><a href="/profile/{{user.username}}/1">Profile</a></li>
-        <!-- Search -->
-        <li class="{% if tab == 'search' %}active{% endif %}"><a href="/search/">Search</a></li>
-    </ul>
-    {% endblock %}
+            <!-- Profile -->
+            <li class="{% if tab == 'profile'%}active{% endif %}"><a href="/profile/{{user.username}}/1">Profile</a></li>
+            <!-- Search -->
+            <li class="{% if tab == 'search' %}active{% endif %}"><a href="/search/">Search</a></li>
+        </ul>
+        {% endblock %}
     
-    <!-- Implementation of Post and Login Button feature -->
-    <!-- Modal -->
-    <div class="modal fade bs-example-modal-lg" id="myModal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-lg">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Post New Song!</h4>
-                </div>
-                <div class="modal-body">
-                    <ul class="nav nav-pills" role="tablist" id='myTabs'>
-                        <li role="presentation" class="active"><a href="#link" aria-controls="link" role="tab" data-toggle="tab" aria-expanded="true">Link</a></li>
-                        <li role="presentation"><a href="#search_tab" aria-controls="search_tab" role="tab" data-toggle="tab">Search</a></li>
-                    </ul>
+        <!-- Implementation of Post and Login Button feature -->
+        <!-- Modal -->
+        <div class="modal fade bs-example-modal-lg" id="myModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-lg">
 
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade in active" id="link">
-                            <div>
-                                <div style='float:right;'>
-                                    <div id='link_video'></div>
-                                </div>
-                                <form action="/post/" method="post" style="width:45%;">{% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="input_link">link</label>
-                                        <input type="link" class="form-control" id="input_link" name="input_link" placeholder="Please paste the link">
-                                        <!--<button  id="show_link">show link</button> -->
-                                        <input class="btn btn-default" type="button" id="show_link" value="show link">
-                                    </div>
-                                    <div class="form-group">
-                                        <label hidden="true" for="vidsID">videoID</label>
-                                        <input type="hidden" class="form-control" id="vidsID" name="vidsID" placeholder="Video ID">
-                                        <input  class="form-control" id="vidsTitle" name="vidsTitle" placeholder="VideoTitle" style="margin-top:10px">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="input_start">Where do you want it to start</label>
-                                        <input type="start_time" class="form-control" id="input_start" name="input_start" placeholder="calculated in seconds">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="post_message">Say sth...</label>
-                                        <textarea type="text" class="form-control" id="post_message" placeholder="type sth here" rows="3" name="post_message"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control" name="category">
-                                            <option value='rock' selected>Rock</option>
-                                                    
-                                                    <option value='hip_hop'>Hip hop</option>
-                                                    <option value='pop'>Pop</option>
-                                                    <option value='post_rock'>Post rock</option>
-                                                    <option value='punk'>Punk</option>
-                                                    <option value='indie'>Indie</option>
-                                                    <option value='acoustic'>Acoustic</option>
-                                                    <option value='electronic'>Electronic</option>
-                                                    <option value='randb'>R&B</option>
-                                                    <option value='country'>Country</option>
-                                                    <option value='jazz'>Jazz</option>
-                                                    <option value='classical'>Classical</option>
-                                        </select>
-                                    </div>
-                                    <input type="hidden" name="user" value="{{ user.id }}">
-                                    <!--<div class="checkbox">
-                                        <label>
-                                        <input type="checkbox"> Check me out
-                                        </label>
-                                    </div>-->
-                                    <input type="submit" class="btn btn-default" value="Submit">
-
-                                </form>
-
-                            </div>
-
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="search_tab">
-                            <div>
-                                <div class="row" align="center">
-                                    <div class="col-sm-4">
-                                        <form action="/post/" method="post" >{% csrf_token %}
-
-                                            <div class="form-group">
-                                                <label hidden="true" for="vidsID">videoID</label>
-                                                <input type="hidden" class="form-control" id="searchvidsID" name="vidsID" placeholder="Video ID">
-                                                <input  class="form-control" id="searchvidsTitle" name="vidsTitle" placeholder="VideoTitle" style="margin-top:10px">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="input_start">Where do you want it to start</label>
-                                                <input type="start_time" class="form-control" id="searchinput_start" name="input_start" placeholder="calculated in seconds">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="post_message">Say sth...</label>
-                                                <textarea type="text" class="form-control" id="searchpost_message" placeholder="type sth here" rows="3" name="post_message"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <select class="form-control" name="category">
-                                                    <option value='rock' selected>Rock</option>
-                                                    <option value='hip_hop'>Hip hop</option>
-                                                    <option value='pop'>Pop</option>
-                                                    <option value='post_rock'>Post rock</option>
-                                                    <option value='punk'>Punk</option>
-                                                    <option value='indie'>Indie</option>
-                                                    <option value='acoustic'>Acoustic</option>
-                                                    <option value='electronic'>Electronic</option>
-                                                    <option value='randb'>R&B</option>
-                                                    <option value='country'>Country</option>
-                                                    <option value='jazz'>Jazz</option>
-                                                    <option value='classical'>Classical</option>
-                                                </select>
-                                            </div>
-                                            <input type="hidden" name="user" value="{{ user.id }}">
-                                            <!--<div class="checkbox">
-                                        <label>
-                                        <input type="checkbox"> Check me out
-                                        </label>
-                                    </div>-->
-                                            <input type="submit" class="btn btn-default" value="Submit">
-
-                                        </form>
-                                    </div>
-                                    <div class="col-sm-6 ">
-                                        <form action="#" id='search_form'>
-                                            <label for="input_song">Search new songs</label>
-                                            <p>
-                                                <input type="text" id="input_song" placeholder="insert here..." autocomplete="off" class="form-control" />
-                                            </p>
-                                            <p>
-                                                <input type="submit" value="Search" class="form-control btn btn-primary w100" style="width:45%;">
-                                            </p>
-                                        </form>
-                                        <div id="results"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Post New Song!</h4>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!-- <button type="button" class="btn btn-primary">Send message</button>-->
+                    <div class="modal-body">
+                        <ul class="nav nav-pills" role="tablist" id='myTabs'>
+                            <li role="presentation" class="active"><a href="#link" aria-controls="link" role="tab" data-toggle="tab" aria-expanded="true">Link</a></li>
+                            <li role="presentation"><a href="#search_tab" aria-controls="search_tab" role="tab" data-toggle="tab">Search</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="link">
+                                <div>
+                                    <div style='float:right;'>
+                                        <div id='link_video'></div>
+                                    </div>
+                                    <form action="/post/" method="post" style="width:45%;">{% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="input_link">link</label>
+                                            <input type="link" class="form-control" id="input_link" name="input_link" placeholder="Please paste the link">
+                                            <!--<button  id="show_link">show link</button> -->
+                                            <input class="btn btn-default" type="button" id="show_link" value="show link">
+                                        </div>
+                                        <div class="form-group">
+                                            <label hidden="true" for="vidsID">videoID</label>
+                                            <input type="hidden" class="form-control" id="vidsID" name="vidsID" placeholder="Video ID">
+                                            <input  class="form-control" id="vidsTitle" name="vidsTitle" placeholder="VideoTitle" style="margin-top:10px">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="input_start">Where do you want it to start</label>
+                                            <input type="start_time" class="form-control" id="input_start" name="input_start" placeholder="calculated in seconds">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="post_message">Say sth...</label>
+                                            <textarea type="text" class="form-control" id="post_message" placeholder="type sth here" rows="3" name="post_message"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control" name="category">
+                                                <option value='rock' selected>Rock</option>
+                                                        
+                                                        <option value='hip_hop'>Hip hop</option>
+                                                        <option value='pop'>Pop</option>
+                                                        <option value='post_rock'>Post rock</option>
+                                                        <option value='punk'>Punk</option>
+                                                        <option value='indie'>Indie</option>
+                                                        <option value='acoustic'>Acoustic</option>
+                                                        <option value='electronic'>Electronic</option>
+                                                        <option value='randb'>R&B</option>
+                                                        <option value='country'>Country</option>
+                                                        <option value='jazz'>Jazz</option>
+                                                        <option value='classical'>Classical</option>
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="user" value="{{ user.id }}">
+                                        <!--<div class="checkbox">
+                                            <label>
+                                            <input type="checkbox"> Check me out
+                                            </label>
+                                        </div>-->
+                                        <input type="submit" class="btn btn-default" value="Submit">
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="search_tab">
+                                <div>
+                                    <div class="row" align="center">
+                                        <div class="col-sm-4">
+                                            <form action="/post/" method="post" >{% csrf_token %}
+
+                                                <div class="form-group">
+                                                    <label hidden="true" for="vidsID">videoID</label>
+                                                    <input type="hidden" class="form-control" id="searchvidsID" name="vidsID" placeholder="Video ID">
+                                                    <input  class="form-control" id="searchvidsTitle" name="vidsTitle" placeholder="VideoTitle" style="margin-top:10px">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="input_start">Where do you want it to start</label>
+                                                    <input type="start_time" class="form-control" id="searchinput_start" name="input_start" placeholder="calculated in seconds">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="post_message">Say sth...</label>
+                                                    <textarea type="text" class="form-control" id="searchpost_message" placeholder="type sth here" rows="3" name="post_message"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select class="form-control" name="category">
+                                                        <option value='rock' selected>Rock</option>
+                                                        <option value='hip_hop'>Hip hop</option>
+                                                        <option value='pop'>Pop</option>
+                                                        <option value='post_rock'>Post rock</option>
+                                                        <option value='punk'>Punk</option>
+                                                        <option value='indie'>Indie</option>
+                                                        <option value='acoustic'>Acoustic</option>
+                                                        <option value='electronic'>Electronic</option>
+                                                        <option value='randb'>R&B</option>
+                                                        <option value='country'>Country</option>
+                                                        <option value='jazz'>Jazz</option>
+                                                        <option value='classical'>Classical</option>
+                                                    </select>
+                                                </div>
+                                                <input type="hidden" name="user" value="{{ user.id }}">
+                                                <!--<div class="checkbox">
+                                            <label>
+                                            <input type="checkbox"> Check me out
+                                            </label>
+                                        </div>-->
+                                                <input type="submit" class="btn btn-default" value="Submit">
+
+                                            </form>
+                                        </div>
+                                        <div class="col-sm-6 ">
+                                            <form action="#" id='search_form'>
+                                                <label for="input_song">Search new songs</label>
+                                                <p>
+                                                    <input type="text" id="input_song" placeholder="insert here..." autocomplete="off" class="form-control" />
+                                                </p>
+                                                <p>
+                                                    <input type="submit" value="Search" class="form-control btn btn-primary w100" style="width:45%;">
+                                                </p>
+                                            </form>
+                                            <div id="results"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Send message</button>-->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Here if not logged in, we simply "hide" Navbar-POST, Navbar-accountName and tab. -->
+        <!-- for the content and those templates that extend this file, will have to handle their login requirement and decide what message to display.
+        For most cases, without tab user can hardly access other pages.
+        In case that a URL is given, people can then access internal page, and view renders the page, content is exposed to user. To avoid this, you should add @login_required in your view function. -->
+    {% else %}
+        <!-- <h1>Let's login first</h1> -->
+        <!-- login requirement message should be shown at each page that extends this base template. -->
+    {% endif %}<!-- requires login -->
 
     <!-- Tab Content implement by separate html templates -->
     {% block content %} {% endblock %}

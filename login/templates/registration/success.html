@@ -1,9 +1,10 @@
-{% extends "base.html" %}
-{% block title %}Registration Successful{% endblock %}
-{% block head %}
- Registration Completed Successfully
-{% endblock %}
+{% extends "playground_base.html" %}
+{% load staticfiles %}
+
 {% block content %}
-    Thank you for registering.
-    <a href="/login/">Login</a> 
+<div class="container">
+	<h1>Registration Completed Successfully</h1>
+    Thank you for registering.<br> 
+    <a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login</a> 
+</div>
 {% endblock %}

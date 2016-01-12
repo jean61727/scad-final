@@ -32,7 +32,11 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', login, name='login'),
     url(r'^logout/$', logout_page),
-    url(r'^accounts/login/$', login), # If user is not login it will redirect to login page
+
+    # Add @login_required before view function so when user is not login it will redirect to login page
+    # The URL accounts/login/ is a default link for such case in Django
+    url(r'^accounts/login/$', login),
+
     url(r'^register/$', register),
     url(r'^register/success/$', register_success),
     url(r'^app/$', base,name = 'mainpage'),
