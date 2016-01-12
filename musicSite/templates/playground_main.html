@@ -5,9 +5,9 @@
 {% if user|stringformat:"s" == "AnonymousUser" %}
 	<h1>Let's login first</h1>
 	<!-- Don't include POST button -->
-	{% block post_button %}{% endblock %}
+	 <!-- block post_button %}{% endblock  -->
 	<!-- Don't include the tab bar -->
-	{% block tabbar %}{% endblock %}
+	 <!-- block tabbar %}{% endblock  -->
 {% else %}
 	<!-- Custom JavaScript -->
 	<script type="text/javascript" src="{% static 'js/initialize_youtube_api.js' %}"></script>

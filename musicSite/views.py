@@ -277,10 +277,11 @@ def home_view(request):
 	if request.method == "POST":
 		raise PermissionDenied
 	else:
-		# a access request to website visit
-		# print "username ",request.user
+		# a website visit
+
+		# check
+
 		return render(request, 'playground_main.html', {'tab':'home'})
-	# return render_to_response('playground_main.html')
 
 def base(request):
 	
