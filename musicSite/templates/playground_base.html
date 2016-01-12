@@ -129,11 +129,11 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.username %}
                     <li>
-                        <p class="navbar-text">Hi {{ user.username }} !</p>
+                        <a href="/accounts/settings/">Hi {{ user.username }} !</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="/accounts/settings/">Account</a>
-                    </li>
+                    </li> -->
                     <li><a href="/logout/">LOGOUT</a></li>
                     {% else %} {% url 'login' as the_url %}
                     <li><a href="{{ the_url }}">LOGIN</a></li>
