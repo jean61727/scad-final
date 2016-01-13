@@ -469,7 +469,7 @@ def like_delete(request):
 
 def user_user(request):
 
-	categories = ['rock','hip_hop','pop','post_rock','punk','indie','acoustic','electronic','randb','country','jazz','classical']
+	categories = ['funny','rock','hip_hop','pop','post_rock','punk','indie','acoustic','electronic','randb','country','jazz','classical']
 
 	all_users=CustomUser.objects.all()
 	all_user_category_array=[]
