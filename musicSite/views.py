@@ -310,10 +310,9 @@ def exploreUsers(request):
 	all_posts = Post.objects.all()
 	follower = Follower.objects.filter(user_id=request.user)
 	print(follower)
-	rec_users=user_user(request)
-	print (rec_users)
-	print (all_users)
-	return render(request,'exploreUsers.html',{'all_users': rec_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
+
+
+	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 
 @csrf_protect
 def user_post(request):
@@ -470,7 +469,7 @@ def like_delete(request):
 
 def user_user(request):
 
-	categories = ['rock','hip_hop','pop','post_rock','punk','indie','acoustic','electronic','randb','country','jazz','classical']
+	categories = ['funny','rock','hip_hop','pop','post_rock','punk','indie','acoustic','electronic','randb','country','jazz','classical']
 
 	all_users=CustomUser.objects.all()
 	all_user_category_array=[]
@@ -499,10 +498,8 @@ def user_user(request):
 	# ranked_rec_dict=sorted(recommend_dict.iteritems(), key=lambda (k,v): (v,k),reverse=True)
 	# http://stackoverflow.com/questions/32534822/sort-out-the-content-displayed-by-the-highest-number
 
-	#ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
-	ranked_rec_dict = sorted(recommend_dict.keys())
-
+	ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
 	print (recommend_dict)
 	print (ranked_rec_dict)# sorted dict that ranks the users most similar to you 
 	# this version still includes the current logged in user itself 
-	return ranked_rec_dict
+	return render(request, 'playground_main.html', {'tab':'home'})
