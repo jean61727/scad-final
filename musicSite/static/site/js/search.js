@@ -29,6 +29,14 @@ $(function() {
 function resetVideoHeight() {
     $(".video").css("height", $("#results").width() * 9/16);
 }
+function clearString(s){ 
+    var pattern = new RegExp("[`~!@#$^&*()=|\"{}':;',\\[\\].<>/?~！@#￥……&*（）&;|{}【】‘；：”“'。，、？]") 
+    var rs = ""; 
+    for (var i = 0; i < s.length; i++) { 
+        rs = rs+s.substr(i, 1).replace(pattern, ' '); 
+    } 
+    return rs;  
+} 
 /*$("#query").keyup(function(event){
       if(event.keyCode == 13){
         
@@ -44,7 +52,7 @@ function showRadioValue() {
     
     
     $('#searchvidsID').val($('input[name="optradio"]:checked').val());
-    $('#searchvidsTitle').val($('input[name="optradio"]:checked').attr('id'));
+    $('#searchvidsTitle').val(clearString($('input[name="optradio"]:checked').attr('id')));
 }
 function init() {
 	gapi.client.setApiKey("AIzaSyCzs5nRdocc7hNoI4QJhao-X0B8nDVI2DU");
