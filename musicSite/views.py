@@ -310,9 +310,10 @@ def exploreUsers(request):
 	all_posts = Post.objects.all()
 	follower = Follower.objects.filter(user_id=request.user)
 	print(follower)
-
-
-	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
+	rec_users=user_user(request)
+	print (rec_users)
+	print (all_users)
+	return render(request,'exploreUsers.html',{'all_users': rec_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 
 @csrf_protect
 def user_post(request):
@@ -498,8 +499,10 @@ def user_user(request):
 	# ranked_rec_dict=sorted(recommend_dict.iteritems(), key=lambda (k,v): (v,k),reverse=True)
 	# http://stackoverflow.com/questions/32534822/sort-out-the-content-displayed-by-the-highest-number
 
-	ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
+	#ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
+	ranked_rec_dict = sorted(recommend_dict.keys())
+
 	print (recommend_dict)
 	print (ranked_rec_dict)# sorted dict that ranks the users most similar to you 
 	# this version still includes the current logged in user itself 
-	return render(request, 'playground_main.html', {'tab':'home'})
+	return ranked_rec_dict
