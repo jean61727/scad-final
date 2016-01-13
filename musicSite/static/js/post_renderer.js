@@ -80,7 +80,6 @@ function render_post_body(json_data, id_container){
 			'class':'col-xs-12',
 		}).appendTo($post_video);
 		render_post_video(obj, $video_col);
-
 		// rightside - post message
 		$post_message = $("<div>", {
 			'class':'row panel-body',
