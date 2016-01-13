@@ -53,10 +53,33 @@ function showRadioValue() {
     
     $('#searchvidsID').val($('input[name="optradio"]:checked').val());
     $('#searchvidsTitle').val(clearString($('input[name="optradio"]:checked').attr('id')));
+    
+    $.getJSON('https://www.googleapis.com/youtube/v3/videos?id='+$('input[name="optradio"]:checked').val()+'&key=AIzaSyCzs5nRdocc7hNoI4QJhao-X0B8nDVI2DU&part=contentDetails',function(data){
+                
+           console.log(convertISO8601ToSeconds(data.items[0].contentDetails.duration));
+                sliderSearch(convertISO8601ToSeconds(data.items[0].contentDetails.duration));
+            });
+    
 }
 function init() {
 	gapi.client.setApiKey("AIzaSyCzs5nRdocc7hNoI4QJhao-X0B8nDVI2DU");
 	gapi.client.load("youtube", "v3", function () {
 		// yt api is ready
 	});
+}
+function sliderSearch(duration){
+var minutes,second;
+
+$( "#sliderSearch" ).slider({
+      
+      min: 0,
+      max: duration,
+      values: [0] ,
+      slide: function( event, ui ) {
+        $( "#searchinput_start" ).val(  ui.values[ 0 ]  );
+      }
+    });
+    $( "#searchinput_start" ).val(  $( "#sliderSearch" ).slider( "values", 0 )  );
+    
+    //$( "#amount" ).val(  $( "#input_start" ).val()/60  );
 }
