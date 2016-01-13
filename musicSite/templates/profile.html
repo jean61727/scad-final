@@ -161,13 +161,25 @@
         }
         console.log(video_id_list);
         //onYouTubePlayerAPIReady();
-        player.destroy();
         playlist(option_control);
     });
 
     function playlist(option) {
+
         var target_video;
+        console.log(option);
         var temp_option = option_control;
+        if(temp_option!=0){
+            player.destroy();
+        }     
+
+        console.log(target_video);
+        tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        
         if (option == 1) {
             option_control = 1;
             target_video = videos;
@@ -175,17 +187,13 @@
             option_control = 2;
             target_video = videos_like;
         }
+
         $("#play_list").empty();
 
-        if (temp_option != option_control) {
+        if (temp_option != option_control) { // when the one picked is different than the one last time
             if (temp_option != 0) {
                 console.log("hihihihihi");
-                player.destroy();
-                console.log(videos[0]);
-                var tag = document.createElement('script');
-                tag.src = "https://www.youtube.com/iframe_api";
-                var firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                
             }
             for (var i = 0; i < target_video.length; i++) {
                 video_id_list[i] = target_video[i].fields.url;
@@ -199,13 +207,14 @@
         }
         //console.log(videos);
 
-        if (temp_option == 0) {
+        /*if (temp_option == 0) {
             console.log(videos[0]);
             var tag = document.createElement('script');
             tag.src = "https://www.youtube.com/iframe_api";
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        }
+        
+        }*/
         onYouTubePlayerAPIReady(1);
     }
 
