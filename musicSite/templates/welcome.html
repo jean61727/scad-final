@@ -1,0 +1,42 @@
+{% extends 'playground_base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+    <!-- External CSS -->
+    <link href="{% static 'css/agency.css' %}" rel="stylesheet">
+    
+    <!--Load Youtube API-->
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+
+    
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container" id="intro-container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Welcome To YouBox!</div>
+                <div class="intro-heading">Enjoy sharing and discovering music here!</div>
+                <a href="/register/" class="page-scroll btn btn-xl">立即註冊</a>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="{% static 'js/jqBootstrapValidation.js' %}"></script>
+    <script src="{% static 'js/contact_me.js' %}"></script>
+
+<style>
+#header{
+
+    background-image: url("{% static 'img/welcomebg2.jpg' %}");
+    background-size: 1500px 1500px;
+}
+</style>
+
+
+{% endblock %}

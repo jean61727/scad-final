@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'^search/$', search_tab_view), # login required
     url(r'^search/user/$', full_text_search), # login required
 
+    #welcome page
+    url(r'^welcome/$',welcome),
+
 
     # Database Access
     url(r'^post_db/$', post_db),

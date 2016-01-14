@@ -314,6 +314,9 @@ def exploreUsers(request):
 
 	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 
+def welcome(request):
+	return render(request,'welcome.html')
+
 @csrf_protect
 def user_post(request):
 
