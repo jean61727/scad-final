@@ -7,6 +7,6 @@ from django.contrib.auth.models import User, UserManager
 #    user_image = models.TextField(max_length=100)
 
 
-class CustomUser(User):
-	user_image = models.TextField(max_length=100)
-	objects = UserManager()
+# class CustomUser(User):
+# 	user_image = models.TextField(max_length=100)
+# 	objects = UserManager()
