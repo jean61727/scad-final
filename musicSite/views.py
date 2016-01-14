@@ -309,7 +309,7 @@ def exploreUsers(request):
 	all_users = CustomUser.objects.all()
 	all_posts = Post.objects.all()
 	follower = Follower.objects.filter(user_id=request.user)
-	print(follower)
+	print(all_users)
 
 
 	return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
