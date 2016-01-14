@@ -12,7 +12,8 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     # Main View Tab Content
-    url(r'^$', home_view, name='home'), # login required
+    #url(r'^$', home_view, name='home'), # login required
+    url(r'^$', welcome),
     url(r'^home/$', home_view, name='home'), # login required
     url(r'^explore/songcategories/content/(?P<category>\w+)/', categoriesContent),
     url(r'^explore/songcategories/$',exploreSongCategories),
