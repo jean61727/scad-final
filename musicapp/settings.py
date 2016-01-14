@@ -36,12 +36,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'login',
-    'musicSite',
-    'posts',
-    'account',
-    'search',
-    'watson',
+    # 'login',
+    # 'musicSite',
+    # 'posts',
+    # 'account',
+    # 'search',
+    # 'watson',
 )
 
 MIDDLEWARE_CLASSES = (
