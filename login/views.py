@@ -21,7 +21,7 @@ def register(request):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email'],
-                # user_image='/static/img/user_pic_jap_pattern.jpg',
+                user_image='/static/img/user_pic_blue_heart.gif',
             )
             # print ("user is!!!!!! ", user.id)
             return HttpResponseRedirect('/register/success/')
