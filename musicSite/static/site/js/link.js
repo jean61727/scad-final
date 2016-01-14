@@ -10,7 +10,7 @@ $(function(){
     });
     $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#slider-range" ).slider( "values", 1 ) );*/
-    $("#input_link").keyup(function (event) {
+        $("#input_link").keyup(function (event) {
 		if (event.keyCode == 13) {
 			
 			$("#show_link").click();
@@ -120,4 +120,10 @@ $( "#slider" ).slider({
     $( "#input_start" ).val(  $( "#slider" ).slider( "values", 0 )  );
     
     $( "#amount" ).val(  $( "#input_start" ).val()/60  );
+}
+function messageTextValue(){
+console.log($("#messageText").val());
+$("#post_message").val($("#messageText").val());
+
+
 }

@@ -83,3 +83,9 @@ $( "#sliderSearch" ).slider({
     
     //$( "#amount" ).val(  $( "#input_start" ).val()/60  );
 }
+function messageTextValueSearch(){
+console.log($("#messageText").val());
+$("#searchpost_message").val($("#messageTextSearch").val());
+
+
+}
