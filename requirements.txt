@@ -4,4 +4,3 @@ Django==1.9.1
 gunicorn==19.4.5
 static3==0.6.1
 numpy==1.10.4
-sklearn==0.0
