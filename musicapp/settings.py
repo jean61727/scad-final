@@ -31,13 +31,12 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'django.contrib.admin',
-    'login',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'login',
     'musicSite',
     'posts',
     'account',
@@ -64,6 +63,7 @@ import dj_database_url
 # add these lines at the end of your settings.py to continue to use sql lite locally and only postgres on heroku.
 # http://stackoverflow.com/questions/12308046/how-to-launch-your-already-made-django-app-on-heroku
 
+# AUTH_USER_MODEL = 'login.CustomUser'
 # import os
 if os.getcwd() == "/app":
     DATABASES = {
