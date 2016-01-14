@@ -324,11 +324,10 @@ def exploreUsers(request):
 
 	rec_users=user_user(request)
 	for following in follower:
-		print following.follow
 		for users in rec_users:
 			if(following.follow==users.username):
 				rec_users.remove(users);
-	print (rec_users)
+	print (rec_users[0])
 	print (all_users)
 	return render(request,'exploreUsers.html',{'all_users': rec_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 def welcome(request):
@@ -518,8 +517,10 @@ def user_user(request):
 	# ranked_rec_dict=sorted(recommend_dict.iteritems(), key=lambda (k,v): (v,k),reverse=True)
 	# http://stackoverflow.com/questions/32534822/sort-out-the-content-displayed-by-the-highest-number
 
-	#ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
-	ranked_rec_dict = sorted(recommend_dict.keys())
+	ranked_rec_dict=sorted(recommend_dict.items(), key=lambda x: (x[1],x[0]),reverse=True)
+	#ranked_rec_dict = sorted(recommend_dict.keys())
+	for idx, rec in enumerate(ranked_rec_dict):
+		ranked_rec_dict[idx] =list(rec)[0] 
 
 	print (recommend_dict)
 	print (ranked_rec_dict)# sorted dict that ranks the users most similar to you 
