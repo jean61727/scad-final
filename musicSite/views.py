@@ -281,11 +281,12 @@ def home_view(request):
 	all_users = CustomUser.objects.all()
 	all_posts = Post.objects.all()
 	follower = Follower.objects.filter(user_id=request.user)
+	five_posts=Post.objects.all()[:5]
 
 	warning = "Hey newbie, follow some users first so your home page will be filled with posts!"
 
 	if len(follower) == 0:
-		return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower,'warning':warning})
+		return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': five_posts, 'tab':'explore', 'user_self': request.user,'follower':follower,'warning':warning})
 
 	elif request.method == "POST":
 		raise PermissionDenied
@@ -317,7 +318,7 @@ def categoriesContent(request,category):
 def exploreUsers(request):
 
 	all_users = CustomUser.objects.all()
-	all_posts = Post.objects.all()
+	all_posts = Post.objects.all()[:5]
 	follower = Follower.objects.filter(user_id=request.user)
 	print(all_users)
 
@@ -325,16 +326,11 @@ def exploreUsers(request):
 	rec_users=user_user(request)
 	for following in follower:
 		for users in rec_users:
-			if(following.follow==users):
+			if(following.follow==users.username):
 				rec_users.remove(users);
 	print (rec_users[0])
 	print (all_users)
-	final_rec_users=[]
-	for rec in rec_users:
-		final_rec_users.append(CustomUser.objects.filter(username=rec)[0])
-		
-	
-	return render(request,'exploreUsers.html',{'all_users': final_rec_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
+	return render(request,'exploreUsers.html',{'all_users': rec_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 def welcome(request):
 	return render(request,'welcome.html')
 
@@ -516,7 +512,7 @@ def user_user(request):
 	
 	recommend_dict={}
 	for idx, user in enumerate(all_users):
-		recommend_dict[user.username]= similarity[0][idx]
+		recommend_dict[user]= similarity[0][idx]
 
 
 	# ranked_rec_dict=sorted(recommend_dict.iteritems(), key=lambda (k,v): (v,k),reverse=True)
