@@ -270,6 +270,7 @@ function render_post_comment(post_data, $comment_container){
 		'data-target':'#'+id_comment_collapse,
 		'id':id_comment_collapse_control,
 		'html':'Comments...',
+        'style':'margin-bottom:10px;',
 	}).appendTo("#"+id_comment_col);
 
 	// block to be collapsed

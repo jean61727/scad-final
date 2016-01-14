@@ -17,4 +17,4 @@ class CustomUser(User):
 	# USERNAME_FIELD = 'username'
     # REQUIRED_FIELDS = []
 	objects = UserManager()
-		
+
