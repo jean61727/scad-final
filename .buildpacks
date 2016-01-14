@@ -1,1 +1,2 @@
-https://github.com/move-fast/conda-buildpack
+https://github.com/conda/conda-buildpack.git
+https://github.com/heroku/heroku-buildpack-python

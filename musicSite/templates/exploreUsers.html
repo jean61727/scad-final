@@ -8,10 +8,24 @@
 
     <!-- thumbnail CSS -->
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+
    
     {% if all_users %}
     <div class="bg-1">
+
         <div class="container" id="user-grid-container">
+    
+        {% if warning %}
+
+        <div class="alert alert-warning fade in">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+          <p><strong>{{warning}}</strong></p>
+        </div>
+
+        {% endif %}
+
         <div class="row text-center">
         {% for traverse_user in all_users %}
 
@@ -109,7 +123,7 @@
     color: rgb(38,38,38);
   }
   .list-group-item{
-    background-color: rgb(100, 100, 100);
+    background-color: rgb(200,200,200);
   }
 
     .portfolio-hover{
