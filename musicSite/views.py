@@ -316,9 +316,12 @@ def categoriesContent(request,category):
 
 def exploreUsers(request):
 
-	all_users = CustomUser.objects.all()
+	#all_users = CustomUser.objects.all()
 	all_posts = Post.objects.all()
-	follower = Follower.objects.filter(user_id=request.user)
+	follower = Follower.objects.filter(user_id=request.user).values_list('follow', flat=True)
+	all_users = CustomUser.objects.exclude(username__in=follower)
+
+	print(follower)
 	print(all_users)
 
 
