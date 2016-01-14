@@ -15,12 +15,112 @@
         <div class="container" id="intro-container">
             <div class="intro-text">
                 <div class="intro-lead-in">Welcome To YouBox!</div>
-                <div class="intro-heading">Enjoy sharing and discovering music here!</div>
+
+                                <hr>
+
+                <div class="intro-heading">Share and discover music everyday!</div>
                 <a href="/register/" class="page-scroll btn btn-xl">立即註冊</a>
+                <a href="/login/" class="page-scroll btn btn-xl">登入</a>
             </div>
 
         </div>
     </header>
+
+        <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">What you can do in YouBox</h2>
+                    <h3 class="section-subheading text-muted">Great music is never enough.</h3>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Share</h4>
+                    <p class="text-muted">Share the music you felt in love with, discover people who relate to you!</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Discover</h4>
+                    <p class="text-muted">Discover new music shared by the users you've followed!</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Explore</h4>
+                    <p class="text-muted">Explore more songs by category, or more users that have similar music taste with you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Portfolio Grid Section -->
+    <section id="portfolio" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading" id="portfolio-heading">How do you share & discover?</h2>
+                    <h3 class="section-subheading text-muted">LOGIN first to explore these pages. :)</h3>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="/home/" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{% static 'img/share.png' %}" class="img-responsive" id="tutorial-1" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>Share</h4>
+                        <p class="text-muted">Post the video of the song you like from YouTube.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="/home/" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{% static 'img/discover.png' %}" class="img-responsive" id="tutorial-2" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>Discover</h4>
+                        <p class="text-muted">Scroll through your home page to discover the songs others posted.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="/explore/songcategories/" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{% static 'img/explore.png' %}" class="img-responsive" id="tutorial-3" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>Explore</h4>
+                        <p class="text-muted">Find popular songs in their categories and the users we recommend for you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- Plugin JavaScript -->
@@ -35,6 +135,25 @@
 
     background-image: url("{% static 'img/welcomebg2.jpg' %}");
     background-size: 1500px 1500px;
+}
+#services{
+    background-color: black;
+}
+.intro-text{
+
+    padding-top: 0px;
+}
+#tutorial-1{
+    height: 200px;
+}
+#portfolio{
+    background-color: rgb(255,215,0);
+}
+#portfolio-heading{
+    color: black;
+}
+.portfolio-item{
+    background-color: ;
 }
 </style>
 
