@@ -1,16 +1,14 @@
 {% extends 'playground_base.html' %} {% load staticfiles %} {% block content %}
 
 <!-- Customed Bootstrap CSS -->
-<link href="{% static 'css/ihover.css' %}" rel="stylesheet">
-
-{% if user.username %} {%block head%}
+<link href="{% static 'css/ihover.css' %}" rel="stylesheet"> {% if user.username %} {%block head%}
 
 <!-- Nav Pills: { User Profile, Follow } -->
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
         <ul class="nav nav-pills" role="tablist" id='myTabs'>
             <li role="presentation" class="active">
-                <a  style="margin:10px" href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab">User Profile</a>
+                <a style="margin:10px" href="#user_profile" aria-controls="user_profile" role="tab" data-toggle="tab">User Profile</a>
             </li>
             <li role="presentation">
                 <a style="margin:10px" href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
@@ -41,12 +39,12 @@
                                 <h3 id="username">{{ user.username }}</h3> {%endblock%}
 
                                 <!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
-                               
+
 
                             </div>
 
                         </div>
-                        
+
 
                     </div>
                     <div class="col-md-6" style="float:right;margin-right:10px;">
@@ -85,9 +83,9 @@
 
             <div role="tabpanel" class="tab-pane fade" id="user_playlist">
                 <div>
-                     <div class = "row">
-                        <div class = "col-sm-9">
-                            <div class = "row">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="row">
                                 <div class="col-sm-3" style="">
                                     <!-- normal -->
                                     <div class="ih-item square effect13 top_to_bottom">
@@ -135,10 +133,10 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
-                    
+
                     <div class='row'>
                         <div class="col-md-offset-2">
                             <div class="col-md-8" id="player" style="margin:10px;">
@@ -154,12 +152,12 @@
 
                     </div>
                     <div class='row'>
-                            <div class="col-md-6">
-                                <ul id="pick_song" class="connectedSortable"></ul>
-                            </div>
-                            <div class="col-md-6">
-                                <ul id="selected_song" class="connectedSortable"></ul>
-                            </div>
+                        <div class="col-md-6">
+                            <ul id="pick_song" class="connectedSortable"></ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul id="selected_song" class="connectedSortable"></ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,31 +167,29 @@
 
 
 {%endblock%} {% else %}
-<h3 align="center">Please Login !</h3> 
-
-{% endif %} 
-
-{%block scripts%}
+<h3 align="center">Please Login !</h3> {% endif %} {%block scripts%}
 <style>
-  #pick_song, #selected_song {
-    border: 1px solid #eee;
-    width: 100%;
-    min-height: 20px;
-    list-style-type: none;
-    margin: 0;
-    padding: 5px 0 0 0;
-    float: left;
-    margin-right: 10px;
-  }
-  #pick_song li, #selected_song li {
-    margin: 0 5px 5px 5px;
-    padding: 5px;
-    font-size: 1.2em;
+    #pick_song,
+    #selected_song {
+        border: 1px solid #eee;
+        width: 100%;
+        min-height: 20px;
+        list-style-type: none;
+        margin: 0;
+        padding: 5px 0 0 0;
+        float: left;
+        margin-right: 10px;
+    }
     
-  }
-  </style>
+    #pick_song li,
+    #selected_song li {
+        margin: 0 5px 5px 5px;
+        padding: 5px;
+        font-size: 1.2em;
+    }
+
+</style>
 <script type="text/javascript">
-    
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -206,9 +202,9 @@
     var video_id_list = [];
     var video_title_list = [];
     var player;
-    var create_id_playlist=[];
-    var create_title_playlist=[];
-    var create_playlist=[];
+    var create_id_playlist = [];
+    var create_title_playlist = [];
+    var create_playlist = [];
 
     $("#play_list").sortable().bind('sortupdate', function(e, ui) {
 
@@ -228,15 +224,15 @@
         playlist(option_control);
     });
 
-       
+
     var oldList, newList, item;
 
-    
-    $( "#pick_song, #selected_song" ).sortable({
-      connectWith: ".connectedSortable"
+
+    $("#pick_song, #selected_song").sortable({
+        connectWith: ".connectedSortable"
     }).bind('sortupdate', function(e, ui) {
         /*console.log('現在的順序' + ui.item.index());*/
-        create_playlist=[];
+        create_playlist = [];
         $("input#test-log").val($('#selected_song').sortable('toArray'));
         console.log("heres");
         console.log($('#selected_song'));
@@ -244,10 +240,10 @@
         for (var i = 0; i < $('#selected_song').sortable('toArray').length; i++) {
             /*console.log($('#play_list').sortable('toArray')[i]);*/
             //console.log($("#"+$('#play_list').sortable('toArray')[i]).attr('value'));
-            create_id_playlist[i]=video_id_list[i] = $("#" + $('#selected_song').sortable('toArray')[i]).attr('value');
+            create_id_playlist[i] = video_id_list[i] = $("#" + $('#selected_song').sortable('toArray')[i]).attr('value');
             //console.log($('#play_list').sortable('toArray')[i]);
             //console.log($("#"+$('#play_list').sortable('toArray')[i]).text());
-            create_title_playlist[i]=video_title_list[i] = $("#" + $('#selected_song').sortable('toArray')[i]).text();
+            create_title_playlist[i] = video_title_list[i] = $("#" + $('#selected_song').sortable('toArray')[i]).text();
             create_playlist.push("s");
             console.log(create_playlist);
         }
@@ -258,14 +254,14 @@
 
 
 
-    for (var i=0; i < videos.length ; i++) {
-            
-            $("#pick_song").append("<li style='background-color:#ffffff;' id=" + i + " class='list-group-item list-group-item-info span3' value='" + videos[i].fields.url+ "' >" + videos[i].fields.title+ "</li>");
+    for (var i = 0; i < videos.length; i++) {
+
+        $("#pick_song").append("<li style='background-color:#ffffff;' id=" + i + " class='list-group-item list-group-item-info span3' value='" + videos[i].fields.url + "' >" + videos[i].fields.title + "</li>");
 
     }
-    for (var i = 0; i < videos_like.length ; i++) {
-            
-            $("#pick_song").append("<li style='background-color:#ffffff;' id=" + (i+ videos.length)+ " class='list-group-item list-group-item-info span3' value='" + videos_like[i].fields.url+ "' >" + videos_like[i].fields.title+ "</li>");
+    for (var i = 0; i < videos_like.length; i++) {
+
+        $("#pick_song").append("<li style='background-color:#ffffff;' id=" + (i + videos.length) + " class='list-group-item list-group-item-info span3' value='" + videos_like[i].fields.url + "' >" + videos_like[i].fields.title + "</li>");
 
     }
 
@@ -274,9 +270,9 @@
         var target_video;
         console.log(option);
         var temp_option = option_control;
-        if(temp_option!=0){
+        if (temp_option != 0) {
             player.destroy();
-        }     
+        }
 
         console.log(target_video);
         tag = document.createElement('script');
@@ -284,16 +280,16 @@
         firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        
+
         if (option == 1) {
             option_control = 1;
             target_video = videos;
         } else if (option == 2) {
             option_control = 2;
             target_video = videos_like;
-        } else if (option==3){
+        } else if (option == 3) {
             option_control = 3;
-            target_video=create_playlist;
+            target_video = create_playlist;
             console.log(target_video);
         }
 
@@ -303,13 +299,14 @@
 
             if (temp_option != 0) {
                 console.log("hihihihihi");
-                
-            }if(option!=3){
+
+            }
+            if (option != 3) {
                 for (var i = 0; i < target_video.length; i++) {
                     video_id_list[i] = target_video[i].fields.url;
                     video_title_list[i] = target_video[i].fields.title;
                 }
-            }else{
+            } else {
                 for (var i = 0; i < target_video.length; i++) {
                     video_id_list[i] = create_id_playlist[i];
                     video_title_list[i] = create_title_playlist[i];
@@ -351,8 +348,7 @@
                     'onStateChange': onPlayerStateChange
                 }
             });
-        }
-        else if (num!=1){
+        } else if (num != 1) {
             console.log("youtube onready called once");
             render_post('post_container', {
                 "username": '{{ user.username }}',
@@ -383,10 +379,10 @@
 </script>
 
 <style>
-#username{
-    color: rgb(255,215,0);
-}
+    #username {
+        color: rgb(255, 215, 0);
+    }
+
 </style>
 
-{% endblock %} 
-{% endblock %}
+{% endblock %} {% endblock %}
