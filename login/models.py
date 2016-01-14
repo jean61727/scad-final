@@ -10,3 +10,4 @@ from django.contrib.auth.models import User, UserManager
 class CustomUser(User):
 	user_image = models.TextField(max_length=100)
 	objects = UserManager()
+
