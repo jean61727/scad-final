@@ -15,6 +15,9 @@
             <li role="presentation">
                 <a style="margin:10px" href="#follow" aria-controls="follow" role="tab" data-toggle="tab">Follow</a>
             </li>
+            <li role="presentation">
+                <a style="margin:10px" href="#user_playlist" aria-controls="user_playlist" role="tab" data-toggle="tab">My PLayList</a>
+            </li>
         </ul>
     </div>
 </div>
@@ -38,54 +41,12 @@
                                 <h3 id="username">{{ user.username }}</h3> {%endblock%}
 
                                 <!--<button class="glyphicon glyphicon-play button" aria-hidden="true" style="margin-top:30%;" id = "play" onclick="playlist()" ></button>-->
-                                <div>
-                                    <div class="col-sm-6" style="">
-                                        <!-- normal -->
-                                        <div class="ih-item square effect13 top_to_bottom">
-                                            <a href="#">
-                                                <div class="img">
-                                                    <img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
-                                                </div>
-                                                <div class="info">
-                                                    <h3>My Playlist</h3>
-                                                    <p>Posted Songs!</p>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- end normal -->
-                                    {%block follow%}
-                                    <div class="col-sm-6" style="">
-                                        <!-- normal -->
-                                        <div class="ih-item square effect13 top_to_bottom">
-                                            <a href="#">
-                                                <div class="img">
-                                                    <img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
-                                                </div>
-                                                <div class="info">
-                                                    <h3>Favorite</h3>
-                                                    <p>Songs Liked!</p>
-                                                </div>
-                                            </a>
-                                        </div>
-
-                                    </div>
-                                    {%endblock%}
-                                </div>
+                               
 
                             </div>
 
                         </div>
-                        <div class='row'>
-                            <div class="col-md-10" id="player" style="float:left;margin:10px;">
-
-                            </div>
-
-                        </div>
-
-                        <div class='row'>
-                            <div class="col-md-11" id="play_list" style="float:left;margin:10px;"></div>
-                        </div>
+                        
 
                     </div>
                     <div class="col-md-6" style="float:right;margin-right:10px;">
@@ -121,6 +82,87 @@
                     </ul>
                 </div>
             </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="user_playlist">
+                <div>
+                     <div class = "row">
+                        <div class = "col-sm-9">
+                            <div class = "row">
+                                <div class="col-sm-3" style="">
+                                    <!-- normal -->
+                                    <div class="ih-item square effect13 top_to_bottom">
+                                        <a href="#">
+                                            <div class="img">
+                                                <img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(1)">
+                                            </div>
+                                            <div class="info">
+                                                <h3>My Playlist</h3>
+                                                <p>Posted Songs!</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- end normal -->
+                                {%block follow%}
+                                <div class="col-sm-3" style="">
+                                    <!-- normal -->
+                                    <div class="ih-item square effect13 top_to_bottom">
+                                        <a href="#">
+                                            <div class="img">
+                                                <img src="{% static 'img/favorites.jpg' %}" alt="img" onclick="playlist(2)">
+                                            </div>
+                                            <div class="info">
+                                                <h3>Favorite</h3>
+                                                <p>Songs Liked!</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                {%endblock%}
+                                <div class="col-sm-3" style="">
+                                    <!-- normal -->
+                                    <div class="ih-item square effect13 top_to_bottom">
+                                        <a href="#">
+                                            <div class="img">
+                                                <img src="{% static 'img/my_song.jpg' %}" alt="img" onclick="playlist(3)">
+                                            </div>
+                                            <div class="info">
+                                                <h3>Customized Playlist</h3>
+                                                <p>CREATE!</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class='row'>
+                        <div class="col-md-offset-2">
+                            <div class="col-md-8" id="player" style="margin:10px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <div class="col-md-offset-2">
+                            <div class="col-md-8" id="play_list" style="float:left;margin:10px;">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class='row'>
+                            <div class="col-md-6">
+                                <ul id="pick_song" class="connectedSortable"></ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul id="selected_song" class="connectedSortable"></ul>
+                            </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -132,6 +174,24 @@
 {% endif %} 
 
 {%block scripts%}
+<style>
+  #pick_song, #selected_song {
+    border: 1px solid #eee;
+    width: 100%;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    float: left;
+    margin-right: 10px;
+  }
+  #pick_song li, #selected_song li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    
+  }
+  </style>
 <script type="text/javascript">
     
     var tag = document.createElement('script');
@@ -146,8 +206,12 @@
     var video_id_list = [];
     var video_title_list = [];
     var player;
+    var create_id_playlist=[];
+    var create_title_playlist=[];
+    var create_playlist=[];
 
     $("#play_list").sortable().bind('sortupdate', function(e, ui) {
+
         /*console.log('現在的順序' + ui.item.index());*/
         $("input#test-log").val($('#play_list').sortable('toArray'));
         console.log(ui.item);
@@ -163,6 +227,47 @@
         //onYouTubePlayerAPIReady();
         playlist(option_control);
     });
+
+       
+    var oldList, newList, item;
+
+    
+    $( "#pick_song, #selected_song" ).sortable({
+      connectWith: ".connectedSortable"
+    }).bind('sortupdate', function(e, ui) {
+        /*console.log('現在的順序' + ui.item.index());*/
+        create_playlist=[];
+        $("input#test-log").val($('#selected_song').sortable('toArray'));
+        console.log("heres");
+        console.log($('#selected_song'));
+        console.log($('#selected_song').sortable('toArray'));
+        for (var i = 0; i < $('#selected_song').sortable('toArray').length; i++) {
+            /*console.log($('#play_list').sortable('toArray')[i]);*/
+            //console.log($("#"+$('#play_list').sortable('toArray')[i]).attr('value'));
+            create_id_playlist[i]=video_id_list[i] = $("#" + $('#selected_song').sortable('toArray')[i]).attr('value');
+            //console.log($('#play_list').sortable('toArray')[i]);
+            //console.log($("#"+$('#play_list').sortable('toArray')[i]).text());
+            create_title_playlist[i]=video_title_list[i] = $("#" + $('#selected_song').sortable('toArray')[i]).text();
+            create_playlist.push("s");
+            console.log(create_playlist);
+        }
+        console.log(video_id_list);
+        //onYouTubePlayerAPIReady();
+        playlist(option_control);
+    });
+
+
+
+    for (var i=0; i < videos.length ; i++) {
+            
+            $("#pick_song").append("<li style='background-color:#ffffff;' id=" + i + " class='list-group-item list-group-item-info span3' value='" + videos[i].fields.url+ "' >" + videos[i].fields.title+ "</li>");
+
+    }
+    for (var i = 0; i < videos_like.length ; i++) {
+            
+            $("#pick_song").append("<li style='background-color:#ffffff;' id=" + (i+ videos.length)+ " class='list-group-item list-group-item-info span3' value='" + videos_like[i].fields.url+ "' >" + videos_like[i].fields.title+ "</li>");
+
+    }
 
     function playlist(option) {
 
@@ -186,24 +291,35 @@
         } else if (option == 2) {
             option_control = 2;
             target_video = videos_like;
+        } else if (option==3){
+            option_control = 3;
+            target_video=create_playlist;
+            console.log(target_video);
         }
 
         $("#play_list").empty();
 
         if (temp_option != option_control) { // when the one picked is different than the one last time
+
             if (temp_option != 0) {
                 console.log("hihihihihi");
                 
-            }
-            for (var i = 0; i < target_video.length; i++) {
-                video_id_list[i] = target_video[i].fields.url;
-                video_title_list[i] = target_video[i].fields.title;
+            }if(option!=3){
+                for (var i = 0; i < target_video.length; i++) {
+                    video_id_list[i] = target_video[i].fields.url;
+                    video_title_list[i] = target_video[i].fields.title;
+                }
+            }else{
+                for (var i = 0; i < target_video.length; i++) {
+                    video_id_list[i] = create_id_playlist[i];
+                    video_title_list[i] = create_title_playlist[i];
+                }
             }
         }
 
         for (var i = 0; i < target_video.length; i++) {
 
-            $("#play_list").append("<li style='background-color:#ffffff;' id=" + i + " class='list-group-item list-group-item-info span3' value='" + video_id_list[i] + "' >" + "<img  width='64' height='40' src=http://img.youtube.com/vi/" + video_id_list[i] + "/1.jpg>" + video_title_list[i] + "</li>");
+            $("#play_list").append("<li id=" + i + " class='list-group-item list-group-item-info span3' value='" + video_id_list[i] + "' >" + "<img  width='64' height='40' src=http://img.youtube.com/vi/" + video_id_list[i] + "/1.jpg>" + video_title_list[i] + "</li>");
         }
         //console.log(videos);
 
@@ -222,7 +338,7 @@
     function onYouTubePlayerAPIReady(num) {
         if (num == 1) {
             player = new YT.Player('player', {
-                height: '315',
+                height: '350',
                 width: '520',
                 loadPlaylist: {
                     listType: 'playlist',
