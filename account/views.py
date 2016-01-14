@@ -13,6 +13,9 @@ from django import template
 # database related
 from posts.models import *
 from login.models import CustomUser
+# from django.contrib.auth.models import User
+# from login.models import Profile
+
 # for using OR operation in db query
 from django.db.models import Q
 
@@ -34,7 +37,6 @@ def db_account_image(request):
 			CustomUser.objects.filter(username=request.user).update(user_image=json_data["image_path"])
 			return HttpResponse("haha updated the db")
 		elif json_data["request_type"] == "get_profile_image":
-			# CustomUser.objects.filter(username=json_data["username"]).values("user_image")
 			pass
 		else:
 			raise PermissionDenied

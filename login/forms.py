@@ -1,6 +1,7 @@
 import re
 from django import forms
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from login.models import CustomUser
 from django.utils.translation import ugettext_lazy as _
  
 class RegistrationForm(forms.Form):
@@ -12,8 +13,8 @@ class RegistrationForm(forms.Form):
  
     def clean_username(self):
         try:
-            user = User.objects.get(username__iexact=self.cleaned_data['username'])
-        except User.DoesNotExist:
+            user = CustomUser.objects.get(username__iexact=self.cleaned_data['username'])
+        except CustomUser.DoesNotExist:
             return self.cleaned_data['username']
         raise forms.ValidationError(_("The username already exists. Please try another one."))
  

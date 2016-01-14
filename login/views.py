@@ -9,6 +9,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from login.models import CustomUser
+# from django.contrib.auth.models import User
 
  
 @csrf_protect
@@ -20,8 +21,9 @@ def register(request):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email'],
-                user_image='/static/img/user_pic_jap_pattern.jpg',
+                # user_image='/static/img/user_pic_jap_pattern.jpg',
             )
+            # print ("user is!!!!!! ", user.id)
             return HttpResponseRedirect('/register/success/')
     else:
         form = RegistrationForm()
