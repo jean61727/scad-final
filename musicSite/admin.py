@@ -15,7 +15,7 @@ admin.site.register(Comment, CommentViewAdmin)
 
 class UserViewAdmin(admin.ModelAdmin):
 	list_display = ('id','username','user_image')
-# admin.site.register(CustomUser, UserViewAdmin)
+admin.site.register(CustomUser, UserViewAdmin)
 
 class  FollowerViewAdmin(admin.ModelAdmin):
 	"""docstring for  FollowerViewAdmin"""
