@@ -31,17 +31,18 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'django.contrib.admin',
+    'login',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'login',
-    # 'musicSite',
-    # 'posts',
-    # 'account',
-    # 'search',
-    # 'watson',
+    
+    'musicSite',
+    'posts',
+    'account',
+    'search',
+    'watson',
 )
 
 MIDDLEWARE_CLASSES = (
