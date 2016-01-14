@@ -12,7 +12,8 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     # Main View Tab Content
-    url(r'^$', home_view, name='home'), # login required
+    #url(r'^$', home_view, name='home'), # login required
+    url(r'^$', welcome),
     url(r'^home/$', home_view, name='home'), # login required
     url(r'^explore/songcategories/content/(?P<category>\w+)/', categoriesContent),
     url(r'^explore/songcategories/$',exploreSongCategories),
@@ -21,6 +22,9 @@ urlpatterns = [
     #url(r'^profile/(?P<user>\w+)',profile_user,name="profile_url"),
     url(r'^search/$', search_tab_view), # login required
     url(r'^search/user/$', full_text_search), # login required
+
+    #welcome page
+    url(r'^welcome/$',welcome),
 
 
     # Database Access

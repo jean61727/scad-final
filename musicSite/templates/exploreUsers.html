@@ -22,19 +22,20 @@
 
                     {% for user_follow in follower %} 
 
+
                         {% if traverse_user.username|stringformat:"s" != user_follow.follow|stringformat:"s" %}
 
-                          <div class="col-sm-4">
-                            <div class="thumbnail">
+                          <div class="col-sm-4" >
+                            <div class="thumbnail" id="user-col">
                             <img src='{{traverse_user.user_image}}' class= "img-circle img-responsive img-thumbnail" style="width:70px; height: 70px;" >
-                              <p><strong>{{ traverse_user.username }}</strong></p>
+                              <p id="user-name-heading"><strong>{{ traverse_user.username }}</strong></p>
                             <div class="list-group">
 
 
                              {% for post in all_posts%}
 
                                 {% if post.user_id|stringformat:"s" == traverse_user.id|stringformat:"s"%}
-                                  <a href="#" class="list-group-item">{{ post.title }}</a>
+                                  <a href="#" class="list-group-item" id="post-title">{{ post.title }}</a>
                                  {%endif%}
 
                               {% endfor %} 
@@ -54,9 +55,9 @@
 
 
                       <div class="col-sm-4">
-                        <div class="thumbnail">
+                        <div class="thumbnail" id="user-col">
                         <img src="{{traverse_user.user_image}}" class= "img-circle img-responsive img-thumbnail" style="width:70px; height: 70px;" >
-                          <p><strong>{{ traverse_user.username }}</strong></p>
+                          <p id="user-name-heading"><strong>{{ traverse_user.username }}</strong></p>
                         <div class="list-group">
 
 
@@ -64,7 +65,7 @@
                              {{post.user_id_username}}
 
                                 {% if post.user_id|stringformat:"s" ==  traverse_user.id|stringformat:"s" %}
-                              <a href="#" class="list-group-item">{{ post.title }}</a>
+                              <a href="#" class="list-group-item" id="post-title">{{ post.title }}</a>
                                  {%endif%}
 
                           {% endfor %} 
@@ -96,6 +97,20 @@
 
 
 <style>
+
+
+  #user-col{
+    background-color: rgb(26, 26, 26);
+  }
+  #user-name-heading{
+    color: rgb(254,203,20);
+  }
+  #post-title{
+    color: rgb(38,38,38);
+  }
+  .list-group-item{
+    background-color: rgb(100, 100, 100);
+  }
 
     .portfolio-hover{
 
