@@ -38,12 +38,12 @@ function render_post(id_container, filter_object){
 		}
 		// console.log("success!");
 	})
-	// .fail(ajax_fail_handler);
-	.fail(function(xhr, textStatus, errorThrown){
-		console.log("render post ajax failed");
-		// console.log("text status: "+textStatus);
-		// console.log(xhr.responseText);
-	})
+	.fail(ajax_fail_handler);
+	// .fail(function(xhr, textStatus, errorThrown){
+	// 	console.log("render post ajax failed");
+	// 	// console.log("text status: "+textStatus);
+	// 	// console.log(xhr.responseText);
+	// });
 }
 
 function render_post_body(json_data, id_container){
