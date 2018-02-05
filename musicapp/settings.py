@@ -68,21 +68,14 @@ import dj_database_url
 if os.getcwd() == "/app":
     DATABASES = {
         'default': dj_database_url.config(default='postgres://localhost')
+        # 'default': dj_database_url.config(default='postgres://akkczjfzfijwed:sfihEkKUaM12s1LiwxO7Bj2XuI@ec2-54-83-40-119.compute-1.amazonaws.com:5432/d2s1m01aeba16m')
     }
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 else:
+    # overwrite database to connect to remote
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            #'ENGINE':'django.db.backends.mysql',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            #'NAME': 'musicproject',
-            #'USER': 'musicprojectuser',
-            #'PASSWORD': 'password',
-            #'HOST': 'localhost',
-            #'PORT': '',
-        }
+        'default': dj_database_url.config(default='postgres://akkczjfzfijwed:sfihEkKUaM12s1LiwxO7Bj2XuI@ec2-54-83-40-119.compute-1.amazonaws.com:5432/d2s1m01aeba16m')
     }
 
 # Internationalization
