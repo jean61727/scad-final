@@ -178,8 +178,10 @@ function render_post_profile(post_data, $post_profile_container){
 	}).appendTo($field_user);
 	$download_col = $("<div>", {
 		'class':'col-xs-12',
-		'html':'<a class="glyphicon glyphicon-download" href="'+link_text+'"></a>',
-	}).appendTo($download_body);
+		'html':'<a class="glyphicon glyphicon-download hahahahhaha" href="'+link_text+'"></a>',
+	})
+	//.appendTo($download_body)
+	;
 }
 
 function render_post_video(post_data, $post_video_container){
@@ -299,7 +301,7 @@ function render_post_comment(post_data, $comment_container){
 function render_comment(id_target, comment, post_id){
 	
 	if (comment["commentor"] === ""){
-		console.log("id  taret is " + id_target);
+		// console.log("id  taret is " + id_target);
 		// console.log("inside!!!");
 		// the bottom input field
 		// a comment line
