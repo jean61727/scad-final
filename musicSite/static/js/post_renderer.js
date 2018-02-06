@@ -299,7 +299,6 @@ function render_post_comment(post_data, $comment_container){
 }
 
 function render_comment(id_target, comment, post_id){
-	console.log(comment);
 	if (comment["commentor"] === ""){
 		// console.log("id  taret is " + id_target);
 		// console.log("inside!!!");
@@ -363,10 +362,9 @@ function render_comment(id_target, comment, post_id){
 			'html':comment['comment_content'],
 		}).appendTo($comment_media_body);
 		// name
-		$comment_heading = $("<a>", {
+		$comment_heading = $("<span>", {
 			'class':'media-heading',
-			'html':"<strong>"+comment["commentor"]+"</strong><br>",
-			'href': profile_href,
+			'html': '<a href=" '+ profile_href +' " ><strong> ' + comment["commentor"] + ' </strong></a>  <em style="margin-left:5px;" >'+ comment["comment_time"] +'</em> <br>',
 		}).prependTo($comment_media_body);
 	}
 	

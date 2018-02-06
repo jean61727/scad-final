@@ -178,7 +178,7 @@ def post_db(request):
 							"commentor":commentor_data["username"],
 							"comment_content":one_comment["comment_message"],
 							"commentor_image":commentor_data["user_image"],
-							"comment_time": one_comment["time"],
+							"comment_time": one_comment["time"].strftime('%-B %-d %p %-I:%M %Y'),
 						}
 						comments.append(comment_data)
 					else:
