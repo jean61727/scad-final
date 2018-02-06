@@ -59,7 +59,7 @@ ROOT_URLCONF = 'musicapp.urls'
 WSGI_APPLICATION = 'musicapp.wsgi.application'
 
 import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500, default='postgres://akkczjfzfijwed:sfihEkKUaM12s1LiwxO7Bj2XuI@ec2-54-83-40-119.compute-1.amazonaws.com:5432/d2s1m01aeba16m')
+db_from_env = dj_database_url.config( default='postgres://akkczjfzfijwed:sfihEkKUaM12s1LiwxO7Bj2XuI@ec2-54-83-40-119.compute-1.amazonaws.com:5432/d2s1m01aeba16m')
 DATABASES['default']= db_from_env
 
 try:
