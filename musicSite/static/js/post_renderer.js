@@ -299,7 +299,7 @@ function render_post_comment(post_data, $comment_container){
 }
 
 function render_comment(id_target, comment, post_id){
-	
+	console.log(comment);
 	if (comment["commentor"] === ""){
 		// console.log("id  taret is " + id_target);
 		// console.log("inside!!!");

@@ -18,7 +18,7 @@ $(function() {
 		var str = JSON.stringify(response.result);
 		for (var i = 0; i < response.result.items.length; i++) {
 			if(response.result.items[i].id.videoId != null ){
-			$('#results').append('<ul><input  type="radio" name="optradio"  onclick="showRadioValue()" id="'+response.result.items[i].snippet.title+'" value="'+response.result.items[i].id.videoId+'"><div>'+response.result.items[i].snippet.title+' </div><iframe width="350" height="210"  src="http://www.youtube.com/embed/' + response.result.items[i].id.videoId + '?origin=https://youboxappv2.herokuapp.com"></iframe></ul>');
+			$('#results').append('<ul><input  type="radio" name="optradio"  onclick="showRadioValue()" id="'+response.result.items[i].snippet.title+'" value="'+response.result.items[i].id.videoId+'"><div>'+response.result.items[i].snippet.title+' </div><iframe width="350" height="210"  src="https://www.youtube.com/embed/' + response.result.items[i].id.videoId + '?origin=https://youboxappv2.herokuapp.com"></iframe></ul>');
 			console.log(response.result.items[i].id.videoId);}
 		}
 		 resetVideoHeight();

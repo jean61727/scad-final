@@ -164,7 +164,7 @@ def post_db(request):
 				}
 				# collecting comment data
 				comment_query_constrain = {"post_id":one_post["id"]}
-				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message", "user_id")
+				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message", "user_id", "time")
 				comments = []
 				
 				for one_comment in filtered_comments:
@@ -178,6 +178,7 @@ def post_db(request):
 							"commentor":commentor_data["username"],
 							"comment_content":one_comment["comment_message"],
 							"commentor_image":commentor_data["user_image"],
+							"comment_time": one_comment["time"],
 						}
 						comments.append(comment_data)
 					else:
