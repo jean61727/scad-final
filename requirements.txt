@@ -6,4 +6,4 @@ static3==0.6.1
 psycopg2
 numpy
 scikit-learn==0.17
-scipy==0.16.1
+scipy==0.15.1
