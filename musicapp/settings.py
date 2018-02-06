@@ -62,11 +62,11 @@ import dj_database_url
 
 DATABASES = {
     'default' : dj_database_url.config( default='postgres://akkczjfzfijwed:sfihEkKUaM12s1LiwxO7Bj2XuI@ec2-54-83-40-119.compute-1.amazonaws.com:5432/d2s1m01aeba16m'),
-}
+} # need at least an instance initialization for DATABASES to be a dictionary
 
 try:
     print('maybe on heroku? url is', os.environ['DATABASE_URL'])
-    db_from_env = dj_database_url.config(conn_max_age=500)
+    db_from_env = dj_database_url.config(conn_max_age=500) # if using DATABASE_URL, no need to type in db url
     DATABASES['default'].update(db_from_env)
     DEBUG = True
     # ALLOWED_HOSTS = ['*']
