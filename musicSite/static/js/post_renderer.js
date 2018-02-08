@@ -362,6 +362,9 @@ function render_comment(id_target, comment, post_id){
 			'html':comment['comment_content'],
 		}).appendTo($comment_media_body);
 		// name
+		if (comment["comment_time"] == undefined) {
+			comment["comment_time"] = "";
+		}
 		$comment_heading = $("<span>", {
 			'class':'media-heading',
 			'html': '<a href=" '+ profile_href +' " ><strong> ' + comment["commentor"] + ' </strong></a>  <em style="margin-left:5px;" >'+ comment["comment_time"] +'</em> <br>',
