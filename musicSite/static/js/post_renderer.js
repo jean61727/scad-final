@@ -2,17 +2,23 @@
 // var global_post_profile_image_height = "80";
 var global_unhearted_class = 'glyphicon glyphicon-heart-empty button';
 var global_hearted_class = 'glyphicon glyphicon-heart button';
+var global_delete_class = 'fa fa-trash';
+var global_logged_in_username = '';
+
+function getSpinner(){
+	return $("<i>", { class: "fa fa-circle-o-notch fa-spin", id: "post_spinner", }).css("font-size", "54px");
+}
+
 // this is the starter of the whole render chain functions
-function render_post(id_container, filter_object){
+function render_post(id_container, filter_object, logged_in_username){
 	// insert spinner
 	if (!document.getElementById("post_spinner")){
 		$("#"+id_container).after(
-			$("<i>", {
-				class: "fa fa-circle-o-notch fa-spin",
-				id: "post_spinner",
-			}).css("font-size", "54px")
+			getSpinner()
 		);
 	}
+
+	global_logged_in_username = logged_in_username;
 
 	// acquire post data for rendering
 	var request_url = '/post_db/';
@@ -134,7 +140,7 @@ function render_post_profile(post_data, $post_profile_container){
 	// id_field_username = post_id + "_field_username";
 	// {pic}
 	$field_pic = $("<div>", {
-		'class':'row',
+		'class':'row field_pic',
 		// 'id':id_field_pic,
 	}).appendTo($field_user);
 	$("<img>", {
@@ -146,7 +152,7 @@ function render_post_profile(post_data, $post_profile_container){
 	// console.log(post_data['user_pic']);
 	// {username}
 	$field_username = $("<div>", {
-		'class':'row',
+		'class':'row field_username',
 		// 'id':id_field_username,
 	}).appendTo($field_user);
 	$("<a>", {
@@ -155,7 +161,7 @@ function render_post_profile(post_data, $post_profile_container){
 	}).appendTo($field_username);
 	// {like}
 	$like_body = $("<div>", {
-		'class':'row',
+		'class':'row like_body',
 	}).appendTo($field_user);
 	if(post_data["is_like"]){
 		heart_icon = $("<i>", {
@@ -182,15 +188,27 @@ function render_post_profile(post_data, $post_profile_container){
 		'id':id_field_like_count,
 	}).appendTo($like_body);
 
+	// {delete}
+	if ( global_logged_in_username == post_data['username']){
+		$delete_body = $("<div>", {
+			'class':'row',
+		}).appendTo($field_user);
+	
+		$delete_col = $("<i>", {
+			'class':global_delete_class,
+		}).css("font-size", "25px").appendTo($delete_body).bind('click', {
+			post_id: post_id,
+		}, delete_clicked);
+	}
 	// { donwload }
-	var link_text = 'http://www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=' + post_data["video_id"];
-	$download_body = $("<div>", {
-		'class':'row',
-	}).appendTo($field_user);
-	$download_col = $("<div>", {
-		'class':'col-xs-12',
-		'html':'<a class="glyphicon glyphicon-download hahahahhaha" href="'+link_text+'"></a>',
-	})
+	// var link_text = 'http://www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=' + post_data["video_id"];
+	// $download_body = $("<div>", {
+	// 	'class':'row',
+	// }).appendTo($field_user);
+	// $download_col = $("<div>", {
+	// 	'class':'col-xs-12',
+	// 	'html':'<a class="glyphicon glyphicon-download hahahahhaha" href="'+link_text+'"></a>',
+	// })
 	//.appendTo($download_body)
 	;
 }
@@ -420,6 +438,29 @@ function comment_input_enter_listener(e){
 		.fail(ajax_fail_handler);
 	}
 
+}
+
+function delete_clicked(e){
+	var resp = confirm("Are you sure you want to delete the post?")
+	if (resp == false) {
+		return;
+	}
+
+	var post_id = e.data.post_id;
+	var request_json = {
+		"request_type":"delete_post",
+		"post_id":post_id,
+	};
+	$.ajax({
+		'type':'POST',
+		'url':'/post_db/',
+		data: JSON.stringify(request_json),
+	})
+	.done(function(response){
+		// console.log(response);
+		location.reload();
+	})
+	.fail(ajax_fail_handler);
 }
 
 function like_clicked(e){

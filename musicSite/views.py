@@ -271,6 +271,15 @@ def post_db(request):
 					"like_count":like_count - 1,
 				}
 				return JsonResponse(json_response)
+		
+		elif request_type == "delete_post":
+			# user = CustomUser.objects.get(username=request.user)
+			Post.objects.filter(user_id=request.user , id=json_data["post_id"]).delete()
+			json_response = {
+				"state":"ok",
+			}
+			return JsonResponse(json_response)
+		
 		else:
 			return HttpResponse("view.py: Invalid request type")
 	else:

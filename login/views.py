@@ -17,6 +17,10 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            # check no duplicate user name 
+            result =  CustomUser.objects.filter(username=form.cleaned_data['username'])
+            if len(result) != 0:
+                return HttpResponseRedirect('/register/')
             user = CustomUser.objects.create_user(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
@@ -30,6 +34,7 @@ def register(request):
     variables = RequestContext(request, {
     'form': form
     })
+    # variables = { 'form': form }    
  
     return render_to_response(
     'registration/register.html',

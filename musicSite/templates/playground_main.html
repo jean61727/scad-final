@@ -17,17 +17,18 @@
 	// jQuery window ready block
 	$(function () {
 		// start_with_get_login_user();
+		{% if user.username %}
 		$("#post_container").after(
 			$("<i>", {
 				class: "fa fa-circle-o-notch fa-spin",
 				id: "pre_post_spinner",
 			}).css("font-size", "54px")
 		);
+		{% endif %}
 	});
 
 	function onYouTubeIframeAPIReady() {
 		// console.log("youtube iframe ready");
-
 		{% if user.username %}
 		start_with_get_login_user();
 		{% else %}
@@ -99,7 +100,7 @@
 				$("#pre_post_spinner").remove();
 				render_post("post_container", {
 					"username": username_list,
-					"limit": 4,
+					"limit": 10,
 					"sort_by": "-time",
 					// "is_like":{
 					// 	"username":"iriver",
@@ -107,7 +108,7 @@
 					// },
 					"or": {
 					},
-				});
+				}, logged_in_username);
 			})
 			.fail(ajax_fail_handler);
 	}

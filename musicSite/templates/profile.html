@@ -174,7 +174,6 @@
     </div>
 </div>
 
-
 {%endblock%} {% else %}
 <h3 align="center">Please Login !</h3> 
 
@@ -382,7 +381,7 @@ border-radius: 5px;
             render_post('post_container', {
                 "username": '{{ user.username }}',
                 "limit": 4,
-            });
+            }, "{{ user }}");
         }
     }
 
