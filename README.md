@@ -4,3 +4,5 @@ You can access the web application through this link: https://youboxappv2.heroku
 
 This is a team work final project for the course social computing application design.
 More details could be found in the project documentation PDF. 
+
+Using Awesome Fonts (https://fontawesome.com/v4.7.0/icon/trash/).
