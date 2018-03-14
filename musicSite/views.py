@@ -512,6 +512,8 @@ def user_user(request):
 	
 	rec_array=all_user_category_array
 	similarity=cosine_similarity([all_user_category_array[user_index]], all_user_category_array)
+	# study cosine similarity
+	# http://blog.christianperone.com/2013/09/machine-learning-cosine-similarity-for-vector-space-models-part-iii/
 	# print ("similarity is ", similarity)
 	# return
 	
