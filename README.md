@@ -6,4 +6,8 @@ This is a team work final project for the course social computing application de
 More details could be found in the project documentation PDF. 
 
 Using Awesome Fonts (https://fontawesome.com/v4.7.0/icon/trash/).
+
 Latest documentation see (https://docs.google.com/document/d/e/2PACX-1vQr7vezNezR60ucQaXbpaN45SFIALBIjQFZp9HgRq1obIGJkjjEFEmycupfnV-YUw7DF44pnGEwAyHx/pub).
+
+Internal Documenttation
+(https://docs.google.com/document/d/16n32JxhkWjVkUf-FbOi8FifpDB21VhhrnPhHnyXhCTg/edit#heading=h.5c6pw9w3c6tf)
