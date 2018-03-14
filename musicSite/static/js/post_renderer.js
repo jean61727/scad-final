@@ -150,7 +150,7 @@ function render_post_profile(post_data, $post_profile_container){
 		// 'id':id_field_username,
 	}).appendTo($field_user);
 	$("<a>", {
-		'href':'/profile/'+post_data['username']+'/',
+		'href':'/profile/'+post_data['username']+'/1/',
 		'html':post_data['username'],
 	}).appendTo($field_username);
 	// {like}
