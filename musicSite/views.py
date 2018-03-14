@@ -387,15 +387,15 @@ def profile (request,user,control):
 	print (user)
 	print (control)
 	print (int(control)==2)
-	like_post=Like.objects.filter(user_id=request.user)
-	user_post=Post.objects.filter(user_id=request.user)
+	like_posts=Like.objects.filter(user_id=request.user)
+	user_posts=Post.objects.filter(user_id=request.user).order_by("-time")
 	user_follow=Follower.objects.filter(user_id=request.user)
 
 	user_be_followed = CustomUser.objects.get(username=user)
 	be_followed_post=Post.objects.filter(user_id=user_be_followed)
 
 	like_post_list=[]
-	for post in like_post:
+	for post in like_posts:
 		like_post_list.append(Post.objects.filter(id=post.post_id)[0])
 	
 	following_user_list=[]
@@ -403,7 +403,7 @@ def profile (request,user,control):
 		following_user_list.append(CustomUser.objects.filter(username=following.follow)[0])
 	
 	
-	data = serializers.serialize("json", user_post)
+	data = serializers.serialize("json", user_posts)
 	like_data=serializers.serialize("json", like_post_list)
 	be_followed_data = serializers.serialize("json", be_followed_post)
 	
