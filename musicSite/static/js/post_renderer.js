@@ -4,6 +4,16 @@ var global_unhearted_class = 'glyphicon glyphicon-heart-empty button';
 var global_hearted_class = 'glyphicon glyphicon-heart button';
 // this is the starter of the whole render chain functions
 function render_post(id_container, filter_object){
+	// insert spinner
+	if (!document.getElementById("post_spinner")){
+		$("#"+id_container).after(
+			$("<i>", {
+				class: "fa fa-circle-o-notch fa-spin",
+				id: "post_spinner",
+			}).css("font-size", "54px")
+		);
+	}
+
 	// acquire post data for rendering
 	var request_url = '/post_db/';
 	var request_json;
@@ -37,6 +47,7 @@ function render_post(id_container, filter_object){
 			render_post_body(json_object, id_container);
 		}
 		// console.log("success!");
+		$("#post_spinner").remove();
 	})
 	.fail(ajax_fail_handler);
 	// .fail(function(xhr, textStatus, errorThrown){
@@ -271,7 +282,7 @@ function render_post_comment(post_data, $comment_container){
 		'data-toggle':'collapse',
 		'data-target':'#'+id_comment_collapse,
 		'id':id_comment_collapse_control,
-		'html':'Comments...',
+		'html':'Comments...(' + comment_data.length +')',
         'style':'margin-bottom:10px;',
 	}).appendTo("#"+id_comment_col);
 
