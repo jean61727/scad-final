@@ -255,6 +255,17 @@ function render_post_profile(post_data, $post_profile_container) {
 			post_id: post_id,
 		}, delete_clicked);
 	}
+
+	// {post time}
+	$posttime_body = $("<div>", {
+		'class': 'row',
+	}).appendTo($field_user);
+
+	$posttime_col = $("<span>", {
+		'class': 'post_time',
+		'html': post_data["time"]["date"] + "<br>" + post_data["time"]["hour_time"] + "<br>" + post_data["time"]["year"] ,
+	}).appendTo($posttime_body);
+
 	// { donwload }
 	// var link_text = 'http://www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=' + post_data["video_id"];
 	// $download_body = $("<div>", {

@@ -159,7 +159,13 @@ def post_db(request):
 					"user_pic": user_data["user_image"] ,
 					"username": user_data["username"],
 					"user_id": one_post["user_id"]  ,
-					"message": one_post["post_message"]  ,
+					"message": one_post["post_message"] ,
+					"time": {
+						"date": one_post["time"].strftime('%-B %-d'),
+						"hour_time": one_post["time"].strftime('%p %-I:%M'),
+						"year": one_post["time"].strftime('%Y'),
+						"all": one_post["time"].strftime('%-B %-d %p %-I:%M %Y'),
+					},
 					"comments":[],
 				}
 				# collecting comment data
