@@ -8,12 +8,13 @@
 <script>
 $(function(){
 
-    render_post(
+    new PostManager(
         "post_container",{
-            "limit":10,
+            "limit":3,
             "category":"{{ category }}",
             "sort_by":"-likes",
-        }   
+        },
+        "{{ user }}",
     );
 });
 

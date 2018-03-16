@@ -202,7 +202,6 @@ border-radius: 5px;
   }
   </style>
 <script type="text/javascript">
-    
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -378,9 +377,9 @@ border-radius: 5px;
         }
         else if (num!=1){
             console.log("youtube onready called once");
-            render_post('post_container', {
+            new PostManager('post_container', {
                 "username": '{{ user.username }}',
-                "limit": 4,
+                "limit": 3,
             }, "{{ user }}");
         }
     }

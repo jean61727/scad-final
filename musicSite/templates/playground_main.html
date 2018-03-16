@@ -98,9 +98,10 @@
 				// render the post using constrain conditions
 				// console.log(username_list);
 				$("#pre_post_spinner").remove();
-				render_post("post_container", {
+				
+				new PostManager("post_container", {
 					"username": username_list,
-					"limit": 10,
+					"limit": 3,
 					"sort_by": "-time",
 					// "is_like":{
 					// 	"username":"iriver",

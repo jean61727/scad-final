@@ -31,6 +31,7 @@ def register(request):
             return HttpResponseRedirect('/register/success/')
     else:
         form = RegistrationForm()
+    
     variables = RequestContext(request, {
     'form': form
     })
