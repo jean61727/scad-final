@@ -1,6 +1,4 @@
-{% extends 'playground_base.html' %}
-{% load staticfiles %}
-{% block content %}
+{% extends 'playground_base.html' %} {% load staticfiles %} {% block content %}
 
 <!-- Custom JavaScript -->
 <script type="text/javascript" src="{% static 'js/initialize_youtube_api.js' %}"></script>
@@ -17,94 +15,103 @@
 <!-- Home Tab Main JavaScript Controller -->
 <script type="text/javascript">
 	// jQuery window ready block
-	$(function(){
+	$(function () {
 		// start_with_get_login_user();
+		{% if user.username %}
+		$("#post_container").after(
+			$("<i>", {
+				class: "fa fa-circle-o-notch fa-spin",
+				id: "pre_post_spinner",
+			}).css("font-size", "54px")
+		);
+		{% endif %}
 	});
 
 	function onYouTubeIframeAPIReady() {
 		// console.log("youtube iframe ready");
-
 		{% if user.username %}
 		start_with_get_login_user();
 		{% else %}
 		$("<h3>", {
-			"html":"Please login first, no post rendered."
+			"html": "Please login first, no post rendered."
 		})
-		.appendTo("#post_container")
-		.after('<hr>');
+			.appendTo("#post_container")
+			.after('<hr>');
 		{% endif %}
 	}
 
-	function start_with_get_login_user(){
+	function start_with_get_login_user() {
 		var request_url = "/post_db/";
 		var json_request = {
-			"request_type":"get_login_user",
+			"request_type": "get_login_user",
 		};
 		// render tab content = render all posts
 		$.ajax({
-			type:"POST",
-			url:request_url,
-			data:JSON.stringify(json_request),
-			dataType:"JSON", /* this specify the returned object type */
-			contentType:"application/json",
+			type: "POST",
+			url: request_url,
+			data: JSON.stringify(json_request),
+			dataType: "JSON", /* this specify the returned object type */
+			contentType: "application/json",
 		})
-		.done(function(result){
-			// Case that user not logged in, is handled in this template and view function, so no need to print any msg here.
-			if (result["username"] == "AnonymousUser"){
-				// show some message
-				// $("<h3>", {
-				// 	"html":"Post Renderer: Not logged in"
-				// })
-				// .appendTo("#post_container")
-				// .after('<hr>');
-				// alert("Access to home: Please log in first")
-				// defualt case when user isn't yet login
-				// render_post("post_container", {
-				// 	"limit":0,
-				// })
+			.done(function (result) {
+				// Case that user not logged in, is handled in this template and view function, so no need to print any msg here.
+				if (result["username"] == "AnonymousUser") {
+					// show some message
+					// $("<h3>", {
+					// 	"html":"Post Renderer: Not logged in"
+					// })
+					// .appendTo("#post_container")
+					// .after('<hr>');
+					// alert("Access to home: Please log in first")
+					// defualt case when user isn't yet login
+					// render_post("post_container", {
+					// 	"limit":0,
+					// })
 
-			} else {
-				// render the login user's post and all his followers'
-				start_with_get_follwer_list(result["username"]);
-			}
-		})
-		.fail(ajax_fail_handler);
+				} else {
+					// render the login user's post and all his followers'
+					start_with_get_follwer_list(result["username"]);
+				}
+			})
+			.fail(ajax_fail_handler);
 	}
 
-	function start_with_get_follwer_list(logged_in_username){
+	function start_with_get_follwer_list(logged_in_username) {
 		var request_url = "/post_db/";
 		var json_request = {
-			"request_type":"get_follower_list",
-			"main_user_name":logged_in_username,
+			"request_type": "get_follower_list",
+			"main_user_name": logged_in_username,
 		};
 
 		$.ajax({
-			type:"POST",
-			url:request_url,
-			data:JSON.stringify(json_request),
-			dataType:"JSON", /* this specify the returned object type */
-			contentType:"application/json",
+			type: "POST",
+			url: request_url,
+			data: JSON.stringify(json_request),
+			dataType: "JSON", /* this specify the returned object type */
+			contentType: "application/json",
 		})
-		.done(function(result){
-			// get follwer list		
-			var username_list = result.follower_list;
-			username_list.push(result.login_user_name);
-			// console.log('the user list is '+username_list);
-			// render the post using constrain conditions
-			// console.log(username_list);
-			render_post("post_container", {
-				"username":username_list,
-				"limit":20,
-				"sort_by":"-time",
-				// "is_like":{
-				// 	"username":"iriver",
-				// 	"value":"true",
-				// },
-				"or":{
-				},
-			});
-		})
-		.fail(ajax_fail_handler);
+			.done(function (result) {
+				// get follwer list		
+				var username_list = result.follower_list;
+				username_list.push(result.login_user_name);
+				// console.log('the user list is '+username_list);
+				// render the post using constrain conditions
+				// console.log(username_list);
+				$("#pre_post_spinner").remove();
+				
+				new PostManager("post_container", {
+					"username": username_list,
+					"limit": 3,
+					"sort_by": "-time",
+					// "is_like":{
+					// 	"username":"iriver",
+					// 	"value":"true",
+					// },
+					"or": {
+					},
+				}, logged_in_username);
+			})
+			.fail(ajax_fail_handler);
 	}
-</script>
-{% endblock %} <!-- block content -->
+</script> {% endblock %}
+<!-- block content -->

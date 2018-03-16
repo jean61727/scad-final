@@ -58,32 +58,22 @@ ROOT_URLCONF = 'musicapp.urls'
 
 WSGI_APPLICATION = 'musicapp.wsgi.application'
 
-
 import dj_database_url
-# add these lines at the end of your settings.py to continue to use sql lite locally and only postgres on heroku.
-# http://stackoverflow.com/questions/12308046/how-to-launch-your-already-made-django-app-on-heroku
 
-# AUTH_USER_MODEL = 'login.CustomUser'
-# import os
-if os.getcwd() == "/app":
-    DATABASES = {
-        'default': dj_database_url.config(default='postgres://localhost')
-    }
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            #'ENGINE':'django.db.backends.mysql',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            #'NAME': 'musicproject',
-            #'USER': 'musicprojectuser',
-            #'PASSWORD': 'password',
-            #'HOST': 'localhost',
-            #'PORT': '',
-        }
-    }
+DATABASES = {
+    'default' : dj_database_url.config( default='postgres://akkczjfzfijwed:sfihEkKUaM12s1LiwxO7Bj2XuI@ec2-54-83-40-119.compute-1.amazonaws.com:5432/d2s1m01aeba16m'),
+} # need at least an instance initialization for DATABASES to be a dictionary
+
+try:
+    print('maybe on heroku? url is', os.environ['DATABASE_URL'])
+    db_from_env = dj_database_url.config(conn_max_age=500) # if using DATABASE_URL, no need to type in db url
+    DATABASES['default'].update(db_from_env)
+    DEBUG = True
+    # ALLOWED_HOSTS = ['*']
+    # Update database configuration with $DATABASE_URL. 
+except:
+    print('its local really...')
+    DEBUG = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -101,8 +91,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
+#
 STATIC_URL = '/static/'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
 # Templates
 # TEMPLATE_DIRS = (

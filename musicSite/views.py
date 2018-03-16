@@ -159,12 +159,18 @@ def post_db(request):
 					"user_pic": user_data["user_image"] ,
 					"username": user_data["username"],
 					"user_id": one_post["user_id"]  ,
-					"message": one_post["post_message"]  ,
+					"message": one_post["post_message"] ,
+					"time": {
+						"date": one_post["time"].strftime('%-B %-d'),
+						"hour_time": one_post["time"].strftime('%p %-I:%M'),
+						"year": one_post["time"].strftime('%Y'),
+						"all": one_post["time"].strftime('%-B %-d %p %-I:%M %Y'),
+					},
 					"comments":[],
 				}
 				# collecting comment data
 				comment_query_constrain = {"post_id":one_post["id"]}
-				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message", "user_id")
+				filtered_comments = Comment.objects.filter(**comment_query_constrain).values("comment_message", "user_id", "time")
 				comments = []
 				
 				for one_comment in filtered_comments:
@@ -178,6 +184,7 @@ def post_db(request):
 							"commentor":commentor_data["username"],
 							"comment_content":one_comment["comment_message"],
 							"commentor_image":commentor_data["user_image"],
+							"comment_time": one_comment["time"].strftime('%-B %-d %p %-I:%M %Y'),
 						}
 						comments.append(comment_data)
 					else:
@@ -270,6 +277,15 @@ def post_db(request):
 					"like_count":like_count - 1,
 				}
 				return JsonResponse(json_response)
+		
+		elif request_type == "delete_post":
+			# user = CustomUser.objects.get(username=request.user)
+			Post.objects.filter(user_id=request.user , id=json_data["post_id"]).delete()
+			json_response = {
+				"state":"ok",
+			}
+			return JsonResponse(json_response)
+		
 		else:
 			return HttpResponse("view.py: Invalid request type")
 	else:
@@ -320,17 +336,17 @@ def exploreUsers(request):
 	all_users = CustomUser.objects.all()
 	all_posts = Post.objects.all()[:5]
 	follower = Follower.objects.filter(user_id=request.user)
-	print(all_users)
-
 
 	rec_users=user_user(request)
 	for following in follower:
 		for users in rec_users:
 			if(following.follow==users.username):
-				rec_users.remove(users);
-	print (rec_users[0])
-	print (all_users)
+				rec_users.remove(users)
+	# print (rec_users[0])
+	# print (all_users)
+	# return render(request,'exploreUsers.html',{'all_users': all_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
 	return render(request,'exploreUsers.html',{'all_users': rec_users,'all_posts': all_posts, 'tab':'explore', 'user_self': request.user,'follower':follower})
+
 def welcome(request):
 	return render(request,'welcome.html')
 
@@ -377,15 +393,15 @@ def profile (request,user,control):
 	print (user)
 	print (control)
 	print (int(control)==2)
-	like_post=Like.objects.filter(user_id=request.user)
-	user_post=Post.objects.filter(user_id=request.user)
+	like_posts=Like.objects.filter(user_id=request.user)
+	user_posts=Post.objects.filter(user_id=request.user).order_by("-time")
 	user_follow=Follower.objects.filter(user_id=request.user)
 
 	user_be_followed = CustomUser.objects.get(username=user)
 	be_followed_post=Post.objects.filter(user_id=user_be_followed)
 
 	like_post_list=[]
-	for post in like_post:
+	for post in like_posts:
 		like_post_list.append(Post.objects.filter(id=post.post_id)[0])
 	
 	following_user_list=[]
@@ -393,14 +409,17 @@ def profile (request,user,control):
 		following_user_list.append(CustomUser.objects.filter(username=following.follow)[0])
 	
 	
-	data = serializers.serialize("json", user_post)
+	data = serializers.serialize("json", user_posts)
 	like_data=serializers.serialize("json", like_post_list)
 	be_followed_data = serializers.serialize("json", be_followed_post)
 	
 	if(str(request.user) !=str(user)):
 		if(int(control)==2):
 			return render(request,'explore_user_profile.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
-		return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
+		# followed profile
+		elif int(control) == 1:
+			return render(request,'profile_other.html',{'data':be_followed_data, 'tab':'profile','follow_user':user_be_followed})
+	# self profile
 	return render(request,'profile.html',{'like_data': like_data,'data':data, 'tab':'profile','user_follow':following_user_list})
 
 '''def profile_user (request,user):
@@ -488,7 +507,6 @@ def like_delete(request):
 		return render(request, 'playground_main.html', {'tab':'home'})
 
 def user_user(request):
-
 	categories = ['funny','rock','hip_hop','pop','post_rock','punk','indie','acoustic','electronic','randb','country','jazz','classical']
 
 	all_users=CustomUser.objects.all()
@@ -500,15 +518,19 @@ def user_user(request):
 			user_index=idx
 		user_category_array=[]
 		for category in categories:
+			# get this user's post in this cat
 			user_in_category=Post.objects.filter(category=category,user_id=user)
+			# store these post counts
 			user_category_array.append(len(user_in_category))
+		# user_category_array describes a user's music taste in each category
 		all_user_category_array.append(user_category_array)
 	
 	rec_array=all_user_category_array
-	
-	similarity=cosine_similarity(all_user_category_array[user_index], all_user_category_array)
-	print (rec_array)
-	print (similarity)
+	similarity=cosine_similarity([all_user_category_array[user_index]], all_user_category_array)
+	# study cosine similarity
+	# http://blog.christianperone.com/2013/09/machine-learning-cosine-similarity-for-vector-space-models-part-iii/
+	# print ("similarity is ", similarity)
+	# return
 	
 	recommend_dict={}
 	for idx, user in enumerate(all_users):
